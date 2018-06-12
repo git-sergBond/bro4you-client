@@ -1,0 +1,34 @@
+.map-comp {
+    display: flex;
+}
+.map-comp .ymap {
+    flex: 0.7;
+    min-width: 250px;
+    min-height: 600px;
+}
+.map-comp .place-info{
+    flex: 0.3;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column
+}
+.map-comp .place-info .content{
+    height: 400px;
+    overflow: scroll;
+}
+.map-comp .quit{
+    float: right;
+    margin: 0.7rem;
+    border-radius: 1rem
+}
+.map-comp h1{
+    font-size: 1.2rem  
+}
+.map-comp .place-info img{
+    margin-bottom: 0.5rem;
+    justify-self: auto;
+    max-width: 200px;
+}
+body{
+    justify-content: space-between
+}
