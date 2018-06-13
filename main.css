@@ -1,5 +1,10 @@
+.imgCenter {text-align:center;}
 .map-comp {
     display: flex;
+    align-content: space-between
+}
+.map-comp p, h1, a{
+    margin-left: 1rem;
 }
 .map-comp .ymap {
     flex: 0.7;
@@ -10,11 +15,40 @@
     flex: 0.3;
     margin-left: 1rem;
     display: flex;
-    flex-direction: column
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border-radius: 1.3rem;
 }
 .map-comp .place-info .content{
     height: 400px;
     overflow: scroll;
+    background-color: darkgrey;
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+}
+.map-comp .place-info .content .quit{
+    position: fixed;
+}
+.map-comp .place-info .content .service-item{
+    margin: 1em;
+    padding: 0.5em;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    
+}
+.service-item div{
+    justify-content: space-between;
+}
+.map-comp .place-info .content .service-item img{
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 4em;
+    margin: auto;
+}
+.map-comp .place-info .content .service-item div{
+    clear: left;
 }
 .map-comp .quit{
     float: right;
