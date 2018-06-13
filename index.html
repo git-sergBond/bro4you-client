@@ -25,7 +25,9 @@
             <div class="content">
                 <button @click='photoTrig = !photoTrig' class="quit"> {{ photoTrig ? 'Скрыть' : 'Показать' }} фото</button>
                 <div class="service-item" v-for='(service, index) in info.services'>
+                <transition name="fade">
                     <div class="imgCenter"><img :src="service.imageUrl" v-show='photoTrig'></div>
+                </transition>
                     <p>№ {{index + 1}} <a :href='service.url'>перейти к покупке</a></p>
                     <p>{{ service.description }}</p>
                     <p>{{ service.price }} RUB</p>

@@ -1,3 +1,12 @@
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+    opacity: 0;
+}
+
+
+
 .imgCenter {text-align:center;}
 .map-comp {
     display: flex;
@@ -12,6 +21,7 @@
     min-height: 600px;
 }
 .map-comp .place-info{
+    height: 600px;
     flex: 0.3;
     margin-left: 1rem;
     display: flex;
@@ -21,9 +31,9 @@
     border-radius: 1.3rem;
 }
 .map-comp .place-info .content{
-    height: 400px;
+    height: 100%;
     overflow: scroll;
-    background-color: darkgrey;
+    background-color: rgb(198, 202, 202);
     margin-left: 0.3rem;
     margin-right: 0.3rem;
 }
@@ -36,16 +46,13 @@
     background-color: white;
     border-radius: 1rem;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    
 }
 .service-item div{
     justify-content: space-between;
 }
 .map-comp .place-info .content .service-item img{
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
     min-width: 4em;
-    margin: auto;
 }
 .map-comp .place-info .content .service-item div{
     clear: left;
