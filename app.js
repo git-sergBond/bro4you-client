@@ -10,7 +10,7 @@ new Vue({
     mapInstanse: null,
     coords: [54.82896654088406, 39.831893822753904],//начальный фокус на карте
     //-------------претенденты на удаление
-    polygon: [],//хранит координаты точек полигона
+    polygon: {},//хранит координаты точек полигона
     placemarks: [],//координаты услуг
     editPoligonState: false,//флаг показывающий, что в данный момент происходит редактирвоание полигона
     //-------------
@@ -38,18 +38,18 @@ new Vue({
       let polygonEdit = null;
       var NewPolygon = function () {
         //Создает новый полигон
-        return new ymaps.Polygon(context.polygon, {}, {
+        let p = new ymaps.Polygon([], {}, {
           fillColor: '#00FF00',// Цвет заливки.
           strokeColor: '#0000FF',// Цвет обводки.
           opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки). 
           strokeWidth: 5,// Ширина обводки.
           strokeStyle: 'shortdash'// Стиль обводки.
         });
-        context.mapInstanse.geoObjects.add(polygonEdit);// Добавляем многоугольник на карту.
+        context.mapInstanse.geoObjects.add(p);// Добавляем многоугольник на карту.
+        return p;
       }
-      context.mapInstanse.geoObjects.add(polygonEdit);// Добавляем многоугольник на карту.
+
       var ClearMap = function(){
-        alert(1232)
         //очищает все на карте
         context.mapInstanse.geoObjects.removeAll();
         polygonEdit = NewPolygon();
@@ -57,13 +57,11 @@ new Vue({
       /*
       КНОПКА поиска услуг в заданном секторе
       */
-      const btnEditPolygon_False = "Выделить в области";
-      const btnEditPolygon_True = "Поиск в данной области";
       let btnRequestEDitPolygon = null;
       let btnCancelEDitPolygon = null;
       let btnEditPolygon = new ymaps.control.Button({
         data: {
-          content: btnEditPolygon_False,
+          content: "Выделить в область",
           image: 'images/search.png'// Иконка имеет размер 16х16 пикселей.
         },
         options: {
