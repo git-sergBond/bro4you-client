@@ -155,28 +155,28 @@ new Vue({
 var responce = [{
   coords: [55.254808646433844, 39.13975515087893],
   info: {
-    address: '3 Москва,пос. Румянцево, улица Верхня, 25А',
-    nameORg: 'ООО ...',
-    description: 'Чет там делаем, производим...',
+    address: 'Москва,пос. Румянцево, улица Верхня, 25А',
+    nameORg: 'ООО ...1...',
+    description: 'Продаем дома...',
     phoneNumber: '+ 7 (XXX) XX - XX',
     services: [
       {
-        imageUrl: 'images/example-org.png',
+        imageUrl: 'images/home1.jpg',
         price: 7700000,
         description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        url: '#7'
       },
       {
-        imageUrl: 'images/example-org.png',
-        price: 7700000,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        imageUrl: 'images/home2.jpg',
+        price: 6500000,
+        description: '3-комнатная. квартира - 56,1 м3 - 1/4 этаж',
+        url: '#8'
       },
       {
-        imageUrl: 'images/example-org.png',
-        price: 7700000,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        imageUrl: 'images/home3.jpg',
+        price: 5000000,
+        description: '4-комнатная. квартира - 56,1 м3 - 1/4 этаж',
+        url: '#9'
       }
     ]
   }
@@ -184,28 +184,28 @@ var responce = [{
 {
   coords: [55.05980129774418, 40.562484643066426],
   info: {
-    address: '1 Москва,пос. Румянцево, улица Верхня, 25А',
-    nameORg: 'ООО ...',
-    description: 'Чет там делаем, производим...',
+    address: 'Белгород, улица Щорса, 123Б',
+    nameORg: 'ООО ...2...',
+    description: 'Автопром...',
     phoneNumber: '+ 7 (XXX) XX - XX',
     services: [
       {
-        imageUrl: 'images/example-org.png',
-        price: 7700000,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        imageUrl: 'images/car1.jpg',
+        price: 50,
+        description: 'Ферарри',
+        url: '#1'
       },
       {
-        imageUrl: 'images/example-org.png',
-        price: 7700000,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        imageUrl: 'images/car2.jpeg',
+        price: 60,
+        description: 'Мерседес',
+        url: '#2'
       },
       {
-        imageUrl: 'images/example-org.png',
-        price: 7700000,
+        imageUrl: 'images/car3.jpg',
+        price: 77,
         description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        url: '#3'
       }
     ]
   }
@@ -213,28 +213,28 @@ var responce = [{
 {
   coords: [54.98721616095246, 39.733016869628926],
   info: {
-    address: '2 Москва,пос. Румянцево, улица Верхня, 25А',
-    nameORg: 'ООО ...',
-    description: 'Чет там делаем, производим...',
+    address: 'Воронеж, улица Студенческая, 5А',
+    nameORg: 'ООО ...3...',
+    description: 'Продаем электронику...',
     phoneNumber: '+ 7 (XXX) XX - XX',
     services: [
       {
-        imageUrl: 'images/example-org.png',
-        price: 7700000,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        imageUrl: 'images/phone1.jpg',
+        price: 99999.9,
+        description: 'нокия',
+        url: '#4'
       },
       {
-        imageUrl: 'images/example-org.png',
-        price: 7700000,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        imageUrl: 'images/phone2.jpg',
+        price: 99999.9,
+        description: 'ксяоми',
+        url: '#5'
       },
       {
-        imageUrl: 'images/example-org.png',
-        price: 7700000,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#123'
+        imageUrl: 'images/phone3.jpg',
+        price: 99999.9,
+        description: 'айфон',
+        url: '#6'
       }
     ]
   }
