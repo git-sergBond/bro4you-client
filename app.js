@@ -35,14 +35,25 @@ new Vue({
       Объект полигона, который редактируется пользователем.
       Координаты полигона отправляются на сервер, после чего происходит поиск в пределах координат полигона
       */
-      let polygonEdit = new ymaps.Polygon(context.polygon, {}, {
-        fillColor: '#00FF00',// Цвет заливки.
-        strokeColor: '#0000FF',// Цвет обводки.
-        opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки). 
-        strokeWidth: 5,// Ширина обводки.
-        strokeStyle: 'shortdash'// Стиль обводки.
-      });
-      this.mapInstanse.geoObjects.add(polygonEdit);// Добавляем многоугольник на карту.
+      let polygonEdit = null;
+      var NewPolygon = function () {
+        //Создает новый полигон
+        return new ymaps.Polygon(context.polygon, {}, {
+          fillColor: '#00FF00',// Цвет заливки.
+          strokeColor: '#0000FF',// Цвет обводки.
+          opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки). 
+          strokeWidth: 5,// Ширина обводки.
+          strokeStyle: 'shortdash'// Стиль обводки.
+        });
+        context.mapInstanse.geoObjects.add(polygonEdit);// Добавляем многоугольник на карту.
+      }
+      context.mapInstanse.geoObjects.add(polygonEdit);// Добавляем многоугольник на карту.
+      var ClearMap = function(){
+        alert(1232)
+        //очищает все на карте
+        context.mapInstanse.geoObjects.removeAll();
+        polygonEdit = NewPolygon();
+      }
       /*
       КНОПКА поиска услуг в заданном секторе
       */
@@ -60,11 +71,10 @@ new Vue({
         }
       });
       btnEditPolygon.events.add('click', function (e) {
+        ClearMap();
         let link_editPoligonState = context.editPoligonState;
         if (link_editPoligonState == false) {
           polygonEdit.editor.startDrawing();
-          //------------------------------------>
-          //!!!! push old poligon
           btnEditPolygon.options.set('visible',false); 
           btnRequestEDitPolygon.options.set('visible',true); 
           btnCancelEDitPolygon.options.set('visible',true); 
@@ -85,6 +95,8 @@ new Vue({
         }
       });
       btnRequestEDitPolygon.events.add('click', function (e) {
+        ClearMap();
+        context.mapInstanse.geoObjects.add(polygonEdit);
         context.editPoligonState = false;
         polygonEdit.editor.stopDrawing();
         btnEditPolygon.options.set('visible',true);
