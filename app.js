@@ -109,7 +109,7 @@ new Vue({
       btnCancelEDitPolygon = new ymaps.control.Button({
         data: {
           // Зададим текст и иконку для кнопки.
-          content: "Отправить",
+          content: "Показать результат",
           image: 'images/arrow.png'
         },
         options: {
