@@ -3,38 +3,36 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>компонент карты</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <!--link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" /-->
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />    
 </head>
 <body> 
     <div id="app" class="map-comp">
-        <yandex-map class="ymap" 
-            zoom="8"
+        <yandex-map class="ymap" zoom="8" 
             :coords="coords"
             @map-was-initialized="initHandler"
         ></yandex-map>
+        
         <div v-show="placeInfoTrig" class="place-info">
             <div class="head">
-                <button @click='placeInfoTrig = false' class="quit">X</button>
+                <a @click='placeInfoTrig = false' class="quit">x</a>
                 <h1>{{ info.address }}</h1>
                 <p>{{ info.nameORg }}</p>
                 <p>{{ info.description }}</p>
                 <p>{{ info.phoneNumber }}</p>
             </div>
             <div class="content">
-                <button @click='photoTrig = !photoTrig' class="quit"> {{ photoTrig ? 'Скрыть' : 'Показать' }} фото</button>
+                <a @click='photoTrig = !photoTrig'>{{ photoTrig ? 'Скрыть' : 'Показать' }} фото</a>
                 <div class="service-item" v-for='(service, index) in info.services'>
-                <transition name="fade">
-                    <div class="imgCenter"><img :src="service.imageUrl" v-show='photoTrig'></div>
-                </transition>
-                    <p>№ {{index + 1}} <a :href='service.url'>перейти к покупке</a></p>
-                    <p>{{ service.description }}</p>
-                    <p>{{ service.price }} RUB</p>
+                    <img :src="service.imageUrl" v-show='photoTrig'>
+                    <p> {{ service.price }} RUB <br> 
+                        {{ service.description }}</p>
+                    <a :href='service.url'>перейти к услуге</a>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
     <script src="dist/bundle.js"></script>
 </body>

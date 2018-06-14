@@ -48,7 +48,6 @@ new Vue({
         context.mapInstanse.geoObjects.add(p);// Добавляем многоугольник на карту.
         return p;
       }
-
       var ClearMap = function(){
         //очищает все на карте
         context.mapInstanse.geoObjects.removeAll();
@@ -72,7 +71,7 @@ new Vue({
         ClearMap();
         let link_editPoligonState = context.editPoligonState;
         if (link_editPoligonState == false) {
-          polygonEdit.editor.startDrawing();
+         // polygonEdit.editor.startDrawing();
           btnEditPolygon.options.set('visible',false); 
           btnRequestEDitPolygon.options.set('visible',true); 
           btnCancelEDitPolygon.options.set('visible',true); 
@@ -96,7 +95,7 @@ new Vue({
         ClearMap();
         context.mapInstanse.geoObjects.add(polygonEdit);
         context.editPoligonState = false;
-        polygonEdit.editor.stopDrawing();
+      //  polygonEdit.editor.stopDrawing();
         btnEditPolygon.options.set('visible',true);
         btnRequestEDitPolygon.options.set('visible',false); 
         btnCancelEDitPolygon.options.set('visible',false); 
@@ -141,13 +140,23 @@ new Vue({
           }
         }
         context.editPoligonState = false;
-        polygonEdit.editor.stopDrawing();
+       // polygonEdit.editor.stopDrawing();
         btnEditPolygon.options.set('visible',true);
         btnRequestEDitPolygon.options.set('visible',false); 
         btnCancelEDitPolygon.options.set('visible',false);
       });
       btnCancelEDitPolygon.options.set('visible',false);
       this.mapInstanse.controls.add(btnCancelEDitPolygon);
+      //полилилайн
+      this.mapInstanse.events.add("click",function(){
+        if(context.editPoligonState == true){
+          alert(123)
+        }
+      });
+      var myPolyline = new ymaps.Polyline(
+        [[55.80, 37.30],[55.80, 37.40],[55.70, 37.30],[55.70, 37.40]]
+      );
+      this.mapInstanse.geoObjects.add(myPolyline);
     }
   }
 })
