@@ -3,6 +3,7 @@
 //
 import Vue from 'vue';
 import YmapPlugin from 'vue-yandex-maps';
+import { runInContext } from 'vm';
 Vue.use(YmapPlugin);
 new Vue({
   el: '#app',
@@ -147,16 +148,44 @@ new Vue({
       });
       btnCancelEDitPolygon.options.set('visible',false);
       this.mapInstanse.controls.add(btnCancelEDitPolygon);
-      //полилилайн
-      this.mapInstanse.events.add("click",function(){
-        if(context.editPoligonState == true){
-          alert(123)
+      //----------обводка пальцем------------
+      var lineStringGeometry = new ymaps.geometry.LineString([// Создаем инстанцию геометрии линии (указываем координаты вершин).
+      //  [30, 50], [31, 51], [32, 52]
+      ]),
+      outline = new ymaps.GeoObject({ geometry: lineStringGeometry });// Создаем инстанцию геообъекта и передаем нашу геометрию в конструктор.
+      context.editPoligonState = true;
+      let redactirovanie = false;
+      this.mapInstanse.events.add(["mousedown",  "mousemove", "mouseup"], function (event) {
+        
+        switch (event.get('type')) {
+          case "mousedown":
+            console.log(1);
+            redactirovanie = !redactirovanie;
+            if(!redactirovanie){
+              myMap.behaviors.disable('drag');
+            } else {
+              myMap.behaviors.enable('drag');
+            }
+            break;
+
+          case "mousemove":
+            console.log(2);
+            if (redactirovanie != true) {
+              let point = event.get('coords');
+              let length = outline.geometry.getLength();
+              outline.geometry.insert(length, point);
+            }
+            break;
+
+          case "mouseup":
+          console.log(3);
+            break;
+
+          default:
+            break;
         }
       });
-      var myPolyline = new ymaps.Polyline(
-        [[55.80, 37.30],[55.80, 37.40],[55.70, 37.30],[55.70, 37.40]]
-      );
-      this.mapInstanse.geoObjects.add(myPolyline);
+      this.mapInstanse.geoObjects.add(outline);
     }
   }
 })
