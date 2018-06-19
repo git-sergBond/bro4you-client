@@ -9,11 +9,28 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />    
 </head>
 <body> 
-    <div id="app" class="map-comp">
-        <yandex-map class="ymap" zoom="8" 
-            :coords="coords"
-            @map-was-initialized="initHandler"
-        ></yandex-map>
+    <div id="app" >
+        <div class="map-comp">
+            <yandex-map class="ymap" zoom="8" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
+            <div class="map-comp--buttons">
+                <button v-show='stateApp == 0' @click='click_btn_Start_Edit'>Нарисовать область</button>
+                <button v-show='stateApp == 1' @click='click_btn_Clear'>Очистить</button>
+                <button v-show='stateApp == 1' @click='click_btn_Send_Polygon'>Показать услуги</button>
+            </div>
+        </div>
+        <div>
+            <p>Уточните категорию</p>
+            <div class="app--categories">
+                <button v-for='tag in tags'>{{ tag }}</button>
+            </div>
+            <p>Рядом с вами</p>
+            <div>
+                <div v-for='item in responce'>
+                    1
+                </div>
+            </div>
+        </div>
+        
         <div v-show="placeInfoTrig" class="place-info">
             <div class="head">
                 <a @click='placeInfoTrig = false' class="quit">x</a>

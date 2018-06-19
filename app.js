@@ -13,13 +13,41 @@ new Vue({
     //-------------претенденты на удаление
     polygon: {},//хранит координаты точек полигона
     placemarks: [],//координаты услуг
-    editPoligonState: false,//флаг показывающий, что в данный момент происходит редактирвоание полигона
+    tags: ['Украшения', 'Игрушки', 'Развлечения'],
     //-------------
     placeInfoTrig: false,//флаг показать/скрыть иформацию о месте(услугах)
     photoTrig: true,//флаг показать/скрыть фото
     info: {},//указатель на данныые о месте(услугах) котоорые показываются рядом с картой
+    //
+    polygonEdit: null,
+    lineStringGeometry: {},
+    //
+    stateApp: 0, //состояние приложения
+    /*
+    0 - перемешение карты, и просмотр информации о услугах
+    1 - редактирование полигона
+    2 - рисование пальцем
+    */
+   responce: responce
   },
   methods: {
+    NewPolygon: function () {
+      //Создает новый полигон
+      let p = new ymaps.Polygon([], {}, {
+        fillColor: '#00FF00',// Цвет заливки.
+        strokeColor: '#0000FF',// Цвет обводки.
+        opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки). 
+        strokeWidth: 5,// Ширина обводки.
+        strokeStyle: 'shortdash'// Стиль обводки.
+      });
+      this.mapInstanse.geoObjects.add(p);// Добавляем многоугольник на карту.
+      return p;
+    },
+    ClearMap: function () {
+      //очищает все на карте
+      this.mapInstanse.geoObjects.removeAll();
+      this.polygonEdit = this.NewPolygon();
+    },
     getInfoForPoligon_from_server: function (coordinates) {
       //асинхронный запрос серверу
       //серверу передается массив точек (вершин полигона)
@@ -29,253 +57,119 @@ new Vue({
       console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
       return responce;
     },
-    initHandler: function (myMap) {
-      let context = this;
-      this.mapInstanse = myMap;//get instanse after init yandex map script
-      /*
-      Объект полигона, который редактируется пользователем.
-      Координаты полигона отправляются на сервер, после чего происходит поиск в пределах координат полигона
-      */
-      let polygonEdit = null;
-      var NewPolygon = function () {
-        //Создает новый полигон
-        let p = new ymaps.Polygon([], {}, {
-          fillColor: '#00FF00',// Цвет заливки.
-          strokeColor: '#0000FF',// Цвет обводки.
-          opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки). 
-          strokeWidth: 5,// Ширина обводки.
-          strokeStyle: 'shortdash'// Стиль обводки.
-        });
-        context.mapInstanse.geoObjects.add(p);// Добавляем многоугольник на карту.
-        return p;
-      }
-      var ClearMap = function(){
-        //очищает все на карте
-        context.mapInstanse.geoObjects.removeAll();
-        polygonEdit = NewPolygon();
-      }
-      /*
-      КНОПКА поиска услуг в заданном секторе
-      */
-      let btnRequestEDitPolygon = null;
-      let btnCancelEDitPolygon = null;
-      let btnEditPolygon = new ymaps.control.Button({
-        data: {
-          content: "Выделить в область",
-          image: 'images/search.png'// Иконка имеет размер 16х16 пикселей.
-        },
-        options: {
-          maxWidth: [28, 178]
-        }
-      });
-      btnEditPolygon.events.add('click', function (e) {
-        ClearMap();
-        let link_editPoligonState = context.editPoligonState;
-        if (link_editPoligonState == false) {
-         // polygonEdit.editor.startDrawing();
-          btnEditPolygon.options.set('visible',false); 
-          btnRequestEDitPolygon.options.set('visible',true); 
-          btnCancelEDitPolygon.options.set('visible',true); 
-        }
-        context.editPoligonState = true;
-      });
-      this.mapInstanse.controls.add(btnEditPolygon);
-      /*
-      КНОПКА Очистить
-      */
-      btnRequestEDitPolygon = new ymaps.control.Button({
-        data: {
-          content: "Очистить",
-          image: 'images/cancel_32x32.png'
-        },
-        options: {
-          maxWidth: [28, 178]
-        }
-      });
-      btnRequestEDitPolygon.events.add('click', function (e) {
-        ClearMap();
-        context.mapInstanse.geoObjects.add(polygonEdit);
-        context.editPoligonState = false;
-      //  polygonEdit.editor.stopDrawing();
-        btnEditPolygon.options.set('visible',true);
-        btnRequestEDitPolygon.options.set('visible',false); 
-        btnCancelEDitPolygon.options.set('visible',false); 
-      });
-      btnRequestEDitPolygon.options.set('visible',false);
-      this.mapInstanse.controls.add(btnRequestEDitPolygon);
-      /*
-      КНОПКА отправки данных
-      */
-      btnCancelEDitPolygon = new ymaps.control.Button({
-        data: {
-          // Зададим текст и иконку для кнопки.
-          content: "Показать результат",
-          image: 'images/arrow.png'
-        },
-        options: {
-          maxWidth: [28, 178]
-        }
-      });
-      btnCancelEDitPolygon.events.add('click', function (e) {
+    click_btn_Start_Edit: function () {
+      this.ClearMap();
+      this.mapInstanse.behaviors.disable('drag');
+      this.stateApp = 1;
+      //------------>
+      this.polygonEdit.editor.startDrawing();
 
-        let link_editPoligonState = context.editPoligonState;
-        if (link_editPoligonState == true) {
-          let geoObjs = ymaps.geoQuery(myMap.geoObjects);
-          for (let i = 0; i < geoObjs._objects.length; i++) {
-            if (geoObjs.get(i).geometry.getType() === "Polygon") {
-              //запрос серверу
-              let coordinates = geoObjs.get(i).geometry.getCoordinates();
-              let placemarks = context.getInfoForPoligon_from_server(coordinates);
-              //добавление меток на карту
-              placemarks.forEach(placemark => {
-                let p = new ymaps.Placemark(placemark.coords);
-                p.info = placemark.info;
-                p.events.add('click', function () {
-                  //при клике, в блоке информации выводятся требуемые данные
-                  context.info = p.info;
-                  context.placeInfoTrig = true;
-                });
-                context.mapInstanse.geoObjects.add(p);
-              });
-            }
+      // ПЕРЕНЕСТИ ЭТОТ КУСОК В ФУНКЦИЮ
+
+      
+      let context = this;
+      /*
+      this.mapInstanse.events.add("click", function (event) {
+        if (context.stateApp == 1) {
+          context.stateApp = 2;
+        } 
+        else if (context.stateApp == 2) {
+          //уменьшаем  полигон
+          //передача на сервак
+          context.click_btn_Send_Polygon();
+          context.stateApp = 0;
+        }
+      });
+      this.mapInstanse.events.add("mousemove", function (event) {
+        if (context.stateApp == 2) {
+          let point = event.get('coords');
+          if(lineStringGeometry != null){
+            let length = this.lineStringGeometry.getLength();
+          this.lineStringGeometry.insert(length, point);
           }
         }
-        context.editPoligonState = false;
-       // polygonEdit.editor.stopDrawing();
-        btnEditPolygon.options.set('visible',true);
-        btnRequestEDitPolygon.options.set('visible',false); 
-        btnCancelEDitPolygon.options.set('visible',false);
       });
-      btnCancelEDitPolygon.options.set('visible',false);
-      this.mapInstanse.controls.add(btnCancelEDitPolygon);
-      //----------обводка пальцем------------
-      var lineStringGeometry = new ymaps.geometry.LineString([// Создаем инстанцию геометрии линии (указываем координаты вершин).
-      //  [30, 50], [31, 51], [32, 52]
-      ]),
-      outline = new ymaps.GeoObject({ geometry: lineStringGeometry });// Создаем инстанцию геообъекта и передаем нашу геометрию в конструктор.
-      context.editPoligonState = true;
-      let redactirovanie = false;
-      this.mapInstanse.events.add(["mousedown",  "mousemove", "mouseup"], function (event) {
-        
-        switch (event.get('type')) {
-          case "mousedown":
-            console.log(1);
-            redactirovanie = !redactirovanie;
-            if(!redactirovanie){
-              myMap.behaviors.disable('drag');
-            } else {
-              myMap.behaviors.enable('drag');
-            }
-            break;
-
-          case "mousemove":
-            console.log(2);
-            if (redactirovanie != true) {
-              let point = event.get('coords');
-              let length = outline.geometry.getLength();
-              outline.geometry.insert(length, point);
-            }
-            break;
-
-          case "mouseup":
-          console.log(3);
-            break;
-
-          default:
-            break;
+      */
+    },
+    click_btn_Clear: function () {
+      this.ClearMap();
+      this.mapInstanse.geoObjects.add(this.polygonEdit);
+      //------------>
+      this.polygonEdit.editor.stopDrawing();
+      this.mapInstanse.behaviors.enable('drag');
+      this.stateApp = 0;
+    },
+    click_btn_Send_Polygon: function () {
+      //ищем среди объектов полигон и отправляем его на сервер 
+      let geoObjs = ymaps.geoQuery(this.mapInstanse.geoObjects);
+      for (let i = 0; i < geoObjs._objects.length; i++) {
+        if (geoObjs.get(i).geometry.getType() === "Polygon") {
+          let coordinates = geoObjs.get(i).geometry.getCoordinates();
+          this.placemarks = this.getInfoForPoligon_from_server(coordinates);
         }
+      }
+      //как пришел ответ идет добавление меток на карту и информации о них
+      let context = this;
+      this.placemarks.forEach(placemark => {
+        let p = new ymaps.Placemark(placemark.coords);
+        p.events.add('click', function () {
+          //при клике, в блоке информации выводятся требуемые данные
+          context.info = placemark.info;
+          context.placeInfoTrig = true;
+        });
+        this.mapInstanse.geoObjects.add(p);
       });
-      this.mapInstanse.geoObjects.add(outline);
+      this.stateApp = 0;
+      //------------->
+      this.polygonEdit.editor.stopDrawing();
+      this.mapInstanse.behaviors.enable('drag');
+    },
+    initHandler: function (myMap) {
+      this.mapInstanse = myMap;
+      //----------обводка пальцем------------
+      this.lineStringGeometry = new ymaps.geometry.LineString([]);
+      this.mapInstanse.geoObjects.add( // Создаем инстанцию геообъекта и передаем нашу геометрию в конструктор
+        new ymaps.GeoObject({
+          geometry: this.lineStringGeometry
+        })
+      );
     }
   }
 })
 
-var responce = [{
-  coords: [55.254808646433844, 39.13975515087893],
-  info: {
-    address: 'Москва,пос. Румянцево, улица Верхня, 25А',
-    nameORg: 'ООО ...1...',
-    description: 'Продаем дома...',
-    phoneNumber: '+ 7 (XXX) XX - XX',
-    services: [
-      {
-        imageUrl: 'images/home1.jpg',
-        price: 7700000,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#7'
-      },
-      {
-        imageUrl: 'images/home2.jpg',
-        price: 6500000,
-        description: '3-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#8'
-      },
-      {
-        imageUrl: 'images/home3.jpg',
-        price: 5000000,
-        description: '4-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#9'
-      }
-    ]
-  }
-},
-{
-  coords: [55.05980129774418, 40.562484643066426],
-  info: {
+var responce = [
+  {
+    coords: [55.05980129774418, 40.562484643066426],
+    name: 'Золотой слон - подставка',
+    imageUrl: 'images/car1.jpg',
     address: 'Белгород, улица Щорса, 123Б',
-    nameORg: 'ООО ...2...',
-    description: 'Автопром...',
-    phoneNumber: '+ 7 (XXX) XX - XX',
-    services: [
-      {
-        imageUrl: 'images/car1.jpg',
-        price: 50,
-        description: 'Ферарри',
-        url: '#1'
-      },
-      {
-        imageUrl: 'images/car2.jpeg',
-        price: 60,
-        description: 'Мерседес',
-        url: '#2'
-      },
-      {
-        imageUrl: 'images/car3.jpg',
-        price: 77,
-        description: '2-комнатная. квартира - 56,1 м3 - 1/4 этаж',
-        url: '#3'
-      }
-    ]
+    phoneNumber: '+ 7 (XXX) XX - 55',
+    countReviews: 43,
+    stars: 4,
+    teg: 'Украшения',
+    url: '#1'
+  },
+  {
+    coords: [55.254808646433844, 39.13975515087893],
+    name: 'Игрушечные слоны',
+    imageUrl: 'images/car2.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 22',
+    countReviews: 43,
+    stars: 4,
+    teg: 'Игрушки',
+    url: '#2'
+  },
+  {
+    coords: [54.98721616095246, 39.733016869628926],
+    name: 'Зоопарк',
+    imageUrl: 'images/car3.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 22',
+    countReviews: 43,
+    stars: 4,
+    teg: 'Развлечения',
+    url: '#3'
   }
-},
-{
-  coords: [54.98721616095246, 39.733016869628926],
-  info: {
-    address: 'Воронеж, улица Студенческая, 5А',
-    nameORg: 'ООО ...3...',
-    description: 'Продаем электронику...',
-    phoneNumber: '+ 7 (XXX) XX - XX',
-    services: [
-      {
-        imageUrl: 'images/phone1.jpg',
-        price: 99999.9,
-        description: 'нокия',
-        url: '#4'
-      },
-      {
-        imageUrl: 'images/phone2.jpg',
-        price: 99999.9,
-        description: 'ксяоми',
-        url: '#5'
-      },
-      {
-        imageUrl: 'images/phone3.jpg',
-        price: 99999.9,
-        description: 'айфон',
-        url: '#6'
-      }
-    ]
-  }
-},
 ];
 
