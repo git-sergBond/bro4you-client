@@ -44,10 +44,12 @@ new Vue({
       this.mapInstanse.geoObjects.add(p);// Добавляем многоугольник на карту.
       return p;
     },
+    //------------------------DELETE THIS METHOD
     ClearMap: function () {
       //очищает все на карте
       this.mapInstanse.geoObjects.removeAll();
       this.polygonEdit = this.NewPolygon();
+      this.intit_events_DrawPolygonByFinger();
     },
     getInfoForPoligon_from_server: function (coordinates) {
       //асинхронный запрос серверу
