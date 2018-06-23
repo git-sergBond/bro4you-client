@@ -28,6 +28,7 @@ new Vue({
     1 - редактирование полигона
     2 - рисование пальцем
     */
+   drawMouseTrig: false,
    responce: responce
   },
   methods: {
@@ -74,18 +75,14 @@ new Vue({
       this.mapInstanse.events.add("mousemove", this.mousemove_event_DrawPolygonByFinger);
     },
     mousedown_event_DrawPolygonByFinger(event){
-      if (this.stateApp == 1) {
-        this.stateApp = 2;
-      } else if (this.stateApp == 2) {
-        //уменьшаем  полигон
-        //передача на сервак
-        this.click_btn_Send_Polygon();
-        this.stateApp = 0;
+      if (this.stateApp === 1) {
+        this.drawMouseTrig = !this.drawMouseTrig;
+        console.log(this.drawMouseTrig);
       }
     },
     mousemove_event_DrawPolygonByFinger(event){
-      if (this.stateApp != 2) return;
-      console.log(this.stateApp);
+      if (this.drawMouseTrig === false) return;
+      //sconsole.log(this.drawMouseTrig);
       let point = event.get('coords');
       let length = this.lineStringGeometry.getLength();
       this.lineStringGeometry.insert(length, point);
@@ -128,7 +125,19 @@ new Vue({
     }
   }
 })
-
+var shares = [
+  {
+    coords: [55.05980129774418, 42],
+    name: 'Пицца - 30%',
+    imageUrl: 'images/car1.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 55',
+    countReviews: 43,
+    stars: 4,
+    teg: 'Украшения',
+    url: '#1'
+  }
+];
 var responce = [
   {
     coords: [55.05980129774418, 40.562484643066426],
