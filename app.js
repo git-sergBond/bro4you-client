@@ -68,26 +68,33 @@ new Vue({
     },
     intit_events_DrawPolygonByFinger(){
       this.lineStringGeometry = new ymaps.geometry.LineString([]);
-      this.mapInstanse.geoObjects.add( // Создаем инстанцию геообъекта и передаем нашу геометрию в конструктор
-        new ymaps.GeoObject({
-          geometry: this.lineStringGeometry
-        })
-      );
-      this.mapInstanse.events.add("click", this.mousedown_event_DrawPolygonByFinger);
+      let geoObj = new ymaps.GeoObject({
+          geometry: this.lineStringGeometry,
+          options: {
+            interactivityModel: 'default#opaque'
+          }
+      });
+      this.mapInstanse.geoObjects.add(geoObj); // Создаем инстанцию геообъекта и передаем нашу геометрию в конструктор
       this.mapInstanse.events.add("mousemove", this.mousemove_event_DrawPolygonByFinger);
     },
     mousedown_event_DrawPolygonByFinger(event){
       if (this.stateApp === 1) {
-        this.drawMouseTrig = !this.drawMouseTrig;
-        console.log(this.drawMouseTrig);
+        console.log(1)
+        this.drawMouseTrig = true;
       }
     },
     mousemove_event_DrawPolygonByFinger(event){
       if (this.drawMouseTrig === false) return;
-      //sconsole.log(this.drawMouseTrig);
+      console.log(2)
       let point = event.get('coords');
       let length = this.lineStringGeometry.getLength();
       this.lineStringGeometry.insert(length, point);
+    },
+    mouseup_event_DrawPolygonByFinger(event){
+      if (this.stateApp === 1) {
+        console.log(3)
+        this.drawMouseTrig = false;
+      }
     },
     click_btn_Clear: function () {
       this.ClearMap();

@@ -10,7 +10,9 @@
 </head>
 <body> 
     <div id="app" >
-        <div class="map-comp">
+        <div class="map-comp" 
+        @mouseup='mouseup_event_DrawPolygonByFinger'
+        @mousedown='mousedown_event_DrawPolygonByFinger'>
             <yandex-map class="ymap" zoom="8" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
             <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit'>Нарисовать область</button>
@@ -32,7 +34,7 @@
             <div>
                 <p>Акции в белгороде</p>
                 <div>
-                    
+
                 </div>
             </div>
         </div>
