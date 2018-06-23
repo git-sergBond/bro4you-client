@@ -20,7 +20,7 @@ new Vue({
     info: {},//указатель на данныые о месте(услугах) котоорые показываются рядом с картой
     //
     polygonEdit: null,
-    lineStringGeometry: {},
+    lineStringGeometry: null,
     //
     stateApp: 0, //состояние приложения
     /*
@@ -61,41 +61,39 @@ new Vue({
       this.ClearMap();
       this.mapInstanse.behaviors.disable('drag');
       this.stateApp = 1;
-      //------------>
-      this.polygonEdit.editor.startDrawing();
-
-      // ПЕРЕНЕСТИ ЭТОТ КУСОК В ФУНКЦИЮ
-
-      
-      let context = this;
-      /*
-      this.mapInstanse.events.add("click", function (event) {
-        if (context.stateApp == 1) {
-          context.stateApp = 2;
-        } 
-        else if (context.stateApp == 2) {
-          //уменьшаем  полигон
-          //передача на сервак
-          context.click_btn_Send_Polygon();
-          context.stateApp = 0;
-        }
-      });
-      this.mapInstanse.events.add("mousemove", function (event) {
-        if (context.stateApp == 2) {
-          let point = event.get('coords');
-          if(lineStringGeometry != null){
-            let length = this.lineStringGeometry.getLength();
-          this.lineStringGeometry.insert(length, point);
-          }
-        }
-      });
-      */
+      //------------>this.polygonEdit.editor.startDrawing();
+    },
+    intit_events_DrawPolygonByFinger(){
+      this.lineStringGeometry = new ymaps.geometry.LineString([]);
+      this.mapInstanse.geoObjects.add( // Создаем инстанцию геообъекта и передаем нашу геометрию в конструктор
+        new ymaps.GeoObject({
+          geometry: this.lineStringGeometry
+        })
+      );
+      this.mapInstanse.events.add("click", this.mousedown_event_DrawPolygonByFinger);
+      this.mapInstanse.events.add("mousemove", this.mousemove_event_DrawPolygonByFinger);
+    },
+    mousedown_event_DrawPolygonByFinger(event){
+      if (this.stateApp == 1) {
+        this.stateApp = 2;
+      } else if (this.stateApp == 2) {
+        //уменьшаем  полигон
+        //передача на сервак
+        this.click_btn_Send_Polygon();
+        this.stateApp = 0;
+      }
+    },
+    mousemove_event_DrawPolygonByFinger(event){
+      if (this.stateApp != 2) return;
+      console.log(this.stateApp);
+      let point = event.get('coords');
+      let length = this.lineStringGeometry.getLength();
+      this.lineStringGeometry.insert(length, point);
     },
     click_btn_Clear: function () {
       this.ClearMap();
       this.mapInstanse.geoObjects.add(this.polygonEdit);
-      //------------>
-      this.polygonEdit.editor.stopDrawing();
+      //------------>this.polygonEdit.editor.stopDrawing();
       this.mapInstanse.behaviors.enable('drag');
       this.stateApp = 0;
     },
@@ -109,30 +107,24 @@ new Vue({
         }
       }
       //как пришел ответ идет добавление меток на карту и информации о них
-      let context = this;
       this.placemarks.forEach(placemark => {
         let p = new ymaps.Placemark(placemark.coords);
-        p.events.add('click', function () {
-          //при клике, в блоке информации выводятся требуемые данные
-          context.info = placemark.info;
-          context.placeInfoTrig = true;
-        });
+        p.events.add('click', this.click_Placemark);//--------->ERROR
         this.mapInstanse.geoObjects.add(p);
       });
       this.stateApp = 0;
-      //------------->
-      this.polygonEdit.editor.stopDrawing();
+      //------------->this.polygonEdit.editor.stopDrawing();
       this.mapInstanse.behaviors.enable('drag');
+    },
+    click_Placemark: function(event){
+      //при клике, в блоке информации выводятся требуемые данные
+      this.info = placemark.info;
+      this.placeInfoTrig = true;
     },
     initHandler: function (myMap) {
       this.mapInstanse = myMap;
       //----------обводка пальцем------------
-      this.lineStringGeometry = new ymaps.geometry.LineString([]);
-      this.mapInstanse.geoObjects.add( // Создаем инстанцию геообъекта и передаем нашу геометрию в конструктор
-        new ymaps.GeoObject({
-          geometry: this.lineStringGeometry
-        })
-      );
+      this.intit_events_DrawPolygonByFinger();
     }
   }
 })
