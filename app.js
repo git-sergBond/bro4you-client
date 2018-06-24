@@ -10,26 +10,23 @@ new Vue({
   data: {
     mapInstanse: null,
     coords: [54.82896654088406, 39.831893822753904],//начальный фокус на карте
-    //-------------претенденты на удаление
-    polygon: {},//хранит координаты точек полигона
-    placemarks: [],//координаты услуг
-    tags: ['Украшения', 'Игрушки', 'Развлечения'],
-    //-------------
-    placeInfoTrig: false,//флаг показать/скрыть иформацию о месте(услугах)
-    photoTrig: true,//флаг показать/скрыть фото
-    info: {},//указатель на данныые о месте(услугах) котоорые показываются рядом с картой
-    //
+    cur_point: null,//текущая выделенная метка на карте (нужно для подсветки)
+    //-------------GeoObjects---------
+    placemarks: [],//координаты услуг+данные
     polygonEdit: null,
+    line: null,
     lineStringGeometry: null,
-    //
+    //-------------State and GUI-------
     stateApp: 0, //состояние приложения
     /*
     0 - перемешение карты, и просмотр информации о услугах
     1 - редактирование полигона
-    2 - рисование пальцем
+    2 - редактирвание мышью
     */
-   drawMouseTrig: false,
-   responce: responce
+    //------------Data------------
+    tags: ['Украшения', 'Игрушки', 'Развлечения'],
+    cur_tag: [],
+    responce: [],
   },
   methods: {
     NewPolygon: function () {
@@ -56,7 +53,7 @@ new Vue({
       //серверу передается массив точек (вершин полигона)
       //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
       console.log('requset to server (json array coordinates)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
-      console.log(coordinates)
+      //console.log(coordinates)
       console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
       return responce;
     },
@@ -64,89 +61,73 @@ new Vue({
       this.ClearMap();
       this.mapInstanse.behaviors.disable('drag');
       this.stateApp = 1;
-      //------------>this.polygonEdit.editor.startDrawing();
     },
+    //-------- ОБВОДКА ОБЛАСТИ --------------
     intit_events_DrawPolygonByFinger(){
       this.lineStringGeometry = new ymaps.geometry.LineString([]);
-      let geoObj = new ymaps.GeoObject({
-          geometry: this.lineStringGeometry,
-          options: {
-            interactivityModel: 'default#opaque'
-          }
+      this.line = new ymaps.GeoObject({
+          geometry: this.lineStringGeometry
       });
-      this.mapInstanse.geoObjects.add(geoObj); // Создаем инстанцию геообъекта и передаем нашу геометрию в конструктор
+      this.mapInstanse.geoObjects.add(this.line); // Создаем инстанцию геообъекта и передаем нашу геометрию
       this.mapInstanse.events.add("mousemove", this.mousemove_event_DrawPolygonByFinger);
     },
     mousedown_event_DrawPolygonByFinger(event){
-      if (this.stateApp === 1) {
-        console.log(1)
-        this.drawMouseTrig = true;
-      }
+      if (this.stateApp === 1) this.stateApp = 2;
     },
     mousemove_event_DrawPolygonByFinger(event){
-      if (this.drawMouseTrig === false) return;
-      console.log(2)
+      if (this.stateApp !== 2) return;
       let point = event.get('coords');
       let length = this.lineStringGeometry.getLength();
       this.lineStringGeometry.insert(length, point);
     },
     mouseup_event_DrawPolygonByFinger(event){
-      if (this.stateApp === 1) {
-        console.log(3)
-        this.drawMouseTrig = false;
+      if (this.stateApp === 2) {
+        this.stateApp = 1;
+        this.Send_Polygon();
       }
     },
     click_btn_Clear: function () {
       this.ClearMap();
       this.mapInstanse.geoObjects.add(this.polygonEdit);
-      //------------>this.polygonEdit.editor.stopDrawing();
       this.mapInstanse.behaviors.enable('drag');
       this.stateApp = 0;
     },
-    click_btn_Send_Polygon: function () {
+    Send_Polygon: function () {
       //ищем среди объектов полигон и отправляем его на сервер 
-      let geoObjs = ymaps.geoQuery(this.mapInstanse.geoObjects);
-      for (let i = 0; i < geoObjs._objects.length; i++) {
-        if (geoObjs.get(i).geometry.getType() === "Polygon") {
-          let coordinates = geoObjs.get(i).geometry.getCoordinates();
-          this.placemarks = this.getInfoForPoligon_from_server(coordinates);
-        }
-      }
+      let coordinates = this.lineStringGeometry.getCoordinates();
+      this.placemarks = this.getInfoForPoligon_from_server(coordinates);
+      this.ClearMap();
       //как пришел ответ идет добавление меток на карту и информации о них
       this.placemarks.forEach(placemark => {
         let p = new ymaps.Placemark(placemark.coords);
-        p.events.add('click', this.click_Placemark);//--------->ERROR
+        p.events.add('click', this.click_Placemark);
         this.mapInstanse.geoObjects.add(p);
       });
       this.stateApp = 0;
-      //------------->this.polygonEdit.editor.stopDrawing();
       this.mapInstanse.behaviors.enable('drag');
     },
-    click_Placemark: function(event){
-      //при клике, в блоке информации выводятся требуемые данные
-      this.info = placemark.info;
-      this.placeInfoTrig = true;
+    click_Placemark: function (event) {
+      //при клике на метке, в блоке информации выделяеются даныне и сама метка
+      this.cur_point = event.get('target').geometry.getCoordinates();
+      // Цвет всех меток очищается
+      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
+      for (let j = 0; j < collection.getLength(); j++) {
+        if (collection.get(j).geometry.getType() === "Point") {
+          collection.get(j).options.set(
+            'preset', 'twirl#blueStretchyIcon'
+          );
+        }
+      }
+      // выделение Цвета текущей метки
+      event.get('target').options.set('preset', 'islands#redIcon');
     },
     initHandler: function (myMap) {
+      //Инициализация карты
       this.mapInstanse = myMap;
-      //----------обводка пальцем------------
       this.intit_events_DrawPolygonByFinger();
     }
   }
 })
-var shares = [
-  {
-    coords: [55.05980129774418, 42],
-    name: 'Пицца - 30%',
-    imageUrl: 'images/car1.jpg',
-    address: 'Белгород, улица Щорса, 123Б',
-    phoneNumber: '+ 7 (XXX) XX - 55',
-    countReviews: 43,
-    stars: 4,
-    teg: 'Украшения',
-    url: '#1'
-  }
-];
 var responce = [
   {
     coords: [55.05980129774418, 40.562484643066426],
@@ -154,20 +135,42 @@ var responce = [
     imageUrl: 'images/car1.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 55',
-    countReviews: 43,
-    stars: 4,
-    teg: 'Украшения',
+    countReviews: 0,
+    stars: 2,
+    tag: 'Украшения',
     url: '#1'
   },
   {
     coords: [55.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
-    imageUrl: 'images/car2.jpg',
+    imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
-    stars: 4,
-    teg: 'Игрушки',
+    stars: 5,
+    tag: 'Игрушки',
+    url: '#2'
+  },
+  {
+    coords: [55.254808646433844, 39.13975515087893],
+    name: 'Игрушечные слоны',
+    imageUrl: 'images/car3.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 22',
+    countReviews: 43,
+    stars: 5,
+    tag: 'Игрушки',
+    url: '#2'
+  },
+  {
+    coords: [55.254808646433844, 39.13975515087893],
+    name: 'Игрушечные слоны',
+    imageUrl: 'images/car3.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 22',
+    countReviews: 43,
+    stars: 5,
+    tag: 'Игрушки',
     url: '#2'
   },
   {
@@ -176,9 +179,20 @@ var responce = [
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
-    countReviews: 43,
-    stars: 4,
-    teg: 'Развлечения',
+    countReviews: 1000,
+    stars: 3,
+    tag: 'Развлечения',
+    url: '#3'
+  },
+  {
+    coords: [54.98721616095246, 39.733016869628926],
+    name: 'Зоопарк',
+    imageUrl: 'images/car3.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 22',
+    countReviews: 1000,
+    stars: 3,
+    tag: 'Развлечения',
     url: '#3'
   }
 ];

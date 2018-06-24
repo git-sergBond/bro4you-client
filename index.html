@@ -17,46 +17,41 @@
             <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit'>Нарисовать область</button>
                 <button v-show='stateApp == 1' @click='click_btn_Clear'>Очистить</button>
-                <button v-show='stateApp == 1' @click='click_btn_Send_Polygon'>Показать услуги</button>
             </div>
         </div>
         <div>
-            <div class="app--categories">
+            <div class="app--categories" v-show='placemarks.length != 0'>
                 <p>Уточните категорию</p>
-                <button v-for='tag in tags'>{{ tag }}</button>
+                <button v-for='tag in tags' @click='cur_tag = tag' >{{ tag }}</button>
             </div>
-            <div>
+
+            <div class="app--near-you" v-show='placemarks.length != 0'>
                 <p>Рядом с вами</p>
-                <div v-for='item in responce'>
-                    1
+                <div class="card-container">
+                    <div v-for='item in placemarks' v-show='item.tag == cur_tag' class="card">
+                        <img :src="item.imageUrl">
+                        <div>
+                            <p>
+                                <b>{{item.name}}</b>
+                                <br>{{item.address}}
+                                <br>{{item.phoneNumber}}
+                            </p>
+                            <span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }">*</span>
+                            <span>Отзывы ({{item.countReviews}})</span>
+                        </div>
+            
+                        <div class="green-button">
+                            <img src="images/icons/let.png">
+                            <span>Написать сообщение</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div>
                 <p>Акции в белгороде</p>
-                <div>
-
-                </div>
             </div>
         </div>
-        
-        <div v-show="placeInfoTrig" class="place-info">
-            <div class="head">
-                <a @click='placeInfoTrig = false' class="quit">x</a>
-                <h1>{{ info.address }}</h1>
-                <p>{{ info.nameORg }}</p>
-                <p>{{ info.description }}</p>
-                <p>{{ info.phoneNumber }}</p>
-            </div>
-            <div class="content">
-                <a @click='photoTrig = !photoTrig'>{{ photoTrig ? 'Скрыть' : 'Показать' }} фото</a>
-                <div class="service-item" v-for='(service, index) in info.services'>
-                    <img :src="service.imageUrl" v-show='photoTrig'>
-                    <p> {{ service.price }} RUB <br> 
-                        {{ service.description }}</p>
-                    <a :href='service.url'>перейти к услуге</a>
-                </div>
-            </div>
-        </div> 
     </div>
     <script src="dist/bundle.js"></script>
 </body>

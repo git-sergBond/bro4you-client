@@ -1,3 +1,36 @@
+.card-container{
+    display: flex;
+    justify-content: space-between;
+}
+.card{
+    margin-right: 1rem;
+    max-width: 270px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.card img{
+    float: left;
+    max-width: 30%;
+}
+.green-button{
+    display: flex;
+    justify-content: center; /*Центрирование по горизонтали*/
+    align-items: center;     /*Центрирование по вертикали */
+    color: white;
+    background-color: rgb(6, 139, 6);
+    height: 2rem;
+}
+.green-button span{
+    margin-left: 0.5rem;
+}
+.green-button img{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.on-star{
+    color: red;
+}
+/**/
+
 .map-comp--buttons
 {
     position: absolute;
