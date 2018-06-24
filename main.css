@@ -1,11 +1,29 @@
+.app--categories{
+    display: flex;
+}
 .card-container{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+}
+.white-button{
+    margin-right: 2rem;
+    padding: 0.5rem;
+    padding-left: 1.3rem;
+    padding-right: 1.3rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 .card{
     margin-right: 1rem;
     max-width: 270px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.card:hover{
+    box-shadow: 0 0 20px rgb(58, 128, 2);
+}
+.on-card{
+    border: 2px solid green;
+    transform: scale(1.1); 
+    box-shadow: 0 0 20px rgba(1, 255, 56, 0.801);
 }
 .card img{
     float: left;

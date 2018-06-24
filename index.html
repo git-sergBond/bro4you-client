@@ -15,22 +15,27 @@
         @mousedown='mousedown_event_DrawPolygonByFinger'>
             <yandex-map class="ymap" zoom="8" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
             <div class="map-comp--buttons">
-                <button v-show='stateApp == 0' @click='click_btn_Start_Edit'>Нарисовать область</button>
-                <button v-show='stateApp == 1' @click='click_btn_Clear'>Очистить</button>
+                <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
+                <button v-show='stateApp == 1' @click='click_btn_Clear' class="white-button">Очистить</button>
             </div>
         </div>
         <div>
-            <div class="app--categories" v-show='placemarks.length != 0'>
-                <p>Уточните категорию</p>
-                <button v-for='tag in tags' @click='cur_tag = tag' >{{ tag }}</button>
+            <div  v-show='placemarks.length != 0'>
+                <p><b>Уточните категорию</b></p>
+                <div class="app--categories">
+                    <p v-for='tag in tags' @click='cur_tag = tag' class="white-button" >{{ tag }}</p>
+                </div>  
             </div>
 
             <div class="app--near-you" v-show='placemarks.length != 0'>
-                <p>Рядом с вами</p>
+                <p><b>Рядом с вами</b></p>
                 <div class="card-container">
-                    <div v-for='item in placemarks' v-show='item.tag == cur_tag' class="card">
+                    <div v-for='item in placemarks'
+                    v-show='item.tag == cur_tag' 
+                    @click="click_on_card(item.coords)" class="card" 
+                    :class="{'on-card': is_equals_coords(item.coords)}" >
                         <img :src="item.imageUrl">
-                        <div>
+                        <div >
                             <p>
                                 <b>{{item.name}}</b>
                                 <br>{{item.address}}

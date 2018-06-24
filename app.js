@@ -120,6 +120,31 @@ new Vue({
       }
       // выделение Цвета текущей метки
       event.get('target').options.set('preset', 'islands#redIcon');
+      // переключение  на вкладку с меткой
+      for (let i = 0; i < this.placemarks.length; i++) {
+        if(this.is_equals_coords(this.placemarks[i].coords)){
+          this.cur_tag = this.placemarks[i].tag;
+        }
+      }
+    },
+    click_on_card: function(coords){
+      //когда нажали на карточку с информацией переходим к выбранной координате
+      this.coords = coords;
+      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
+      for (let j = 0; j < collection.getLength(); j++) {
+        let point = collection.get(j);
+        if (point.geometry.getType() === "Point"){
+          let c = point.geometry.getCoordinates();
+          if(c[0] == coords[0] && c[1] == coords[1]){
+            point.events.fire('click');
+          }
+        }
+      }
+    },
+    is_equals_coords: function(coords){
+      if(this.cur_point == null) return false;
+      if (coords[0] == this.cur_point[0] && coords[1] == this.cur_point[1]) return true;
+      return false;
     },
     initHandler: function (myMap) {
       //Инициализация карты
@@ -141,7 +166,7 @@ var responce = [
     url: '#1'
   },
   {
-    coords: [55.254808646433844, 39.13975515087893],
+    coords: [57.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
@@ -152,7 +177,7 @@ var responce = [
     url: '#2'
   },
   {
-    coords: [55.254808646433844, 39.13975515087893],
+    coords: [55.254808646433844, 40.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
@@ -163,7 +188,7 @@ var responce = [
     url: '#2'
   },
   {
-    coords: [55.254808646433844, 39.13975515087893],
+    coords: [60.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
@@ -174,7 +199,18 @@ var responce = [
     url: '#2'
   },
   {
-    coords: [54.98721616095246, 39.733016869628926],
+    coords: [60.254808646433844, 39.13975515087893],
+    name: 'Игрушечные слоны',
+    imageUrl: 'images/car3.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 22',
+    countReviews: 43,
+    stars: 5,
+    tag: 'Игрушки',
+    url: '#2'
+  },
+  {
+    coords: [55.98721616095246, 39.733016869628926],
     name: 'Зоопарк',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
@@ -185,7 +221,7 @@ var responce = [
     url: '#3'
   },
   {
-    coords: [54.98721616095246, 39.733016869628926],
+    coords: [59.98721616095246, 39.733016869628926],
     name: 'Зоопарк',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
