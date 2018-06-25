@@ -26,9 +26,10 @@
 /*инфа внутри карточки*/
 info_with_photo{
     padding-top: 0.2rem;
+    width: 100%;
 }
 .info_with_photo img{
-    height: 4rem;
+    width: 30%;
     float: left; 
 }
 .info_with_photo p{
