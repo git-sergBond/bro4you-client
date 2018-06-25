@@ -16,7 +16,7 @@
             <yandex-map class="ymap" zoom="8" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
             <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
-                <button v-show='stateApp == 1' @click='click_btn_Clear' class="white-button">Назад</button>
+                <button v-show='stateApp == 1 || stateApp == 2' @click='click_btn_Clear' class="white-button">Очистить</button>
             </div>
         </div>
         <div>

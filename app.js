@@ -92,14 +92,20 @@ new Vue({
     },
     mouseup_event_DrawPolygonByFinger(event){
       if (this.stateApp === 2) {
-        this.stateApp = 1;
-        this.Send_Polygon();
+        if(this.lineStringGeometry.getLength()>2){
+          this.stateApp = 1;
+          this.Send_Polygon();
+        }
       }
     },
     click_btn_Clear: function () {
-      this.delete_geoObject(this.polygonEdit);
-      this.mapInstanse.behaviors.enable('drag');
+      //очищаем все метки и полигоны с карты
+      //делаем похожую на начальную страницу
       this.stateApp = 0;
+      this.ClearMap();
+      this.mapInstanse.geoObjects.add(this.line);
+      this.add_actions_info();
+      this.mapInstanse.behaviors.enable('drag');
     },
     add_placemarks_on_map: function(arr_placemarks){
       //добавление меток на карту и информации о них
@@ -189,14 +195,17 @@ new Vue({
     is_service_AND_equals_coords(item){
       return this.is_service(item) && this.is_equals_coords(item.coords);
     },
+    add_actions_info(){
+      //добавление Акций при загрузке компонента
+      this.placemarks = shares;
+      this.add_placemarks_on_map(this.placemarks);
+    },
     //ИНИЦИАЛИЗАТОРЫ
     initHandler: function (myMap) {
       //Инициализация карты
       this.mapInstanse = myMap;
       this.intit_events_DrawPolygonByFinger();
-      //добавление Акций при загрузке компонента
-      this.placemarks = shares;
-      this.add_placemarks_on_map(this.placemarks);
+      this.add_actions_info();
     }
   }
 })
