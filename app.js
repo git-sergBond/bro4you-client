@@ -92,17 +92,21 @@ new Vue({
       this.mapInstanse.behaviors.enable('drag');
       this.stateApp = 0;
     },
+    add_placemarks_on_map: function(arr_placemarks){
+      //добавление меток на карту и информации о них
+      arr_placemarks.forEach(placemark => {
+        let p = new ymaps.Placemark(placemark.coords);
+        p.events.add('click', this.click_Placemark);
+        this.mapInstanse.geoObjects.add(p);
+      });
+    },
     Send_Polygon: function () {
       //ищем среди объектов полигон и отправляем его на сервер 
       let coordinates = this.lineStringGeometry.getCoordinates();
       this.placemarks = this.getInfoForPoligon_from_server(coordinates);
       this.ClearMap();
       //как пришел ответ идет добавление меток на карту и информации о них
-      this.placemarks.forEach(placemark => {
-        let p = new ymaps.Placemark(placemark.coords);
-        p.events.add('click', this.click_Placemark);
-        this.mapInstanse.geoObjects.add(p);
-      });
+      this.add_placemarks_on_map(this.placemarks);
       this.stateApp = 0;
       this.mapInstanse.behaviors.enable('drag');
     },
@@ -146,15 +150,44 @@ new Vue({
       if (coords[0] == this.cur_point[0] && coords[1] == this.cur_point[1]) return true;
       return false;
     },
+    is_share(item){
+      return item.type == 'shares';
+    },
+    is_share_AND_equals_coords(item){
+      return this.is_share(item) && this.is_equals_coords(item.coords);
+    },
+    is_service(item){
+      return item.type == 'service';
+    },
+    is_service_AND_equals_coords(item){
+      return this.is_service(item) && this.is_equals_coords(item.coords);
+    },
     initHandler: function (myMap) {
       //Инициализация карты
       this.mapInstanse = myMap;
       this.intit_events_DrawPolygonByFinger();
+      this.placemarks = shares;
+      this.add_placemarks_on_map(this.placemarks);
     }
   }
 })
+var shares = [
+  {
+    type: 'shares',//discounts
+    coords: [55.05980129774418, 40.562484643066426],
+    name: 'Маникюр - 30%',
+    imageUrl: 'images/car1.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 55',
+    countReviews: 123,
+    stars: 5,
+    tag: 'Украшения',
+    url: '#1'
+  }
+];
 var responce = [
   {
+    type: 'service',
     coords: [55.05980129774418, 40.562484643066426],
     name: 'Золотой слон - подставка',
     imageUrl: 'images/car1.jpg',
@@ -166,6 +199,7 @@ var responce = [
     url: '#1'
   },
   {
+    type: 'service',
     coords: [57.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
@@ -177,6 +211,7 @@ var responce = [
     url: '#2'
   },
   {
+    type: 'service',
     coords: [55.254808646433844, 40.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
@@ -188,6 +223,7 @@ var responce = [
     url: '#2'
   },
   {
+    type: 'service',
     coords: [60.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
@@ -199,6 +235,7 @@ var responce = [
     url: '#2'
   },
   {
+    type: 'service',
     coords: [60.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
@@ -210,6 +247,7 @@ var responce = [
     url: '#2'
   },
   {
+    type: 'service',
     coords: [55.98721616095246, 39.733016869628926],
     name: 'Зоопарк',
     imageUrl: 'images/car3.jpg',
@@ -221,6 +259,7 @@ var responce = [
     url: '#3'
   },
   {
+    type: 'service',
     coords: [59.98721616095246, 39.733016869628926],
     name: 'Зоопарк',
     imageUrl: 'images/car3.jpg',

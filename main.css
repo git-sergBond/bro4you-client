@@ -20,10 +20,18 @@
 .card:hover{
     box-shadow: 0 0 20px rgb(58, 128, 2);
 }
+.share:hover{
+    box-shadow: 0 0 20px rgb(155, 3, 3);
+}
 .on-card{
     border: 2px solid green;
     transform: scale(1.1); 
     box-shadow: 0 0 20px rgba(1, 255, 56, 0.801);
+}
+.on-share{
+    border: 2px solid rgb(155, 3, 3);
+    transform: scale(1.1); 
+    box-shadow: 0 0 20px rgba(200, 20, 36, 0.801);
 }
 .card img{
     float: left;
@@ -36,6 +44,9 @@
     color: white;
     background-color: rgb(6, 139, 6);
     height: 2rem;
+}
+.red-button{
+    background-color: rgb(155, 3, 3);
 }
 .green-button span{
     margin-left: 0.5rem;

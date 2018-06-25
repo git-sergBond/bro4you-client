@@ -29,11 +29,18 @@
 
             <div class="app--near-you" v-show='placemarks.length != 0'>
                 <p><b>Рядом с вами</b></p>
+                <p><b>Акции</b></p>
                 <div class="card-container">
                     <div v-for='item in placemarks'
-                    v-show='item.tag == cur_tag' 
-                    @click="click_on_card(item.coords)" class="card" 
-                    :class="{'on-card': is_equals_coords(item.coords)}" >
+                    v-show="item.tag == cur_tag || is_share(item)"
+                    @click="click_on_card(item.coords)" 
+                    class="card"
+                    :class="
+                    {
+                        share: is_share(item),
+                        'on-card': is_service_AND_equals_coords(item),
+                        'on-share': is_share_AND_equals_coords(item)
+                    }" >
                         <img :src="item.imageUrl">
                         <div >
                             <p>
@@ -45,16 +52,12 @@
                             <span>Отзывы ({{item.countReviews}})</span>
                         </div>
             
-                        <div class="green-button">
+                        <div class="green-button" :class="{'red-button': is_share(item)}">
                             <img src="images/icons/let.png">
                             <span>Написать сообщение</span>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div>
-                <p>Акции в белгороде</p>
             </div>
         </div>
     </div>
