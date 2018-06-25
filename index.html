@@ -29,7 +29,6 @@
 
             <div class="app--near-you" v-show='placemarks.length != 0'>
                 <p><b>Рядом с вами</b></p>
-                <p><b>Акции</b></p>
                 <div class="card-container">
                     <div v-for='item in placemarks'
                     v-show="item.tag == cur_tag || is_share(item)"
@@ -53,7 +52,7 @@
                         </div>
             
                         <div class="green-button" :class="{'red-button': is_share(item)}">
-                            <img src="images/icons/let.png">
+                            <img :src="is_share(item) ? 'images/icons/shares.png' : 'images/icons/let.png'">
                             <span>Написать сообщение</span>
                         </div>
                     </div>

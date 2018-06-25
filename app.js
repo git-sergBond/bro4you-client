@@ -145,6 +145,7 @@ new Vue({
         }
       }
     },
+    //ФИЛЬТРЫ
     is_equals_coords: function(coords){
       if(this.cur_point == null) return false;
       if (coords[0] == this.cur_point[0] && coords[1] == this.cur_point[1]) return true;
@@ -162,6 +163,7 @@ new Vue({
     is_service_AND_equals_coords(item){
       return this.is_service(item) && this.is_equals_coords(item.coords);
     },
+    //ИНИЦИАЛИЗАТОРЫ
     initHandler: function (myMap) {
       //Инициализация карты
       this.mapInstanse = myMap;
