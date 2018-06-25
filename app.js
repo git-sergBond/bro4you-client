@@ -32,11 +32,11 @@ new Vue({
     NewPolygon: function (arrayPoints) {
       //Создает новый полигон
       let p = new ymaps.Polygon([arrayPoints], {}, {
-        fillColor: '#00FF00',// Цвет заливки.
+        fillColor: '#0000FF',// Цвет заливки.
         strokeColor: '#0000FF',// Цвет обводки.
         opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки). 
-        strokeWidth: 5,// Ширина обводки.
-        strokeStyle: 'shortdash'// Стиль обводки.
+        strokeWidth: 3,// Ширина обводки.
+        
       });
       this.mapInstanse.geoObjects.add(p);// Добавляем многоугольник на карту.
       return p;
