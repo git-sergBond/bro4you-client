@@ -23,6 +23,17 @@
 .share:hover{
     box-shadow: 0 0 20px rgb(155, 3, 3);
 }
+/*инфа внутри карточки*/
+info_with_photo{
+    padding-top: 0.2rem;
+}
+.info_with_photo img{
+    height: 4rem;
+    float: left; 
+}
+.info_with_photo p{
+    margin: 0;
+}
 .on-card{
     border: 2px solid green;
     transform: scale(1.1); 
@@ -44,6 +55,8 @@
     color: white;
     background-color: rgb(6, 139, 6);
     height: 2rem;
+    clear: left;
+    margin: 0;
 }
 .red-button{
     background-color: rgb(155, 3, 3);

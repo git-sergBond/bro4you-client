@@ -45,7 +45,6 @@ new Vue({
     ClearMap: function () {
       //очищает все на карте
       this.mapInstanse.geoObjects.removeAll();
-      this.polygonEdit = this.NewPolygon();
       this.intit_events_DrawPolygonByFinger();
     },
     getInfoForPoligon_from_server: function (coordinates) {
@@ -100,6 +99,14 @@ new Vue({
         this.mapInstanse.geoObjects.add(p);
       });
     },
+    add_polygon_on_map: function(arr_coordinates){
+      //Добавление полигона с заданной геометрией
+      this.polygonEdit = this.NewPolygon();
+      arr_coordinates.forEach(point => {
+        let length = this.polygonEdit.geometry.getLength();
+        this.polygonEdit.geometry.insert(length, point);
+      });
+    },
     Send_Polygon: function () {
       //ищем среди объектов полигон и отправляем его на сервер 
       let coordinates = this.lineStringGeometry.getCoordinates();
@@ -107,6 +114,7 @@ new Vue({
       this.ClearMap();
       //как пришел ответ идет добавление меток на карту и информации о них
       this.add_placemarks_on_map(this.placemarks);
+      this.add_polygon_on_map(coordinates);
       this.stateApp = 0;
       this.mapInstanse.behaviors.enable('drag');
     },
