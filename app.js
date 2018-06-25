@@ -3,7 +3,7 @@
 //
 import Vue from 'vue';
 import YmapPlugin from 'vue-yandex-maps';
-import { runInContext } from 'vm';
+//import { runInContext } from 'vm';
 Vue.use(YmapPlugin);
 new Vue({
   el: '#app',
@@ -29,9 +29,9 @@ new Vue({
     responce: [],
   },
   methods: {
-    NewPolygon: function () {
+    NewPolygon: function (arrayPoints) {
       //Создает новый полигон
-      let p = new ymaps.Polygon([], {}, {
+      let p = new ymaps.Polygon(arrayPoints, {}, {
         fillColor: '#00FF00',// Цвет заливки.
         strokeColor: '#0000FF',// Цвет обводки.
         opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки). 
@@ -62,11 +62,18 @@ new Vue({
       this.stateApp = 1;
     },
     //-------- ОБВОДКА ОБЛАСТИ --------------
-    intit_events_DrawPolygonByFinger(){
+    intit_events_DrawPolygonByFinger() {
       this.lineStringGeometry = new ymaps.geometry.LineString([]);
       this.line = new ymaps.GeoObject({
-          geometry: this.lineStringGeometry
-      });
+        geometry: this.lineStringGeometry,
+      }, {
+          // Описываем опции геообъекта.
+          fillColor: '#00FF00',// Цвет заливки.
+          strokeColor: '#0000FF',// Цвет обводки.
+          opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки).
+          strokeWidth: 5,// Ширина обводки.
+          strokeStyle: 'shortdash'// Стиль обводки.
+        });
       this.mapInstanse.geoObjects.add(this.line); // Создаем инстанцию геообъекта и передаем нашу геометрию
       this.mapInstanse.events.add("mousemove", this.mousemove_event_DrawPolygonByFinger);
     },
@@ -99,19 +106,48 @@ new Vue({
         this.mapInstanse.geoObjects.add(p);
       });
     },
+    alg_simplifi_line(arr_in){
+      //уменьшение колличества точек на линии
+      console.log(arr_in.length)
+      let simle_arr = [];
+      simle_arr.push(arr_in[0]);
+      for (let index = 0; index < arr_in.length; index++) {
+        if(index % 5 <= 0) simle_arr.push(arr_in[index]);
+      }
+      simle_arr.push(arr_in[arr_in.length-1]);
+      console.log(simle_arr.length)
+      return simle_arr;
+    },
     add_polygon_on_map: function(arr_coordinates){
       //Добавление полигона с заданной геометрией
-      this.polygonEdit = this.NewPolygon();
-      arr_coordinates.forEach(point => {
-        let length = this.polygonEdit.geometry.getLength();
-        this.polygonEdit.geometry.insert(length, point);
-      });
+      this.lineStringGeometry.insert(this.lineStringGeometry.getLength(),this.lineStringGeometry.getCoordinates()[0]);
+      let simple_line = this.alg_simplifi_line(arr_coordinates);
+      /*
+      this.lineStringGeometry = new ymaps.geometry.LineString([]);
+      this.line = new ymaps.GeoObject({
+        geometry: this.lineStringGeometry,
+      }, {
+          // Описываем опции геообъекта.
+          fillColor: '#00FF00',// Цвет заливки.
+          strokeColor: '#0000FF',// Цвет обводки.
+          opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки).
+          strokeWidth: 5,// Ширина обводки.
+          strokeStyle: 'shortdash'// Стиль обводки.
+        });
+      this.mapInstanse.geoObjects.add(this.line);*/
+      let myPolygon = new ymaps.Polygon([simple_line], {}, {
+        // Задаем опции геообъекта.
+        fillColor: '#00FF0088',// Цвет заливки.
+        strokeWidth: 5// Ширина обводки.
+    });
+    this.mapInstanse.geoObjects.add(myPolygon);// Добавляем многоугольник на карту.
     },
     Send_Polygon: function () {
       //ищем среди объектов полигон и отправляем его на сервер 
       let coordinates = this.lineStringGeometry.getCoordinates();
+
       this.placemarks = this.getInfoForPoligon_from_server(coordinates);
-      this.ClearMap();
+      //this.ClearMap();
       //как пришел ответ идет добавление меток на карту и информации о них
       this.add_placemarks_on_map(this.placemarks);
       this.add_polygon_on_map(coordinates);

@@ -3,7 +3,7 @@
 }
 .card-container{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 }
 .white-button{
     margin-right: 2rem;
@@ -55,9 +55,10 @@ info_with_photo{
     align-items: center;     /*Центрирование по вертикали */
     color: white;
     background-color: rgb(6, 139, 6);
-    height: 2rem;
     clear: left;
     margin: 0;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
 }
 .red-button{
     background-color: rgb(155, 3, 3);
