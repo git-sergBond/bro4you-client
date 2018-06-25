@@ -31,7 +31,7 @@ new Vue({
   methods: {
     NewPolygon: function (arrayPoints) {
       //Создает новый полигон
-      let p = new ymaps.Polygon(arrayPoints, {}, {
+      let p = new ymaps.Polygon([arrayPoints], {}, {
         fillColor: '#00FF00',// Цвет заливки.
         strokeColor: '#0000FF',// Цвет обводки.
         opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки). 
@@ -56,8 +56,12 @@ new Vue({
       console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
       return responce;
     },
+    delete_geoObject(o){
+      //Удаление гео объекта с карты
+      if(o != null) this.mapInstanse.geoObjects.remove(o);
+    },
     click_btn_Start_Edit: function () {
-      this.ClearMap();
+      this.delete_geoObject(this.polygonEdit);
       this.mapInstanse.behaviors.disable('drag');
       this.stateApp = 1;
     },
@@ -93,8 +97,7 @@ new Vue({
       }
     },
     click_btn_Clear: function () {
-      this.ClearMap();
-      this.mapInstanse.geoObjects.add(this.polygonEdit);
+      this.delete_geoObject(this.polygonEdit);
       this.mapInstanse.behaviors.enable('drag');
       this.stateApp = 0;
     },
@@ -118,39 +121,18 @@ new Vue({
       console.log(simle_arr.length)
       return simle_arr;
     },
-    add_polygon_on_map: function(arr_coordinates){
-      //Добавление полигона с заданной геометрией
-      this.lineStringGeometry.insert(this.lineStringGeometry.getLength(),this.lineStringGeometry.getCoordinates()[0]);
-      let simple_line = this.alg_simplifi_line(arr_coordinates);
-      /*
-      this.lineStringGeometry = new ymaps.geometry.LineString([]);
-      this.line = new ymaps.GeoObject({
-        geometry: this.lineStringGeometry,
-      }, {
-          // Описываем опции геообъекта.
-          fillColor: '#00FF00',// Цвет заливки.
-          strokeColor: '#0000FF',// Цвет обводки.
-          opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки).
-          strokeWidth: 5,// Ширина обводки.
-          strokeStyle: 'shortdash'// Стиль обводки.
-        });
-      this.mapInstanse.geoObjects.add(this.line);*/
-      let myPolygon = new ymaps.Polygon([simple_line], {}, {
-        // Задаем опции геообъекта.
-        fillColor: '#00FF0088',// Цвет заливки.
-        strokeWidth: 5// Ширина обводки.
-    });
-    this.mapInstanse.geoObjects.add(myPolygon);// Добавляем многоугольник на карту.
-    },
     Send_Polygon: function () {
       //ищем среди объектов полигон и отправляем его на сервер 
       let coordinates = this.lineStringGeometry.getCoordinates();
-
-      this.placemarks = this.getInfoForPoligon_from_server(coordinates);
-      //this.ClearMap();
+      //!добавляем точку в конец, чтобы не делать преобразований с полигоном
+      this.lineStringGeometry.insert(this.lineStringGeometry.getLength(),this.lineStringGeometry.getCoordinates()[0]);
+      let simple_line = this.alg_simplifi_line(coordinates);
+      this.placemarks = this.getInfoForPoligon_from_server(simple_line);
+      this.ClearMap();
       //как пришел ответ идет добавление меток на карту и информации о них
       this.add_placemarks_on_map(this.placemarks);
-      this.add_polygon_on_map(coordinates);
+      this.polygonEdit =  this.NewPolygon(simple_line);
+      //возвращаем прежнее состояние приложения и активируем перетаскивание
       this.stateApp = 0;
       this.mapInstanse.behaviors.enable('drag');
     },
@@ -212,6 +194,7 @@ new Vue({
       //Инициализация карты
       this.mapInstanse = myMap;
       this.intit_events_DrawPolygonByFinger();
+      //добавление Акций при загрузке компонента
       this.placemarks = shares;
       this.add_placemarks_on_map(this.placemarks);
     }
