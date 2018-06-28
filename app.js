@@ -4,15 +4,20 @@
 import Vue from 'vue';
 import YmapPlugin from 'vue-yandex-maps';
 //import { runInContext } from 'vm';
+//var hello = require('!vue./components/hello.vue');
+import hello from './components/search.vue'
 Vue.use(YmapPlugin);
 new Vue({
   el: '#app',
   data: {
+    message: 'Введите название услуги',
     mapInstanse: null,
     coords: [54.82896654088406, 39.831893822753904],//начальный фокус на карте
     cur_point: null,//текущая выделенная метка на карте (нужно для подсветки)
     //-------------GeoObjects---------
-    placemarks: [],//координаты услуг+данные
+    poly_line: [],
+    placemarks: [],//координаты услуг+данные ---------->services
+    shares: [],
     polygonEdit: null,
     line: null,
     lineStringGeometry: null,
@@ -24,11 +29,23 @@ new Vue({
     2 - редактирвание мышью
     */
     //------------Data------------
-    tags: ['Украшения', 'Игрушки', 'Развлечения'],
+    /*
+    |   Исправить термины ТЕГ на КАТЕГОРИЯ
+    |
+     */
+    tags: [],
     cur_tag: [],
+
     responce: [],
+
+    categories: [],
+    cur_category: '',
   },
+  components: {
+    hello: hello
+},
   methods: {
+    //--------------РАБОТА С ГЕО ОБЪЕКТАМИ---------------
     NewPolygon: function (arrayPoints) {
       //Создает новый полигон
       let p = new ymaps.Polygon([arrayPoints], {}, {
@@ -41,31 +58,51 @@ new Vue({
       this.mapInstanse.geoObjects.add(p);// Добавляем многоугольник на карту.
       return p;
     },
-    //------------------------DELETE THIS METHOD
+    delete_geoObject(o){
+      //Удаление гео объекта с карты
+      if(o != null) this.mapInstanse.geoObjects.remove(o);
+    },
     ClearMap: function () {
       //очищает все на карте
       this.mapInstanse.geoObjects.removeAll();
       this.intit_events_DrawPolygonByFinger();
     },
-    getInfoForPoligon_from_server: function (coordinates) {
+    //----------------ЗАПРОСЫ----------------------------
+    getInfoForPoligon_from_server: function (search, coordinates) {
       //асинхронный запрос серверу
-      //серверу передается массив точек (вершин полигона)
+      //серверу запрос поиска + передается массив точек (вершин полигона)
       //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
-      console.log('requset to server (json array coordinates)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
+      console.log('requset to server (search msg + json array coordinates)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
       //console.log(coordinates)
       console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
       return responce;
     },
-    delete_geoObject(o){
-      //Удаление гео объекта с карты
-      if(o != null) this.mapInstanse.geoObjects.remove(o);
+    getInfoForBounds_from_server: function(search, bounds){
+      //асинхронный запрос серверу
+      //серверу строка запроса пользователя + координаты квадрата Л-В и П-Н
+      //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
+      console.log('requset to server (string search msg + bounds rect)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
+      console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
+      return responce;
     },
-    click_btn_Start_Edit: function () {
-      this.delete_geoObject(this.polygonEdit);
-      this.mapInstanse.behaviors.disable('drag');
-      this.stateApp = 1;
+    get_Categories_and_polygon_from_server: function(category, polygon){
+// NOP 
+return responce;
     },
-    //-------- ОБВОДКА ОБЛАСТИ --------------
+    get_Categories_and_bounds_from_server: function(category, bounds){
+// NOP
+return responce;
+    },
+    getCategoties_from_server: function(){
+      return ['Магазины Авто', 'Еда', 'Одежда', 'Ищут работу', "Транспорт", "Развлечения", "Драгоценности", "Банкоматы"];
+    },
+    getShares_from_server: function(bounds){
+      //получить данные о рекламе и акциях в звдвнном районе
+      console.log('requset to server (bounds rect)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
+      console.log('... become response (json array sahres with info)')//<-----------------  жду ответа
+      return shares;
+    },
+    //-------- ОБВОДКА ОБЛАСТИ ---------------------------
     intit_events_DrawPolygonByFinger() {
       this.lineStringGeometry = new ymaps.geometry.LineString([]);
       this.line = new ymaps.GeoObject({
@@ -98,50 +135,52 @@ new Vue({
         }
       }
     },
+    //-------------ОБРАБОТЧИКИ КНОПОК--------------------
     click_btn_Clear: function () {
       //очищаем все метки и полигоны с карты
       //делаем похожую на начальную страницу
       this.stateApp = 0;
       this.ClearMap();
+      this.tags = [];
+      this.polygonEdit = null;
       this.mapInstanse.geoObjects.add(this.line);
       this.add_actions_info();
       this.mapInstanse.behaviors.enable('drag');
     },
-    add_placemarks_on_map: function(arr_placemarks){
-      //добавление меток на карту и информации о них
-      arr_placemarks.forEach(placemark => {
-        let p = new ymaps.Placemark(placemark.coords);
-        p.events.add('click', this.click_Placemark);
-        this.mapInstanse.geoObjects.add(p);
-      });
+    click_btn_Start_Edit: function () {
+      this.delete_geoObject(this.polygonEdit);
+      this.mapInstanse.behaviors.disable('drag');
+      this.stateApp = 1;
     },
-    alg_simplifi_line(arr_in){
-      //уменьшение колличества точек на линии
-      console.log(arr_in.length)
-      let simle_arr = [];
-      simle_arr.push(arr_in[0]);
-      for (let index = 0; index < arr_in.length; index++) {
-        if(index % 5 <= 0) simle_arr.push(arr_in[index]);
-      }
-      simle_arr.push(arr_in[arr_in.length-1]);
-      console.log(simle_arr.length)
-      return simle_arr;
-    },
-    Send_Polygon: function () {
-      //ищем среди объектов полигон и отправляем его на сервер 
-      let coordinates = this.lineStringGeometry.getCoordinates();
-      //!добавляем точку в конец, чтобы не делать преобразований с полигоном
-      this.lineStringGeometry.insert(this.lineStringGeometry.getLength(),this.lineStringGeometry.getCoordinates()[0]);
-      let simple_line = this.alg_simplifi_line(coordinates);
-      this.placemarks = this.getInfoForPoligon_from_server(simple_line);
+    click_btn_search: function(event){
+      //Кликнули на кнопку найти
+      //если не указана область то
+      //    передаем левую верхнюю и правую нижнюю координату области видимости
+      //иначе передаем полигон в котором нужно искать и запрос
       this.ClearMap();
-      //как пришел ответ идет добавление меток на карту и информации о них
+      this.add_actions_info();
+      let bounds = this.mapInstanse.getBounds();//2 координаты
+      if(this.polygonEdit == null){
+        this.placemarks = this.getInfoForBounds_from_server(this.message, bounds);
+      }else{
+        this.placemarks = this.getInfoForPoligon_from_server(this.message, this.poly_line);
+      }
       this.add_placemarks_on_map(this.placemarks);
-      this.polygonEdit =  this.NewPolygon(simple_line);
-      //возвращаем прежнее состояние приложения и активируем перетаскивание
-      this.stateApp = 0;
-      this.mapInstanse.behaviors.enable('drag');
+      this.tags = this.get_categoryes_from_placemarks(this.placemarks);
     },
+    change_category_event: function(){
+      this.ClearMap();
+      this.add_actions_info();
+      let bounds = this.mapInstanse.getBounds();//2 координаты
+      if(this.polygonEdit == null){
+        this.placemarks = this.get_Categories_and_bounds_from_server(this.cur_category, bounds);
+      }else{
+        this.placemarks = this.get_Categories_and_polygon_from_server(this.cur_category, this.poly_line);
+      }
+      this.add_placemarks_on_map(this.placemarks);
+      this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+    },
+    //------------Обработчики остальных объектов ---------
     click_Placemark: function (event) {
       //при клике на метке, в блоке информации выделяеются даныне и сама метка
       this.cur_point = event.get('target').geometry.getCoordinates();
@@ -177,7 +216,56 @@ new Vue({
         }
       }
     },
-    //ФИЛЬТРЫ
+    //---------------- ОТРИСОВКА ОБЛАСТИ НА КАРТЕ---------
+    add_placemarks_on_map: function(arr_placemarks){
+      //добавление меток на карту и информации о них
+      arr_placemarks.forEach(placemark => {
+        let p = new ymaps.Placemark(placemark.coords);
+        p.events.add('click', this.click_Placemark);
+        this.mapInstanse.geoObjects.add(p);
+      });
+    },
+    alg_simplifi_line(arr_in){
+      //уменьшение колличества точек на линии
+      console.log(arr_in.length)
+      let simle_arr = [];
+      simle_arr.push(arr_in[0]);
+      for (let index = 0; index < arr_in.length; index++) {
+        if(index % 5 <= 0) simle_arr.push(arr_in[index]);
+      }
+      simle_arr.push(arr_in[arr_in.length-1]);
+      console.log(simle_arr.length)
+      return simle_arr;
+    },
+    get_categoryes_from_placemarks(placemarks){
+      //Когда приходит массив данных, м записываем все имеющиеся категории в массив
+      //что бы уточнить
+      let tags = [];
+      for (let i = 0; i < placemarks.length; i++) {
+        let tag = placemarks[i].tag;
+        if(tags.indexOf(tag) === -1) tags.push(tag);
+      }
+      return tags;
+    },
+    Send_Polygon: function () {
+      //ищем среди объектов полигон и отправляем его на сервер 
+      let coordinates = this.lineStringGeometry.getCoordinates();
+      //!добавляем точку в конец, чтобы не делать преобразований с полигоном
+      this.lineStringGeometry.insert(this.lineStringGeometry.getLength(),this.lineStringGeometry.getCoordinates()[0]);
+      let simple_line = this.alg_simplifi_line(coordinates);
+      this.poly_line = simple_line;
+      this.placemarks = this.getInfoForPoligon_from_server(simple_line);
+      this.ClearMap();
+      this.add_actions_info();
+      //как пришел ответ идет добавление меток на карту и информации о них
+      this.add_placemarks_on_map(this.placemarks);
+      this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+      this.polygonEdit =  this.NewPolygon(simple_line);
+      //возвращаем прежнее состояние приложения и активируем перетаскивание
+      this.stateApp = 0;
+      this.mapInstanse.behaviors.enable('drag');
+    },
+    //----------------ФИЛЬТРЫ------------------------------
     is_equals_coords: function(coords){
       if(this.cur_point == null) return false;
       if (coords[0] == this.cur_point[0] && coords[1] == this.cur_point[1]) return true;
@@ -195,23 +283,23 @@ new Vue({
     is_service_AND_equals_coords(item){
       return this.is_service(item) && this.is_equals_coords(item.coords);
     },
-    add_actions_info(){
-      //добавление Акций при загрузке компонента
-      this.placemarks = shares;
-      this.add_placemarks_on_map(this.placemarks);
-    },
-    //ИНИЦИАЛИЗАТОРЫ
+    //-----------------ИНИЦИАЛИЗАТОРЫ---------------------
     initHandler: function (myMap) {
-      //Инициализация карты
+      //Инициализация карты и прочей фигни
       this.mapInstanse = myMap;
       this.intit_events_DrawPolygonByFinger();
       this.add_actions_info();
+      this.categories = this.getCategoties_from_server();
+    },
+    add_actions_info(){
+      //добавление Акций при загрузке компонента
+      this.shares = this.getShares_from_server();
+      this.add_placemarks_on_map(this.shares);
     }
   }
 })
 var shares = [
   {
-    type: 'shares',//discounts
     coords: [55.05980129774418, 40.562484643066426],
     name: 'Маникюр - 30%',
     imageUrl: 'images/car1.jpg',
@@ -219,91 +307,120 @@ var shares = [
     phoneNumber: '+ 7 (XXX) XX - 55',
     countReviews: 123,
     stars: 5,
-    tag: 'Украшения',
+    url: '#1'
+  },
+  {
+    coords: [60.05980129774418, 40.562484643066426],
+    name: 'СТО - 30%',
+    imageUrl: 'images/car1.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 55',
+    countReviews: 123,
+    stars: 5,
+    url: '#1'
+  },
+  {
+    coords: [60.05980129774418, 50.562484643066426],
+    name: 'Автомойка - 30%',
+    imageUrl: 'images/car1.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 55',
+    countReviews: 123,
+    stars: 5,
+    url: '#1'
+  },
+  {
+    coords: [60.05980129774418, 60.562484643066426],
+    name: 'Ногти - 30%',
+    imageUrl: 'images/car1.jpg',
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 55',
+    countReviews: 123,
+    stars: 5,
     url: '#1'
   }
 ];
 var responce = [
   {
-    type: 'service',
-    coords: [55.05980129774418, 40.562484643066426],
+    coords: [57.05980129774418, 40.562484643066426],
     name: 'Золотой слон - подставка',
     imageUrl: 'images/car1.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 55',
     countReviews: 0,
+    price: '7 000',
     stars: 2,
-    tag: 'Украшения',
+    tag: 'Книги',
     url: '#1'
   },
   {
-    type: 'service',
     coords: [57.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
+    price: '10 000',
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
   },
   {
-    type: 'service',
     coords: [55.254808646433844, 40.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
+    price: '8 000',
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
   },
   {
-    type: 'service',
     coords: [60.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
+    price: '9 000',
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
   },
   {
-    type: 'service',
     coords: [60.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
+    price: '5 000',
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
   },
   {
-    type: 'service',
     coords: [55.98721616095246, 39.733016869628926],
     name: 'Зоопарк',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 1000,
+    price: '6 000',
     stars: 3,
     tag: 'Развлечения',
     url: '#3'
   },
   {
-    type: 'service',
     coords: [59.98721616095246, 39.733016869628926],
     name: 'Зоопарк',
     imageUrl: 'images/car3.jpg',
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 1000,
+    price: '5 000',
     stars: 3,
     tag: 'Развлечения',
     url: '#3'

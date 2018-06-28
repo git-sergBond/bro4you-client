@@ -10,35 +10,55 @@
 </head>
 <body> 
     <div id="app" >
+        <div class="search">
+            <div>
+                <select v-model='cur_category' @change="change_category_event">
+                    <option disabled value="">Выберите категорию</option>
+                    <option v-for="cat in categories">{{ cat }}</option>
+                </select>
+            </div>
+            <input type="text" v-model="message">
+            <p @click='click_btn_search'>
+                <img src="images/icons/search.png"> Найти</p>
+        </div>
         <div class="map-comp" 
-        @mouseup='mouseup_event_DrawPolygonByFinger'
-        @mousedown='mousedown_event_DrawPolygonByFinger'>
-            <yandex-map class="ymap" zoom="8" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
+            @mouseup='mouseup_event_DrawPolygonByFinger'
+            @mousedown='mousedown_event_DrawPolygonByFinger'
+            ><yandex-map class="ymap" zoom="8" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
+            <div class="place-info" v-for='item in placemarks' v-show='is_equals_coords(item.coords)'>
+                <img :src="item.imageUrl">
+                <p>
+                    <b>{{item.name}}</b>
+                    <br>{{item.address}}
+                    <br>{{item.phoneNumber}}
+                    <br>{{item.price}} (Руб.)
+                    <br>
+                    <span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }">*</span>
+                    <span>Отзывы ({{item.countReviews}})</span>
+                </p>            
+            </div>
             <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
                 <button v-show='stateApp == 1 || stateApp == 2' @click='click_btn_Clear' class="white-button">Очистить</button>
             </div>
         </div>
-        <div>
-            <div  v-show='placemarks.length != 0'>
+        <div style="margin: 10px 1.3rem 0 1.3rem">
+
+        
+            <div  v-show='placemarks.length != 0 && tags.length != 0'>
                 <p><b>Уточните категорию</b></p>
                 <div class="app--categories">
                     <p v-for='tag in tags' @click='cur_tag = tag' class="white-button" >{{ tag }}</p>
                 </div>  
             </div>
 
-            <div class="app--near-you" v-show='placemarks.length != 0'>
-                <p>
+            <div class="app--near-you" v-show='shares.length != 0'>
+                <p >
                     <b>Рядом с вами</b>
                 </p>
                 <div class="card-container">
-                    <div v-for='item in placemarks' v-show="item.tag == cur_tag || is_share(item)" @click="click_on_card(item.coords)" class="card"
-                        :class="
-                        {
-                             share: is_share(item),
-                             'on-card': is_service_AND_equals_coords(item),
-                             'on-share': is_share_AND_equals_coords(item)
-                        }">
+                    <div v-for='item in shares' @click="click_on_card(item.coords)" class="card"
+                        :class="{'on-card': is_equals_coords(item.coords)}">
                         <div class="info_with_photo">
                             <img :src="item.imageUrl">
                             <p style="margin-left: 32%">
@@ -49,13 +69,13 @@
                                 <span>Отзывы ({{item.countReviews}})</span>
                             </p>
                         </div>
-                        <p class="green-button" :class="{'red-button': is_share(item)}">
-                            <img :src="is_share(item) ? 'images/icons/shares.png' : 'images/icons/let.png'"> Написать сообщение
+                        <p class="green-button">
+                            <img src="images/icons/let.png"> Написать сообщение
                         </p>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
     </div>
     <script src="dist/bundle.js"></script>
 </body>

@@ -20,9 +20,6 @@
 .card:hover{
     box-shadow: 0 0 20px rgb(58, 128, 2);
 }
-.share:hover{
-    box-shadow: 0 0 20px rgb(155, 3, 3);
-}
 /*инфа внутри карточки*/
 info_with_photo{
     padding-top: 0.2rem;
@@ -40,11 +37,6 @@ info_with_photo{
     transform: scale(1.1); 
     box-shadow: 0 0 20px rgba(1, 255, 56, 0.801);
 }
-.on-share{
-    border: 2px solid rgb(155, 3, 3);
-    transform: scale(1.1); 
-    box-shadow: 0 0 20px rgba(200, 20, 36, 0.801);
-}
 .card img{
     float: left;
     max-width: 30%;
@@ -60,9 +52,6 @@ info_with_photo{
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
 }
-.red-button{
-    background-color: rgb(155, 3, 3);
-}
 .green-button span{
     margin-left: 0.5rem;
 }
@@ -73,28 +62,81 @@ info_with_photo{
 .on-star{
     color: red;
 }
+/*поиск на странице*/
+.search{
+    width: 100%;
+    box-shadow: 0 0 20px gray;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search div{
+    border: 1px solid gray;
+    border-top: 0px;
+    border-left: 0px;
+    border-bottom: 0px;
+    padding-right: 0.7rem;
+}
+select{
+    border: 1px solid gray;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    background: white;
+    font-size: 1.5em;
+    margin: 0;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+input[type="text"] {
+    border-width: 1px;
+    border-color: gray;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    font-size: 1.5em; 
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 60%;
+}
+.search p{
+    display: flex;
+    justify-content: center; /*Центрирование по горизонтали*/
+    align-items: center;     /*Центрирование по вертикали */
+    margin: 0;
+    padding-top: 0.1rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.7em;
+    border: 1px solid gray;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 0;
+    font-size: 1.5em;
+}
+.search p img{
+    width: 1.3em;
+}
 /**/
-
 .map-comp--buttons
 {
     position: absolute;
-    bottom: 10%;
+    top: 50%;
     width: 100%;
     text-align: center;
 }
 .map-comp {
-    width: 100%;
-    height: 100vh ;
+    padding-left: 1.3rem;
+    padding-right: 1.3rem;
+    height: 50vh ;
 }
 p, h1, a{
     font-family: 'Comfortaa', cursive;
     margin-left: 0.2rem;
     margin-top: 0.15rem
-}
-a {
-    padding: 0.2em;
-    border: 1px solid rgb(119, 106, 233);
-    border-radius: 1rem;
 }
 h1{
     font-size: 1.1em  
@@ -104,40 +146,18 @@ h1{
     height: 100%;
 }
 .map-comp .place-info{
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 9%;
     right: 0;
-    height: 100%;
-    width: 34vw;
+    height: 50%;
+    width: 25vw;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: white;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);;
 }
-.map-comp .place-info .content{
-    height: 100%;
-    overflow-y: scroll;
-    background-color: #f4f4f4;
-    margin: 0;
-}
-.map-comp .place-info .content .quit{
-    position: fixed;
-}
-.map-comp .place-info .content .service-item{
-    margin: 0.2rem;
-    margin-bottom: 0.7rem;
-    padding-bottom: 0.5rem;
-    background-color: white;
-    border-radius: 1rem;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-.service-item img{
-    width: 100%;
-}
-.map-comp .place-info .content .service-item div{
-    clear: left;
-}
-.map-comp .quit{
-    float: right;
-    margin: 0.7rem;
+.place-info img{
+    width: 80%;
 }
