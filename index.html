@@ -43,12 +43,11 @@
             </div>
         </div>
         <div style="margin: 10px 1.3rem 0 1.3rem">
-
-        
             <div  v-show='placemarks.length != 0 && tags.length != 0'>
                 <p><b>Уточните категорию</b></p>
                 <div class="app--categories">
-                    <p v-for='tag in tags' @click='cur_tag = tag' class="white-button" >{{ tag }}</p>
+                    <p v-for='tag in tags' @click='click_btn_changeTag(tag)' class="white-button" >{{ tag }}</p>
+                    <p @click='click_btn_ShowAllTags' class="white-button" >Показать все</p>
                 </div>  
             </div>
 

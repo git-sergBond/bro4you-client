@@ -140,8 +140,9 @@ return responce;
       //очищаем все метки и полигоны с карты
       //делаем похожую на начальную страницу
       this.stateApp = 0;
-      this.ClearMap();
+      this.click_btn_ShowAllTags();
       this.tags = [];
+      this.ClearMap();
       this.polygonEdit = null;
       this.mapInstanse.geoObjects.add(this.line);
       this.add_actions_info();
@@ -167,6 +168,7 @@ return responce;
       }
       this.add_placemarks_on_map(this.placemarks);
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+      this.click_btn_ShowAllTags();
     },
     change_category_event: function(){
       this.ClearMap();
@@ -179,6 +181,34 @@ return responce;
       }
       this.add_placemarks_on_map(this.placemarks);
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+      this.click_btn_ShowAllTags();
+    },
+    click_btn_changeTag: function(tag){
+      //При уточнении категрии все прочие метки скрываются на карте
+      this.cur_tag = tag;//запомнили фильтр тегов
+      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
+      for (let j = 0; j < collection.getLength(); j++) {
+        if (collection.get(j).geometry.getType() === "Point") {
+          let point = collection.get(j);
+          point.options.set('visible', true); 
+          this.placemarks.forEach(el => {
+            if(el.tag == this.cur_tag && el.coords == point.geometry.getCoordinates()){
+              point.options.set('visible', false); 
+            }
+          });
+        }
+      }
+    },
+    click_btn_ShowAllTags: function(){
+      //Очистить фильтр уточнения всех меток
+      this.cur_tag = 'All';
+      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
+      for (let j = 0; j < collection.getLength(); j++) {
+        if (collection.get(j).geometry.getType() === "Point") {
+          let point = collection.get(j);
+          point.options.set('visible', true); 
+        }
+      }
     },
     //------------Обработчики остальных объектов ---------
     click_Placemark: function (event) {
@@ -260,6 +290,7 @@ return responce;
       //как пришел ответ идет добавление меток на карту и информации о них
       this.add_placemarks_on_map(this.placemarks);
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+      this.click_btn_ShowAllTags();
       this.polygonEdit =  this.NewPolygon(simple_line);
       //возвращаем прежнее состояние приложения и активируем перетаскивание
       this.stateApp = 0;
