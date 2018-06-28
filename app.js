@@ -39,7 +39,7 @@ new Vue({
     responce: [],
 
     categories: [],
-    cur_category: '',
+    cur_category: 'All',
     low_price: 0,
     high_price: 0
   },
@@ -185,37 +185,13 @@ return responce;
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
       this.click_btn_ShowAllTags();
     },
-    click_btn_changeTag: function(tag){
-      //При уточнении категрии все прочие метки скрываются на карте
-      this.cur_tag = tag;//запомнили фильтр тегов
-      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
-      for (let j = 0; j < collection.getLength(); j++) {
-        if (collection.get(j).geometry.getType() === "Point") {
-          let point = collection.get(j);
-          point.options.set('visible', false); 
-          this.placemarks.forEach(el => {
-            if(el.tag == this.cur_tag && el.coords == point.geometry.getCoordinates()){
-              point.options.set('visible', true); 
-            }
-          });
-        }
-      }
-    },
-    click_btn_ShowAllTags: function(){
-      //Очистить фильтр уточнения всех меток
-      this.cur_tag = 'All';
-      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
-      for (let j = 0; j < collection.getLength(); j++) {
-        if (collection.get(j).geometry.getType() === "Point") {
-          let point = collection.get(j);
-          point.options.set('visible', true); 
-        }
-      }
-    },
-    change_txt_priceFilter: function(){
-      //Метод оставляет только те метки которые соответствуют услуге с заданной стоимостью
-      //фильтр тегов
-      //фильтр цен
+    /*
+    |   ИЗБЫТОЧНОСТь В КОДЕ ДЛЯ ФИЛЬТРОВ
+    |
+    |
+    */
+    filter: function(){
+      //фильтр для категорий и цен
       let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
       for (let j = 0; j < collection.getLength(); j++) {
         if (collection.get(j).geometry.getType() === "Point") {
@@ -230,6 +206,26 @@ return responce;
           });
         }
       }
+    },
+    click_btn_changeTag: function(tag){
+      //При уточнении категрии все прочие метки скрываются на карте
+      this.cur_tag = tag;//запомнили фильтр тегов
+      this.filter();
+    },
+    click_btn_ShowAllTags: function(){
+      //Очистить фильтр уточнения всех меток
+      this.cur_tag = 'All';
+      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
+      for (let j = 0; j < collection.getLength(); j++) {
+        if (collection.get(j).geometry.getType() === "Point") {
+          let point = collection.get(j);
+          point.options.set('visible', true); 
+        }
+      }
+    },
+    change_txt_priceFilter: function(){
+      //Метод оставляет только те метки которые соответствуют услуге с заданной стоимостью
+      this.filter();
     },
     //------------Обработчики остальных объектов ---------
     click_Placemark: function (event) {
