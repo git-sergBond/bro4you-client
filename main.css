@@ -120,6 +120,14 @@ input[type="text"] {
 .search p img{
     width: 1.3em;
 }
+.price-filter{
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    background-color: white;
+    padding: 0.2rem;
+    box-shadow: 0 0 10px black
+}
 /**/
 .map-comp--buttons
 {

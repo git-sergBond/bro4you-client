@@ -40,6 +40,8 @@ new Vue({
 
     categories: [],
     cur_category: '',
+    low_price: 0,
+    high_price: 0
   },
   components: {
     hello: hello
@@ -190,10 +192,10 @@ return responce;
       for (let j = 0; j < collection.getLength(); j++) {
         if (collection.get(j).geometry.getType() === "Point") {
           let point = collection.get(j);
-          point.options.set('visible', true); 
+          point.options.set('visible', false); 
           this.placemarks.forEach(el => {
             if(el.tag == this.cur_tag && el.coords == point.geometry.getCoordinates()){
-              point.options.set('visible', false); 
+              point.options.set('visible', true); 
             }
           });
         }
@@ -207,6 +209,25 @@ return responce;
         if (collection.get(j).geometry.getType() === "Point") {
           let point = collection.get(j);
           point.options.set('visible', true); 
+        }
+      }
+    },
+    change_txt_priceFilter: function(){
+      //Метод оставляет только те метки которые соответствуют услуге с заданной стоимостью
+      //фильтр тегов
+      //фильтр цен
+      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
+      for (let j = 0; j < collection.getLength(); j++) {
+        if (collection.get(j).geometry.getType() === "Point") {
+          let point = collection.get(j);
+          point.options.set('visible', false); 
+          this.placemarks.forEach(el => {
+            if((el.tag == this.cur_tag || this.cur_tag == 'All') 
+            && el.price >= this.low_price && el.price <= this.high_price
+            && el.coords == point.geometry.getCoordinates()){
+              point.options.set('visible', true); 
+            }
+          });
         }
       }
     },
@@ -379,7 +400,7 @@ var responce = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 55',
     countReviews: 0,
-    price: '7 000',
+    price: 7000,
     stars: 2,
     tag: 'Книги',
     url: '#1'
@@ -391,7 +412,7 @@ var responce = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
-    price: '10 000',
+    price: 10000,
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
@@ -403,7 +424,7 @@ var responce = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
-    price: '8 000',
+    price: 8000,
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
@@ -415,7 +436,7 @@ var responce = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
-    price: '9 000',
+    price: 9000,
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
@@ -427,7 +448,7 @@ var responce = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
-    price: '5 000',
+    price: 5000,
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
@@ -439,7 +460,7 @@ var responce = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 1000,
-    price: '6 000',
+    price: 6000,
     stars: 3,
     tag: 'Развлечения',
     url: '#3'
@@ -451,7 +472,7 @@ var responce = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 1000,
-    price: '5 000',
+    price: 5000,
     stars: 3,
     tag: 'Развлечения',
     url: '#3'

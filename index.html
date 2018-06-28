@@ -25,6 +25,12 @@
             @mouseup='mouseup_event_DrawPolygonByFinger'
             @mousedown='mousedown_event_DrawPolygonByFinger'
             ><yandex-map class="ymap" zoom="8" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
+            <div class="price-filter">
+                <span>Цена от</span>
+                <input type="number" v-model='low_price' @change='change_txt_priceFilter'>
+                <span>до</span>
+                <input type="number" v-model='high_price' @change='change_txt_priceFilter'>
+            </div>
             <div class="place-info" v-for='item in placemarks' v-show='is_equals_coords(item.coords)'>
                 <img :src="item.imageUrl">
                 <p>
