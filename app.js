@@ -171,6 +171,7 @@ return responce;
       this.add_placemarks_on_map(this.placemarks);
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
       this.click_btn_ShowAllTags();
+      this.get_low_and_high_price_from_placemarks(this.placemarks);
     },
     change_category_event: function(){
       this.ClearMap();
@@ -184,6 +185,7 @@ return responce;
       this.add_placemarks_on_map(this.placemarks);
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
       this.click_btn_ShowAllTags();
+      this.get_low_and_high_price_from_placemarks(this.placemarks);
     },
     /*
     |   ИЗБЫТОЧНОСТь В КОДЕ ДЛЯ ФИЛЬТРОВ
@@ -198,12 +200,14 @@ return responce;
           let point = collection.get(j);
           point.options.set('visible', false); 
           this.placemarks.forEach(el => {
-            if((el.tag == this.cur_tag || this.cur_tag == 'All') 
-            && el.price >= this.low_price && el.price <= this.high_price
+            if(el.tag == this.cur_tag  
+            && el.price >= this.low_price 
+            && el.price <= this.high_price
             && el.coords == point.geometry.getCoordinates()){
               point.options.set('visible', true); 
             }
           });
+          if(this.cur_tag == 'All') point.options.set('visible', true); 
         }
       }
     },
@@ -215,13 +219,8 @@ return responce;
     click_btn_ShowAllTags: function(){
       //Очистить фильтр уточнения всех меток
       this.cur_tag = 'All';
-      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
-      for (let j = 0; j < collection.getLength(); j++) {
-        if (collection.get(j).geometry.getType() === "Point") {
-          let point = collection.get(j);
-          point.options.set('visible', true); 
-        }
-      }
+      this.filter();
+      this.get_low_and_high_price_from_placemarks(this.placemarks);
     },
     change_txt_priceFilter: function(){
       //Метод оставляет только те метки которые соответствуют услуге с заданной стоимостью
@@ -294,6 +293,18 @@ return responce;
       }
       return tags;
     },
+    get_low_and_high_price_from_placemarks: function(placemarks){
+      //Находим максимально и минимальное  значение для цен
+      let low_price = Number(placemarks[0].price);
+      let high_price = Number(placemarks[0].price);
+      for (let i = 0; i < placemarks.length; i++) {
+        let el = Number(placemarks[i].price);
+        if(el > high_price) high_price = el;
+        if(el < low_price) low_price = el;
+      }
+      this.low_price = low_price;
+      this.high_price = high_price;
+    },
     Send_Polygon: function () {
       //ищем среди объектов полигон и отправляем его на сервер 
       let coordinates = this.lineStringGeometry.getCoordinates();
@@ -306,6 +317,7 @@ return responce;
       this.add_actions_info();
       //как пришел ответ идет добавление меток на карту и информации о них
       this.add_placemarks_on_map(this.placemarks);
+      this.get_low_and_high_price_from_placemarks(this.placemarks);
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
       this.click_btn_ShowAllTags();
       this.polygonEdit =  this.NewPolygon(simple_line);
