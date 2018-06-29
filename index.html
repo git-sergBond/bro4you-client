@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />    
+    <link rel="stylesheet" href="http:/netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 </head>
 <body> 
     <div id="app" >
@@ -39,7 +40,7 @@
                     <br>{{item.phoneNumber}}
                     <br>{{item.price}} (Руб.)
                     <br>
-                    <span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }">*</span>
+                    <span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }"><i class="fa fa-star fa-lg" style="font: 24px/1 FontAwesome;">★</i></span>
                     <span>Отзывы ({{item.countReviews}})</span>
                 </p>            
             </div>
@@ -52,8 +53,8 @@
             <div  v-show='placemarks.length != 0 && tags.length != 0'>
                 <p><b>Уточните категорию</b></p>
                 <div class="app--categories">
-                    <p v-for='tag in tags' @click='click_btn_changeTag(tag)' class="white-button" >{{ tag }}</p>
-                    <p @click='click_btn_ShowAllTags' class="white-button" >Показать все</p>
+                    <p v-for='tag in tags' @click='click_btn_changeTag(tag)' class="white-button" :class="{'on-card': tag == cur_tag}" >{{ tag }}</p>
+                    <p @click='click_btn_ShowAllTags' class="white-button" :class="{'on-card': 'All' == cur_tag}">Показать все</p>
                 </div>  
             </div>
 
@@ -70,7 +71,7 @@
                                 <b>{{item.name}}</b>
                                 <br>{{item.address}}
                                 <br>{{item.phoneNumber}}
-                                <br><span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }">*</span>
+                                <br><span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }" style="font: 1.2rem FontAwesome;">★</span>
                                 <span>Отзывы ({{item.countReviews}})</span>
                             </p>
                         </div>

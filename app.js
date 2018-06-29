@@ -366,7 +366,7 @@ var shares = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 55',
     countReviews: 123,
-    stars: 5,
+    stars: 4,
     url: '#1'
   },
   {
@@ -376,7 +376,7 @@ var shares = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 55',
     countReviews: 123,
-    stars: 5,
+    stars: 3,
     url: '#1'
   },
   {
@@ -396,7 +396,7 @@ var shares = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 55',
     countReviews: 123,
-    stars: 5,
+    stars: 2,
     url: '#1'
   }
 ];
