@@ -13,15 +13,16 @@ new Vue({
     message: 'Введите название услуги',
     mapInstanse: null,
     coords: [54.82896654088406, 39.831893822753904],//начальный фокус на карте
-    cur_point: null,//текущая выделенная метка на карте (нужно для подсветки)
+    
     //-------------GeoObjects---------
     poly_line: [],
+    cur_point: null,//текущая выделенная метка на карте (нужно для подсветки)
     placemarks: [],//координаты услуг+данные ---------->services
     shares: [],
     polygonEdit: null,
     line: null,
     lineStringGeometry: null,
-    regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
+    
     //-------------State and GUI-------
     stateApp: 0, //состояние приложения
     /*
@@ -34,15 +35,19 @@ new Vue({
     |   Исправить термины ТЕГ на КАТЕГОРИЯ
     |
      */
+    //для фильтра пот категорий
     tags: [],
     cur_tag: [],
-
-    responce: [],
-
+    //для фильтра категорий
     categories: [],
     cur_category: 'All',
+    //для фильтра цен
     low_price: 0,
-    high_price: 0
+    high_price: 0,
+    //для фильтра регионов
+    regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
+    osmId: null,
+    region_name: null
   },
   components: {
     hello: hello
@@ -175,6 +180,7 @@ return responce;
       this.get_low_and_high_price_from_placemarks(this.placemarks);
     },
     change_category_event: function(){
+      //событие выбора категории из чекбокса
       this.ClearMap();
       this.add_actions_info();
       let bounds = this.mapInstanse.getBounds();//2 координаты
@@ -305,6 +311,11 @@ return responce;
       this.low_price = low_price;
       this.high_price = high_price;
     },
+    /*
+    | функция повторяется в конце 
+    |
+    |
+    */
     Send_Polygon: function () {
       //ищем среди объектов полигон и отправляем его на сервер 
       let coordinates = this.lineStringGeometry.getCoordinates();
@@ -370,6 +381,28 @@ return responce;
     remember_regions: function( result ){
       //сохраняем гео объекты регионов в переменной data.regions
       this.regions = result.geoObjects; // ссылка на коллекцию GeoObjectCollection
+      result.geoObjects.events.add('click', this.click_on_region);//добавляем обработчик срабатывающий при нажатии региона
+    },
+    click_on_region: function(event){
+      //если кликнули по региону, то
+      //запомнили в перемнных id и имя региона
+      let region = event.get('target');
+      this.osmId = region.properties.get('osmId');
+      this.region_name = region.properties.get('name');
+      console.log(this.region_name + ' -> ' + this.osmId);//debug
+      //передаем координаты региона
+      let coords = region.geometry.getCoordinates()[0];
+      this.placemarks = this.getInfoForPoligon_from_server(coords);
+      //убираем все регионы
+      this.ClearMap();
+      //высвечиваем метки
+      this.add_actions_info();
+      this.add_placemarks_on_map(this.placemarks);
+      this.get_low_and_high_price_from_placemarks(this.placemarks);
+      this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+      this.click_btn_ShowAllTags();
+      //добавляем этот регион на карту
+      this.mapInstanse.geoObjects.add(region);
     }
   }
 })
