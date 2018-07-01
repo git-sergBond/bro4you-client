@@ -46,7 +46,7 @@
             </div>
             <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
-                <button v-show='stateApp == 1 || stateApp == 2' @click='click_btn_Clear' class="white-button">Очистить</button>
+                <button v-show='stateApp == 1 || stateApp == 2 || stateApp == 3 ' @click='click_btn_Clear' class="white-button">Очистить</button>
                 <button v-show='stateApp == 0' @click='click_btn_choose_region' class="white-button">Выбрать регион</button>
             </div>
         </div>

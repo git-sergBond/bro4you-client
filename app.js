@@ -29,6 +29,7 @@ new Vue({
     0 - перемешение карты, и просмотр информации о услугах
     1 - редактирование полигона
     2 - редактирвание мышью
+    3 - специально для фильтра по регионам
     */
     //------------Data------------
     /*
@@ -148,7 +149,8 @@ return responce;
       //очищаем все метки и полигоны с карты
       //делаем похожую на начальную страницу
       this.stateApp = 0;
-      this.click_btn_ShowAllTags();
+      this.cur_tag = 'All';
+      this.filter();
       this.tags = [];
       this.ClearMap();
       this.polygonEdit = null;
@@ -197,6 +199,7 @@ return responce;
     click_btn_choose_region: function(){
       //нажали на кнопку выбрать регион
       this.init_regions();//высвечиваем регионы на карте
+      this.stateApp = 3;
     },
     filter: function(){
       //фильтр для категорий и цен
@@ -404,6 +407,7 @@ return responce;
       this.click_btn_ShowAllTags();
       //добавляем этот регион на карту
       this.mapInstanse.geoObjects.add(region);
+      this.stateApp = 0;
     }
   }
 })
