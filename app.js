@@ -382,6 +382,7 @@ return responce;
       this.regions = result.geoObjects; // ссылка на коллекцию GeoObjectCollection
       result.geoObjects.events.add('click', this.click_on_region);//добавляем обработчик срабатывающий при нажатии региона
       this.mapInstanse.geoObjects.add(this.regions);//высвечиваем регионы на карте
+      ymaps.geoQuery(this.regions).applyBoundsToMap(this.mapInstanse);//изменяем масштаб карты, чтобы увидеть все регионы
     },
     click_on_region: function(event){
       //если кликнули по региону, то
