@@ -304,6 +304,7 @@ return responce;
     },
     get_low_and_high_price_from_placemarks: function(placemarks){
       //Находим максимально и минимальное  значение для цен
+      //+ ранжирование цен посредствам цвета метки (1)
       let low_price = Number(placemarks[0].price);
       let high_price = Number(placemarks[0].price);
       for (let i = 0; i < placemarks.length; i++) {
@@ -313,6 +314,25 @@ return responce;
       }
       this.low_price = low_price;
       this.high_price = high_price;
+      /*  (1) во время прохода выставляем цвета для ранжирования меток по цене 
+          blue - 0 до 25%
+          green - 25 до 50%
+          yellow - 50 до 75%
+          red - 75% до 100%
+          этот цвет вставляется в каждый элемент массива объектов placemarks
+      */
+      let colors = ['blue', 'green', 'yellow', 'red'];
+      let proporion = (high_price - low_price) / colors.length;
+      for (let i = 0; i < placemarks.length; i++) {
+        let price = Number(placemarks[i].price);
+        let color = colors[0];
+        for (let j = 0; j < colors.length; j++) {
+          if(price >= (proporion*j+low_price)) {
+            color = colors[j];
+          }
+        }
+        //el.set(color);//
+      }
     },
     /*
     | функция повторяется в конце 
