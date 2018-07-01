@@ -236,26 +236,27 @@ return responce;
       this.filter();
     },
     //------------Обработчики остальных объектов ---------
+    clear_color_marks: function(){
+      // Цвет всех меток очищается
+      return ymaps.geoQuery(this.mapInstanse.geoObjects)
+        .search('geometry.type = "Point"')
+        .setOptions('preset', 'twirl#blueStretchyIcon');
+    },
     click_Placemark: function (event) {
       //при клике на метке, в блоке информации выделяеются даныне и сама метка
       this.cur_point = event.get('target').geometry.getCoordinates();
-      // Цвет всех меток очищается
-      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
-      for (let j = 0; j < collection.getLength(); j++) {
-        if (collection.get(j).geometry.getType() === "Point") {
-          collection.get(j).options.set(
-            'preset', 'twirl#blueStretchyIcon'
-          );
-        }
-      }
-      // выделение Цвета текущей метки
-      event.get('target').options.set('preset', 'islands#redIcon');
-      // переключение  на вкладку с меткой
-      for (let i = 0; i < this.placemarks.length; i++) {
-        if(this.is_equals_coords(this.placemarks[i].coords)){
-          this.cur_tag = this.placemarks[i].tag;
-        }
-      }
+      let collection =  this.clear_color_marks();//делаем все метки синими
+      this.placemarks.forEach(el => {//выделение иконки согласно ее цене
+        let coord_0 = el.coords[0];
+        let coord_1 = el.coords[1];
+        let dot = '';
+        if(this.is_equals_coords(el.coords))
+        {
+          dot = 'Dot';// выделение текущей меткя
+          this.cur_tag = el.tag;// переключение  на вкладку с меткой
+        } 
+        this.set_color_pmark(collection,coord_0,coord_1,el.color+dot);
+      });
     },
     click_on_card: function(coords){
       //когда нажали на карточку с информацией переходим к выбранной координате
@@ -302,37 +303,48 @@ return responce;
       }
       return tags;
     },
-    get_low_and_high_price_from_placemarks: function(placemarks){
+    get_low_and_high_price_from_placemarks: function (placemarks) {
       //Находим максимально и минимальное  значение для цен
       //+ ранжирование цен посредствам цвета метки (1)
       let low_price = Number(placemarks[0].price);
       let high_price = Number(placemarks[0].price);
       for (let i = 0; i < placemarks.length; i++) {
         let el = Number(placemarks[i].price);
-        if(el > high_price) high_price = el;
-        if(el < low_price) low_price = el;
+        if (el > high_price) high_price = el;
+        if (el < low_price) low_price = el;
       }
       this.low_price = low_price;
       this.high_price = high_price;
       /*  (1) во время прохода выставляем цвета для ранжирования меток по цене 
           blue - 0 до 25%
-          green - 25 до 50%
-          yellow - 50 до 75%
+          darkgreen - 25 до 50%
+          orangeIcon - 50 до 75%
           red - 75% до 100%
           этот цвет вставляется в каждый элемент массива объектов placemarks
       */
-      let colors = ['blue', 'green', 'yellow', 'red'];
+      let collection = this.clear_color_marks();// Цвет всех меток выставляется согласно цене
+      let colors = ['blue', 'darkgreen', 'orangeIcon', 'red'];
       let proporion = (high_price - low_price) / colors.length;
       for (let i = 0; i < placemarks.length; i++) {
         let price = Number(placemarks[i].price);
         let color = colors[0];
         for (let j = 0; j < colors.length; j++) {
-          if(price >= (proporion*j+low_price)) {
+          if (price >= (proporion * j + low_price)) {
             color = colors[j];
           }
         }
-        //el.set(color);//
+        placemarks[i].color = color;//запомнили цвет для метки
+        let coord_0 = placemarks[i].coords[0];
+        let coord_1 = placemarks[i].coords[1];
+        this.set_color_pmark(collection,coord_0,coord_1,color);
       }
+    },
+    set_color_pmark: function (collection, coord_0, coord_1, color) {
+      // Цвет всех меток выставляется согласно colors в options 
+      collection
+        .search("geometry.coordinates.0 = " + coord_0)
+        .search("geometry.coordinates.1 = " + coord_1)
+        .setOptions('preset', 'islands#'+color+'Icon').each(()=>console.log(1));
     },
     /*
     | функция повторяется в конце 
