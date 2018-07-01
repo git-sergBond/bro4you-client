@@ -196,7 +196,7 @@ return responce;
     },
     click_btn_choose_region: function(){
       //нажали на кнопку выбрать регион
-      this.mapInstanse.geoObjects.add(this.regions);//высвечиваем регионы на карте
+      this.init_regions();//высвечиваем регионы на карте
     },
     filter: function(){
       //фильтр для категорий и цен
@@ -361,7 +361,6 @@ return responce;
       this.intit_events_DrawPolygonByFinger();
       this.add_actions_info();
       this.categories = this.getCategoties_from_server();
-      this.init_regions();
     },
     add_actions_info(){
       //добавление Акций при загрузке компонента
@@ -382,6 +381,7 @@ return responce;
       //сохраняем гео объекты регионов в переменной data.regions
       this.regions = result.geoObjects; // ссылка на коллекцию GeoObjectCollection
       result.geoObjects.events.add('click', this.click_on_region);//добавляем обработчик срабатывающий при нажатии региона
+      this.mapInstanse.geoObjects.add(this.regions);//высвечиваем регионы на карте
     },
     click_on_region: function(event){
       //если кликнули по региону, то
