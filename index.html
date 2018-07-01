@@ -47,6 +47,7 @@
             <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
                 <button v-show='stateApp == 1 || stateApp == 2' @click='click_btn_Clear' class="white-button">Очистить</button>
+                <button v-show='stateApp == 0' @click='click_btn_choose_region' class="white-button">Выбрать регион</button>
             </div>
         </div>
         <div style="margin: 10px 1.3rem 0 1.3rem">
@@ -57,7 +58,7 @@
                     <p @click='click_btn_ShowAllTags' class="white-button" :class="{'on-card': 'All' == cur_tag}">Показать все</p>
                 </div>  
             </div>
-
+            
             <div class="app--near-you" v-show='shares.length != 0'>
                 <p >
                     <b>Рядом с вами</b>

@@ -21,6 +21,7 @@ new Vue({
     polygonEdit: null,
     line: null,
     lineStringGeometry: null,
+    regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
     //-------------State and GUI-------
     stateApp: 0, //состояние приложения
     /*
@@ -187,11 +188,10 @@ return responce;
       this.click_btn_ShowAllTags();
       this.get_low_and_high_price_from_placemarks(this.placemarks);
     },
-    /*
-    |   ИЗБЫТОЧНОСТь В КОДЕ ДЛЯ ФИЛЬТРОВ
-    |
-    |
-    */
+    click_btn_choose_region: function(){
+      //нажали на кнопку выбрать регион
+      this.mapInstanse.geoObjects.add(this.regions);//высвечиваем регионы на карте
+    },
     filter: function(){
       //фильтр для категорий и цен
       let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
@@ -350,11 +350,26 @@ return responce;
       this.intit_events_DrawPolygonByFinger();
       this.add_actions_info();
       this.categories = this.getCategoties_from_server();
+      this.init_regions();
     },
     add_actions_info(){
       //добавление Акций при загрузке компонента
       this.shares = this.getShares_from_server();
       this.add_placemarks_on_map(this.shares);
+    },
+    //----------------РЕГИОНЫ------------------------------
+    init_regions: function(){
+      //Считать данные о регионах
+      ymaps.regions.load('RU', {
+        lang: 'ru',
+        quality: 1
+      }).then(this.remember_regions, function () {
+        alert('No response');
+      });
+    },
+    remember_regions: function( result ){
+      //сохраняем гео объекты регионов в переменной data.regions
+      this.regions = result.geoObjects; // ссылка на коллекцию GeoObjectCollection
     }
   }
 })
