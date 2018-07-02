@@ -33,7 +33,9 @@
                 <input type="number" v-model='high_price' @change='change_txt_priceFilter'>
             </div>
             <div class="place-info" v-for='item in placemarks' v-show='is_equals_coords(item.coords)'>
-                <img :src="item.imageUrl">
+                <button class="quit"
+                    @click="cur_point = null">×</button> 
+                <carousel Cwidth='230px' :images="item.imageUrl"></carousel>
                 <p>
                     <b>{{item.name}}</b>
                     <br>{{item.address}}
@@ -42,7 +44,7 @@
                     <br>
                     <span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }"><i class="fa fa-star fa-lg" style="font: 24px/1 FontAwesome;">★</i></span>
                     <span>Отзывы ({{item.countReviews}})</span>
-                </p>            
+                </p>           
             </div>
             <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>

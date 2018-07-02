@@ -5,7 +5,7 @@ import Vue from 'vue';
 import YmapPlugin from 'vue-yandex-maps';
 //import { runInContext } from 'vm';
 //var hello = require('!vue./components/hello.vue');
-import hello from './components/search.vue'
+import carousel from './components/carousel.vue'
 Vue.use(YmapPlugin);
 new Vue({
   el: '#app',
@@ -51,7 +51,7 @@ new Vue({
     region_name: null
   },
   components: {
-    hello: hello
+    carousel: carousel
 },
   methods: {
     //--------------РАБОТА С ГЕО ОБЪЕКТАМИ---------------
@@ -278,7 +278,7 @@ return responce;
       // Макет создается через фабрику макетов с помощью текстового шаблона.
       let HintLayout = ymaps.templateLayoutFactory.createClass(
         "<div class='my-hint'>" +
-        "<img src = '{{ properties.imageUrl }}'>"+
+        "<img src = '{{ properties.imageUrl[0] }}'>"+
         "<p><b>{{ properties.name }}</b>" +
         "<br/>{{ properties.address }}" +
         "<br/>{{ properties.phoneNumber }}" +
@@ -569,7 +569,7 @@ var responce = [
   {
     coords: [57.05980129774418, 40.562484643066426],
     name: 'Золотой слон - подставка',
-    imageUrl: 'images/car1.jpg',
+    imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 55',
     countReviews: 0,
@@ -581,7 +581,7 @@ var responce = [
   {
     coords: [57.254808646433844, 39.13975515087893],
     name: 'Игрушечные слоны',
-    imageUrl: 'images/car3.jpg',
+    imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
@@ -593,19 +593,7 @@ var responce = [
   {
     coords: [55.254808646433844, 40.13975515087893],
     name: 'Игрушечные слоны',
-    imageUrl: 'images/car3.jpg',
-    address: 'Белгород, улица Щорса, 123Б',
-    phoneNumber: '+ 7 (XXX) XX - 22',
-    countReviews: 43,
-    price: 8000,
-    stars: 5,
-    tag: 'Игрушки',
-    url: '#2'
-  },
-  {
-    coords: [60.254808646433844, 39.13975515087893],
-    name: 'Игрушечные слоны',
-    imageUrl: 'images/car3.jpg',
+    imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
@@ -615,13 +603,25 @@ var responce = [
     url: '#2'
   },
   {
-    coords: [60.254808646433844, 39.13975515087893],
+    coords: [55.254808646433844, 38.13975515087893],
     name: 'Игрушечные слоны',
-    imageUrl: 'images/car3.jpg',
+    imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
-    price: 5000,
+    price: 8745,
+    stars: 5,
+    tag: 'Игрушки',
+    url: '#2'
+  },
+  {
+    coords: [60.254808646433844, 39.13975515087893],
+    name: 'Игрушечные слоны',
+    imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
+    address: 'Белгород, улица Щорса, 123Б',
+    phoneNumber: '+ 7 (XXX) XX - 22',
+    countReviews: 43,
+    price: 7000,
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
@@ -629,7 +629,7 @@ var responce = [
   {
     coords: [55.98721616095246, 39.733016869628926],
     name: 'Зоопарк',
-    imageUrl: 'images/car3.jpg',
+    imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 1000,
@@ -641,7 +641,7 @@ var responce = [
   {
     coords: [59.98721616095246, 39.733016869628926],
     name: 'Зоопарк',
-    imageUrl: 'images/car3.jpg',
+    imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 1000,

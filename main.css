@@ -26,6 +26,11 @@
     margin-left: 173px;
     padding-top: 3px;
 }
+.place-info .quit{
+    background-color: white;
+    margin-left: 93%;
+    border-width: 0; font-size: 2rem
+}
   /**/
 .app--categories{
     display: flex;
@@ -201,7 +206,4 @@ h1{
     justify-content: center;
     background-color: white;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);;
-}
-.place-info img{
-    width: 80%;
 }
