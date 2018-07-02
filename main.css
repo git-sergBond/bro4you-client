@@ -4,6 +4,28 @@
   .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
     opacity: 0;
   }
+  .my-hint {
+    display: inline-block;
+    position: relative;
+    left: -10px;
+    font-size: 0.8rem;
+    color: #333333;
+    text-align: left;
+    vertical-align: middle;
+    background-color: white;
+    border-width: 0;
+    font-family: Arial;
+    box-shadow: 0 0 10px black;
+    min-width: 350px;
+}
+.my-hint img {
+    width: 170px;
+    float: left;
+}
+.my-hint p{
+    margin-left: 173px;
+    padding-top: 3px;
+}
   /**/
 .app--categories{
     display: flex;
