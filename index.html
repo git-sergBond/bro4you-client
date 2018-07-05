@@ -35,6 +35,11 @@
                 <input type="number" v-model='low_price' @change='change_txt_priceFilter'>
                 <span>до</span>
                 <input type="number" v-model='high_price' @change='change_txt_priceFilter'>
+                <p> Цвет:
+                    <span v-for='(price, index) in rang_price'
+                    :style="{'background-color': colors[index]}"
+                    >{{ price }}</span>
+                </p>
             </div>
             <div class="place-info" v-for='item in placemarks' v-show='is_equals_coords(item.coords)'>
                 <button class="quit"

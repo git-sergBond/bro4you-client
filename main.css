@@ -170,6 +170,16 @@ input[type="text"] {
     border-bottom-width: 1px;
     width: 4rem;
 }
+.price-filter p{
+    margin: 0;
+    margin-top: 5px;
+}
+.price-filter p span{
+    border-radius: 5px;
+    padding: 2px;
+    margin-right: 3px;
+    color: white;
+} 
 /**/
 .map-comp--buttons
 {

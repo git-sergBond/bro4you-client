@@ -67,6 +67,8 @@ new Vue({
     //для фильтра цен
     low_price: 0,
     high_price: 0,
+    colors: ['blue', 'darkgreen', 'orange', 'red'],
+    rang_price: null,
     //для фильтра регионов
     regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
     osmId: null,
@@ -426,8 +428,12 @@ return responce;
           этот цвет вставляется в каждый элемент массива объектов placemarks
       */
       let collection = this.clear_color_marks();// Цвет всех меток выставляется согласно цене
-      let colors = ['blue', 'darkgreen', 'orangeIcon', 'red'];
+      let colors = this.colors;
       let proporion = (high_price - low_price) / colors.length;
+      this.rang_price = [];
+      for (let j = 0; j < colors.length; j++) {
+        this.rang_price.push(proporion * j + low_price);
+      }
       for (let i = 0; i < placemarks.length; i++) {
         let price = Number(placemarks[i].price);
         let color = colors[0];
@@ -632,7 +638,7 @@ var responce = [
     address: 'Белгород, улица Щорса, 123Б',
     phoneNumber: '+ 7 (XXX) XX - 22',
     countReviews: 43,
-    price: 8745,
+    price: 7500,
     stars: 5,
     tag: 'Игрушки',
     url: '#2'
