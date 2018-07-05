@@ -38,6 +38,7 @@ module.exports = {
 }
 .carousel img{
   z-index: 1;
+  display: block;
 }
 .btn{
   position: absolute;

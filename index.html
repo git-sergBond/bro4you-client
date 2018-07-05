@@ -39,9 +39,11 @@
             <div class="place-info" v-for='item in placemarks' v-show='is_equals_coords(item.coords)'>
                 <button class="quit"
                     @click="cur_point = null">×</button> 
+                    <p>
+                            <b>{{item.name}}</b>
+                    </p>
                 <carousel Cwidth='230px' :images="item.imageUrl"></carousel>
                 <p>
-                    <b>{{item.name}}</b>
                     <br>{{item.address}}
                     <br>{{item.phoneNumber}}
                     <br>{{item.price}} (Руб.)
