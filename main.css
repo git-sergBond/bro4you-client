@@ -196,7 +196,7 @@ h1{
     height: 100%;
 }
 .map-comp .place-info{
-    position: fixed;
+    position: absolute;
     top: 9%;
     right: 0;
     height: 50%;
