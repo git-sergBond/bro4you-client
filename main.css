@@ -160,7 +160,7 @@ input[type="text"] {
 .price-filter{
     position: absolute;
     top: 10%;
-    left: 5%;
+    left: 2.3%;
     background-color: white;
     padding: 0.3rem;
     box-shadow: 0 0 10px black
@@ -168,6 +168,7 @@ input[type="text"] {
 .price-filter input[type='number']{
     border: 0 solid black;
     border-bottom-width: 1px;
+    width: 4rem;
 }
 /**/
 .map-comp--buttons

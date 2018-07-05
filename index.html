@@ -11,11 +11,10 @@
 </head>
 <body> 
     <div id="app" >
-        <div v-for='pm in placemarks_preload'>
+        <!--div v-for='pm in placemarks_preload'>
           <static-map :z=13 :W=300 :H=200 :info="pm"></static-map>  
           <hr>
-        </div>
-        
+        </div-->
         <div class="search">
             <div>
                 <select v-model='cur_category' @change="change_category_event">
@@ -30,7 +29,7 @@
         <div class="map-comp" 
             @mouseup='mouseup_event_DrawPolygonByFinger'
             @mousedown='mousedown_event_DrawPolygonByFinger'
-            ><yandex-map class="ymap" zoom="8" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
+            ><yandex-map class="ymap" zoom="8" :controls="['zoomControl']" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
             <div class="price-filter">
                 <span>Цена от</span>
                 <input type="number" v-model='low_price' @change='change_txt_priceFilter'>

@@ -14,6 +14,7 @@ new Vue({
         address: 'Белгород, улица Щорса, 123Б',
         phoneNumber: '+ 7 (XXX) XX - 55',
         countReviews: 123,
+        price: 7000,
         stars: 4,
         url: '#1'
       },
@@ -24,6 +25,7 @@ new Vue({
         address: 'Белгород, улица Щорса, 123Б',
         phoneNumber: '+ 7 (XXX) XX - 55',
         countReviews: 123,
+        price: 54511,
         stars: 3,
         url: '#1'
       }
