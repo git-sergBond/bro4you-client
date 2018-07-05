@@ -1,15 +1,35 @@
-//
-// 1 убрать переменные претендующие на удаление
-//
 import Vue from 'vue';
 import YmapPlugin from 'vue-yandex-maps';
-//import { runInContext } from 'vm';
-//var hello = require('!vue./components/hello.vue');
-import carousel from './components/carousel.vue'
+import carousel from './components/carousel.vue';
+import staticMap from './components/staticMap.vue';
 Vue.use(YmapPlugin);
 new Vue({
   el: '#app',
   data: {
+    placemarks_preload: [
+      {
+        coords: [43.871158,56.347345],
+        name: 'Маникюр - 30%',
+        imageUrl: 'images/car1.jpg',
+        address: 'Белгород, улица Щорса, 123Б',
+        phoneNumber: '+ 7 (XXX) XX - 55',
+        countReviews: 123,
+        stars: 4,
+        url: '#1'
+      },
+      {
+        coords: [44.871158,55.347345],
+        name: 'СТО - 30%',
+        imageUrl: 'images/car1.jpg',
+        address: 'Белгород, улица Щорса, 123Б',
+        phoneNumber: '+ 7 (XXX) XX - 55',
+        countReviews: 123,
+        stars: 3,
+        url: '#1'
+      }
+    ],
+
+
     message: 'Введите название услуги',
     mapInstanse: null,
     coords: [54.82896654088406, 39.831893822753904],//начальный фокус на карте
@@ -51,8 +71,9 @@ new Vue({
     region_name: null
   },
   components: {
-    carousel: carousel
-},
+    carousel: carousel,
+    staticMap: staticMap
+  },
   methods: {
     //--------------РАБОТА С ГЕО ОБЪЕКТАМИ---------------
     NewPolygon: function (arrayPoints) {
@@ -522,7 +543,7 @@ return responce;
       this.stateApp = 0;
     }
   }
-})
+});
 var shares = [
   {
     coords: [55.05980129774418, 40.562484643066426],

@@ -11,6 +11,11 @@
 </head>
 <body> 
     <div id="app" >
+        <div v-for='pm in placemarks_preload'>
+          <static-map :z=13 :W=300 :H=200 :info="pm"></static-map>  
+          <hr>
+        </div>
+        
         <div class="search">
             <div>
                 <select v-model='cur_category' @change="change_category_event">
