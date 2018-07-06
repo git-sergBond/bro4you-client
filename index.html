@@ -30,7 +30,7 @@
             @mouseup='mouseup_event_DrawPolygonByFinger'
             @mousedown='mousedown_event_DrawPolygonByFinger'
             ><yandex-map class="ymap" zoom="8" :controls="['zoomControl']" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
-            <div class="price-filter">
+            <div class="price-filter" v-show='rang_price != null'>
                 <span>Цена от</span>
                 <input type="number" v-model='low_price' @change='change_txt_priceFilter'>
                 <span>до</span>
@@ -55,12 +55,13 @@
                     <br>
                     <span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }"><i class="fa fa-star fa-lg" style="font: 24px/1 FontAwesome;">★</i></span>
                     <span>Отзывы ({{item.countReviews}})</span>
-                </p>           
+                </p>          
             </div>
             <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
                 <button v-show='stateApp == 1 || stateApp == 2 || stateApp == 3 ' @click='click_btn_Clear' class="white-button">Очистить</button>
-                <button v-show='stateApp == 0' @click='click_btn_choose_region' class="white-button">Выбрать регион</button>
+                <button v-show='stateApp == 0' @click='click_btn_choose_region' class="white-button">Выбрать регионы</button>
+                <button v-show='stateApp == 3' @click='click_btn_show_result_for_regions' class="white-button">Показать результат</button>
             </div>
         </div>
         <div style="margin: 10px 1.3rem 0 1.3rem">

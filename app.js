@@ -111,6 +111,15 @@ new Vue({
       console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
       return responce;
     },
+    getInfoForPoligons_from_server: function (search, coordinates) {
+      //асинхронный запрос серверу
+      //серверу запрос поиска + массив полигонов
+      //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
+      console.log('requset to server (search msg + json array polygons)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
+      //console.log(coordinates)
+      console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
+      return responce;
+    },
     getInfoForBounds_from_server: function(search, bounds){
       //асинхронный запрос серверу
       //серверу строка запроса пользователя + координаты квадрата Л-В и П-Н
@@ -223,8 +232,35 @@ return responce;
     },
     click_btn_choose_region: function(){
       //нажали на кнопку выбрать регион
+      this.ClearMap();
       this.init_regions();//высвечиваем регионы на карте
       this.stateApp = 3;
+    },
+    click_btn_show_result_for_regions: function(){
+      let checked_regions = [];
+      let coords = [];
+      let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
+      collection //проходимсся по коллекции
+        .search("properties.user_check = true")//если пользователь выбрал регион
+        .each((region)=>{
+          checked_regions.push(region);//добавляем ссылку на регион во временный массив
+          coords.push(region.geometry.getCoordinates()[0]);//сохраняем каждый полигон
+        });
+      //передаем координаты полигонов
+      this.placemarks = this.getInfoForPoligons_from_server(coords);
+      //убираем все регионы
+      this.ClearMap();
+      //высвечиваем метки
+      this.add_actions_info();
+      this.add_placemarks_on_map(this.placemarks);
+      this.get_low_and_high_price_from_placemarks(this.placemarks);
+      this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+      this.click_btn_ShowAllTags();
+      //добавляем каждый регион на карту
+      checked_regions.forEach(region => {
+        this.mapInstanse.geoObjects.add(region);
+      });
+      this.stateApp = 0;
     },
     filter: function(){
       //фильтр для категорий и цен
@@ -535,20 +571,13 @@ return responce;
       this.osmId = region.properties.get('osmId');
       this.region_name = region.properties.get('name');
       console.log(this.region_name + ' -> ' + this.osmId);//debug
-      //передаем координаты региона
-      let coords = region.geometry.getCoordinates()[0];
-      this.placemarks = this.getInfoForPoligon_from_server(coords);
-      //убираем все регионы
-      this.ClearMap();
-      //высвечиваем метки
-      this.add_actions_info();
-      this.add_placemarks_on_map(this.placemarks);
-      this.get_low_and_high_price_from_placemarks(this.placemarks);
-      this.tags = this.get_categoryes_from_placemarks(this.placemarks);
-      this.click_btn_ShowAllTags();
-      //добавляем этот регион на карту
-      this.mapInstanse.geoObjects.add(region);
-      this.stateApp = 0;
+      if(region.options.get('fillColor')!='#66FF0099'){
+        region.options.set('fillColor','#66FF0099');
+        region.properties.set('user_check',true);
+      }else{
+        region.options.set('fillColor','#0066ff99');
+        region.properties.set('user_check',false);
+      }
     }
   }
 });
