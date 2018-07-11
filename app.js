@@ -41,10 +41,14 @@ new Vue({
     
     //-------------GeoObjects---------
         ExtremePoins: {//определение квадрата поиска, (максимальные точки)
+            //максимальные точки в квадрате
             top: 0,
             bottom: 0,
             left: 0,
-            right: 0
+            right: 0,
+            //максимальные точки в окружности
+            center: 0,
+            radius: 0
         },
     poly_line: [],
     cur_point: null,//текущая выделенная метка на карте (нужно для подсветки)
@@ -514,12 +518,29 @@ return responce;
         for (var i = 0; i<arr_coord.length; i++) {//добавляем каждую точку в коллекцию
             myCollection.add(new ymaps.Placemark(arr_coord[i]));
         }
+        //вычисляем центр и радиус
+        //находим крайние точки
+        let top = ymaps.geoQuery(myCollection).getExtremeObject('top');
+        let right = ymaps.geoQuery(myCollection).getExtremeObject('right');
+        let left = ymaps.geoQuery(myCollection).getExtremeObject('left');
+        let bottom = ymaps.geoQuery(myCollection).getExtremeObject('bottom');
+        //считываем координаты точек
+        top = top.geometry.getCoordinates();
+        right = right.geometry.getCoordinates();
+        let pd1 = [top[0],right[1]];//нашли правую точку на диагонали
+        left = left.geometry.getCoordinates();
+        bottom = bottom.geometry.getCoordinates();
+        let pd2 = [bottom[0],left[1]];//нашли левую точку на диагонали
+        console.log('pd1 '+pd1)
         //созраняем рузультат
         return {
             top: ymaps.geoQuery(myCollection).getExtreme('top'),//проводим поиск по коллеекции
             bottom: ymaps.geoQuery(myCollection).getExtreme('bottom'),
             left: ymaps.geoQuery(myCollection).getExtreme('left'),
             right: ymaps.geoQuery(myCollection).getExtreme('right'),
+            center: 0,
+            pd1: pd1,
+            pd2: pd2
         };
 
     },
@@ -547,6 +568,12 @@ return responce;
       //возвращаем прежнее состояние приложения и активируем перетаскивание
       this.stateApp = 0;
       this.mapInstanse.behaviors.enable('drag');
+      //DEBUG
+        let p1 = new ymaps.Placemark(this.ExtremePoins.pd1,{},{});
+        this.mapInstanse.geoObjects.add(p1);
+        let p2 = new ymaps.Placemark(this.ExtremePoins.pd2,{},{});
+        this.mapInstanse.geoObjects.add(p2);
+
     },
     //----------------ФИЛЬТРЫ------------------------------
     is_equals_coords: function(coords){
