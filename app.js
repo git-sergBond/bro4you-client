@@ -433,7 +433,7 @@ return responce;
           phoneNumber: placemark.phoneNumber,
           countReviews: placemark.countReviews,
           price: placemark.price,
-          stars: placemark.stars
+          stars: placemark.stars,
         });
         p.events.add('click', this.click_Placemark);
         this.mapInstanse.geoObjects.add(p);
@@ -553,12 +553,14 @@ return responce;
         };
 
     },
-      filter_pm_by_polygon: function(pm_collection, polygon){
+      filter_pm_by_polygon: function(polygon){
         //удаляем все точки не соответствующие выделенному полигону
-          let collection = ymaps.geoQuery(pm_collection);
-          let inSide = collection.searchInside(polygon);//ищем точки в полигоне
-          collection.remove(inSide)//находим точки в не диапазона
-              .setOptions('visible', false);//и скрываем их
+          let query = ymaps.geoQuery(this.mapInstanse.geoObjects)
+              .search('geometry.type = "Point"')//выбираем все точки на карте
+              .search('properties.price != null');// не фильтруем акции
+          let inSide = query.searchInside(polygon);//ищем точки в полигоне
+          query.remove(inSide)//находим точки в не диапазона
+              .setOptions('visible', false)//и скрываем их
         },
       Send_Polygon: function () {
         //ищем среди объектов полигон и отправляем его на сервер
@@ -576,14 +578,14 @@ return responce;
       this.ClearMap();
       this.add_actions_info();
       //как пришел ответ идет добавление меток на карту и информации о них
-      let pm_filter_collection =  this.add_placemarks_on_map(this.placemarks);//добавили избыточное колличество точек на карту
+      this.add_placemarks_on_map(this.placemarks);//добавили избыточное колличество точек на карту
         // что бы не нарушить последовательность, тут вынесена строка *577*
       this.get_low_and_high_price_from_placemarks(this.placemarks);
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
       this.click_btn_ShowAllTags();
       this.polygonEdit =  this.NewPolygon(simple_line);
       // *577* строка вынесена, тк принимает вторым аргументом полигон
-      this.filter_pm_by_polygon(pm_filter_collection, this.polygonEdit);// убираем все точки не удовлетворяющие полигону
+      this.filter_pm_by_polygon(this.polygonEdit);// убираем все точки не удовлетворяющие полигону
       //возвращаем прежнее состояние приложения и активируем перетаскивание
       this.stateApp = 0;
       this.mapInstanse.behaviors.enable('drag');
