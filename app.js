@@ -420,10 +420,12 @@ return responce;
       //добавление меток на карту и информации о них
       let HintShare = this.make_service_hint();
       let HintServ = this.make_shares_hint();
+      let myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
       arr_placemarks.forEach(placemark => {
         let p = new ymaps.Placemark(placemark.coords, {}, {
           hintLayout: (placemark.price == null || placemark.price == undefined) ? HintServ : HintShare
         });
+        myCollection.add(p);//добавляем каждую точку в коллекцию
         p.properties.set({
           name: placemark.name,
           imageUrl: placemark.imageUrl,
@@ -436,6 +438,7 @@ return responce;
         p.events.add('click', this.click_Placemark);
         this.mapInstanse.geoObjects.add(p);
       });
+      return myCollection;
     },
     alg_simplifi_line(arr_in){
       //уменьшение колличества точек на линии
@@ -514,7 +517,7 @@ return responce;
     getExtrimePoints: function(arr_coord){
         //определение максимально даленных точек в массиве точек по ширине и высоте
         console.log(arr_coord);
-        var myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
+        let myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
         for (var i = 0; i<arr_coord.length; i++) {//добавляем каждую точку в коллекцию
             myCollection.add(new ymaps.Placemark(arr_coord[i]));
         }
@@ -550,7 +553,14 @@ return responce;
         };
 
     },
-    Send_Polygon: function () {
+      filter_pm_by_polygon: function(pm_collection, polygon){
+        //удаляем все точки не соответствующие выделенному полигону
+          let collection = ymaps.geoQuery(pm_collection);
+          let inSide = collection.searchInside(polygon);//ищем точки в полигоне
+          collection.remove(inSide)//находим точки в не диапазона
+              .setOptions('visible', false);//и скрываем их
+        },
+      Send_Polygon: function () {
         //ищем среди объектов полигон и отправляем его на сервер
         let coordinates = this.lineStringGeometry.getCoordinates();
         //!добавляем точку в конец, чтобы не делать преобразований с полигоном
@@ -566,11 +576,14 @@ return responce;
       this.ClearMap();
       this.add_actions_info();
       //как пришел ответ идет добавление меток на карту и информации о них
-      this.add_placemarks_on_map(this.placemarks);
+      let pm_filter_collection =  this.add_placemarks_on_map(this.placemarks);//добавили избыточное колличество точек на карту
+        // что бы не нарушить последовательность, тут вынесена строка *577*
       this.get_low_and_high_price_from_placemarks(this.placemarks);
       this.tags = this.get_categoryes_from_placemarks(this.placemarks);
       this.click_btn_ShowAllTags();
       this.polygonEdit =  this.NewPolygon(simple_line);
+      // *577* строка вынесена, тк принимает вторым аргументом полигон
+      this.filter_pm_by_polygon(pm_filter_collection, this.polygonEdit);// убираем все точки не удовлетворяющие полигону
       //возвращаем прежнее состояние приложения и активируем перетаскивание
       this.stateApp = 0;
       this.mapInstanse.behaviors.enable('drag');
