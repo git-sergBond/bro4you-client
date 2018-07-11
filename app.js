@@ -532,12 +532,11 @@ return responce;
         bottom = bottom.geometry.getCoordinates();
         let pd2 = [bottom[0],left[1]];//нашли левую точку на диагонали
         let diameter = Math.sqrt(Math.pow((pd1[0] - pd2[0]),2) + Math.pow((pd1[1] - pd2[1]),2));
-        let radius = diameter/2;
-        let pcenter = [
+        let radius = diameter/2;//нашли радиус
+        let pcenter = [//нашли точку лежащую по середине диагонали
             (pd2[0] + pd1[0]) / 2,
             (pd2[1] + pd1[1]) / 2
         ];
-        console.log('pd1 '+pd1)
         //созраняем рузультат
         return {
             top: ymaps.geoQuery(myCollection).getExtreme('top'),//проводим поиск по коллеекции
@@ -545,6 +544,7 @@ return responce;
             left: ymaps.geoQuery(myCollection).getExtreme('left'),
             right: ymaps.geoQuery(myCollection).getExtreme('right'),
             center: pcenter,
+            radius: radius,
             pd1: pd1,
             pd2: pd2,
         };
@@ -575,12 +575,13 @@ return responce;
       this.stateApp = 0;
       this.mapInstanse.behaviors.enable('drag');
       //DEBUG
+        /*
         let p1 = new ymaps.Placemark(this.ExtremePoins.pd1,{},{});
         this.mapInstanse.geoObjects.add(p1);
         let p2 = new ymaps.Placemark(this.ExtremePoins.pd2,{},{});
         this.mapInstanse.geoObjects.add(p2);
         let c = new ymaps.Placemark(this.ExtremePoins.center,{},{});
-        this.mapInstanse.geoObjects.add(c);
+        this.mapInstanse.geoObjects.add(c);*/
     },
     //----------------ФИЛЬТРЫ------------------------------
     is_equals_coords: function(coords){
