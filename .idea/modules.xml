@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/map-comp.iml" filepath="$PROJECT_DIR$/.idea/map-comp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../registration-placemark-comp/.idea/registration-placemark-comp.iml" filepath="$PROJECT_DIR$/../registration-placemark-comp/.idea/registration-placemark-comp.iml" />
+    </modules>
+  </component>
+</project>

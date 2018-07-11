@@ -11,11 +11,14 @@
 </head>
 <body> 
     <div id="app" >
+        <!--button @click="show_category_trig"></button>
+        <category v-show="show_category_trig" class="app--categories--position"></category-->
         <!--div v-for='pm in placemarks_preload'>
           <static-map :z=13 :W=300 :H=200 :info="pm"></static-map>  
           <hr>
         </div-->
         <div class="search">
+            <button>Откр. категории</button>
             <div>
                 <select v-model='cur_category' @change="change_category_event">
                     <option disabled value="">Выберите категорию</option>
@@ -101,3 +104,15 @@
     <script src="dist/bundle.js"></script>
 </body>
 </html>
+<script>
+    import Category from "./components/category";
+    export default {
+        components: {Category}
+    }
+</script>
+<script>
+    import Category from "./components/category";
+    export default {
+        components: {Category}
+    }
+</script>

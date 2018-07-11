@@ -2,11 +2,14 @@ import Vue from 'vue';
 import YmapPlugin from 'vue-yandex-maps';
 import carousel from './components/carousel.vue';
 import staticMap from './components/staticMap.vue';
+import category from './components/category.vue';
+
 Vue.use(YmapPlugin);
+
 new Vue({
-  el: '#app',
-  data: {
-    placemarks_preload: [
+    el: '#app',
+    data: {
+    placemarks_preload: [//тестовые данные для проверки компонента статических картинок с ифнрмацией
       {
         coords: [43.871158,56.347345],
         name: 'Маникюр - 30%',
@@ -37,13 +40,19 @@ new Vue({
     coords: [54.82896654088406, 39.831893822753904],//начальный фокус на карте
     
     //-------------GeoObjects---------
+        ExtremePoins: {//определение квадрата поиска, (максимальные точки)
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0
+        },
     poly_line: [],
     cur_point: null,//текущая выделенная метка на карте (нужно для подсветки)
     placemarks: [],//координаты услуг+данные ---------->services
-    shares: [],
-    polygonEdit: null,
-    line: null,
-    lineStringGeometry: null,
+    shares: [],//инфа о услугах
+    polygonEdit: null,//gполигон для редактирования
+    line: null,//линия для обвода мышкой
+    lineStringGeometry: null,//геометрия для линии обвода мышкой
     
     //-------------State and GUI-------
     stateApp: 0, //состояние приложения
@@ -59,25 +68,27 @@ new Vue({
     |
      */
     //для фильтра пот категорий
-    tags: [],
-    cur_tag: [],
+      tags: [],
+      cur_tag: [],
+      show_category_trig: false,
     //для фильтра категорий
-    categories: [],
-    cur_category: 'All',
+      categories: [],
+      cur_category: 'All',
     //для фильтра цен
-    low_price: 0,
-    high_price: 0,
-    colors: ['blue', 'darkgreen', 'orange', 'red'],
-    rang_price: null,
+      low_price: 0,
+      high_price: 0,
+      colors: ['blue', 'darkgreen', 'orange', 'red'],
+      rang_price: null,
     //для фильтра регионов
     regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
     osmId: null,
     region_name: null
   },
-  components: {
-    carousel: carousel,
-    staticMap: staticMap
-  },
+    components: {
+      carousel: carousel,
+      staticMap: staticMap,
+      category: category
+    },
   methods: {
     //--------------РАБОТА С ГЕО ОБЪЕКТАМИ---------------
     NewPolygon: function (arrayPoints) {
@@ -496,13 +507,34 @@ return responce;
     |
     |
     */
+    getExtrimePoints: function(arr_coord){
+        //определение максимально даленных точек в массиве точек по ширине и высоте
+        console.log(arr_coord);
+        var myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
+        for (var i = 0; i<arr_coord.length; i++) {//добавляем каждую точку в коллекцию
+            myCollection.add(new ymaps.Placemark(arr_coord[i]));
+        }
+        //созраняем рузультат
+        return {
+            top: ymaps.geoQuery(myCollection).getExtreme('top'),//проводим поиск по коллеекции
+            bottom: ymaps.geoQuery(myCollection).getExtreme('bottom'),
+            left: ymaps.geoQuery(myCollection).getExtreme('left'),
+            right: ymaps.geoQuery(myCollection).getExtreme('right'),
+        };
+
+    },
     Send_Polygon: function () {
-      //ищем среди объектов полигон и отправляем его на сервер 
-      let coordinates = this.lineStringGeometry.getCoordinates();
-      //!добавляем точку в конец, чтобы не делать преобразований с полигоном
-      this.lineStringGeometry.insert(this.lineStringGeometry.getLength(),this.lineStringGeometry.getCoordinates()[0]);
-      let simple_line = this.alg_simplifi_line(coordinates);
-      this.poly_line = simple_line;
+        //ищем среди объектов полигон и отправляем его на сервер
+        let coordinates = this.lineStringGeometry.getCoordinates();
+        //!добавляем точку в конец, чтобы не делать преобразований с полигоном
+        this.lineStringGeometry.insert(this.lineStringGeometry.getLength(),this.lineStringGeometry.getCoordinates()[0]);
+        //упрощаем геометрию линии, что бы можно было построить полигон
+        let simple_line = this.alg_simplifi_line(coordinates);
+        this.poly_line = simple_line;
+        //определение крайних (максимальных точек)
+        this.ExtremePoins = this.getExtrimePoints(simple_line);
+        console.log(this.ExtremePoins);
+        // передача информауии на сервер
       this.placemarks = this.getInfoForPoligon_from_server(simple_line);
       this.ClearMap();
       this.add_actions_info();
