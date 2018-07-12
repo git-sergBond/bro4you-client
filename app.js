@@ -74,7 +74,7 @@ new Vue({
     //для фильтра пот категорий
       tags: [],
       cur_tag: [],
-      show_category_trig: false,
+      show_category_trig: true,
     //для фильтра категорий
       categories: [],
       cur_category: 'All',
