@@ -29,7 +29,11 @@ module.exports = {
           'vue-style-loader',
           'css-loader'
         ]
-      }
+      },
+        {
+            test: /\.json$/,
+            loader: 'json-loader'
+        }
     ]
   },
   plugins: [

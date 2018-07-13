@@ -1,0 +1,77 @@
+{
+  id: 0,
+  name: "root",
+  img: "",
+  child: [
+    {
+      id: 1,
+      name: "Автомобили СТО",
+      img: "",
+      child: [
+        {
+          id: 6,
+          name: "Форд",
+          img: "",
+          child: [
+
+          ]
+        },
+        {
+          id: 7,
+          name: "Седан",
+          img: "",
+          child: [
+
+          ]
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: "Книги",
+      img: "",
+      child: [
+        {
+          id: 8,
+          name: "Фантастика",
+          img: "",
+          child: [
+
+          ]
+        },
+        {
+          id: 9,
+          name: "Приключения",
+          img: "",
+          child: [
+
+          ]
+        }
+      ]
+    },
+    {
+      id: 3,
+      name: "root",
+      img: "",
+      child: [
+
+      ]
+    },
+    {
+      id: 4,
+      name: "root",
+      img: "",
+      child: [
+
+      ]
+    },
+    {
+      id: 5,
+      name: "root",
+      img: "",
+      child: [
+
+      ]
+    }
+  ]
+}

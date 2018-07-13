@@ -1,15 +1,15 @@
 <template>
     <div class="app--categories">
         <div class="app--categories--parent">
-            <button v-if="parent_cat != null"
+            <div v-if="show_parent != null"
                     @click="on_click_parent_cat"
                     class="app--categories-item">
-                <img :src="parent_cat.img"/>
-                <p>{{parent_cat.name}}</p>
-            </button>
+                <img :src="show_parent.img"/>
+                <p>{{show_parent.name}}</p>
+            </div>
         </div>
         <div class="app--categories--menu">
-            <button v-for="item in cats"
+            <button v-for="item in show_child"
                     @click="click_on_category(item)"
                     class="app--categories-item"
                     :class="{red: item.check}">
@@ -17,72 +17,191 @@
                 <p>{{item.name}}</p>
             </button>
         </div>
-        <button @click="clear">Найти</button>
-        <button>Очистить</button>
+        <button>left</button>
+        <button>right</button>
+        <button @click="search">Найти</button>
+        <button @click="clear">Очистить</button>
     </div>
 </template>
 
 <script>
+    //import json from './components/categories.json';
     export default {
         name: "category",
         data: function () {
             return {
-                parent_cat: null,
-                cats: [],
-                tree: [
-                    {
-                        name: 'Машины',
-                        img: '',
-                        sub: [
-                            {
-                                check: false,
-                                name: 'Жигуль)',
-                                img: ''
-                            },
-                            {
-                                check: false,
-                                name: 'Форд',
-                                img: ''
-                            }
-                        ]
-                    },
-                    {
-                        name: 'Роботы',
-                        img: '',
-                        sub: [
-                            {
-                                check: false,
-                                name: 'т-900',
-                                img: ''
-                            },
-                            {
-                                check: false,
-                                name: 'robocop',
-                                img: ''
-                            }
-                        ]
-                    },
-                ]
+                parent: null,
+                show_parent: null,
+                show_child: null,
+                tree: null,
+                checked: []
             }
         },
         methods:{
             click_on_category: function (item) {
-                let i = this.tree.indexOf(item);
-                item.check = !item.check;
-                this.cats = this.tree[i].sub;
-                this.parent_cat = this.tree[i];
+                if(item.child.length > 0){
+                    this.show_child = item.child;
+                    this.parent = this.show_parent;
+                    this.show_parent = item;
+                } else {
+                    item.check = !item.check;
+                    let index = this.checked.indexOf(item);
+                    if(index == -1){
+                        this.checked.push(item);
+                    }else {
+                        //del
+                    }
+                }
             },
             on_click_parent_cat: function () {
-                this.parent_cat = null;
-                this.cats = this.tree;
+                this.show_parent = this.parent;
+                this.show_child = this.parent.child;
             },
             clear: function () {
-                
-            }
+                //очистка выделенных подкатегорий
+                /*
+                this.tree.forEach(function (el) {
+                    el.sub.forEach(function (sub_cat) {
+                        sub_cat.check = false;
+                    })
+                })*/
+            },
+            search: function () {
+                //отправка выделенных подкатегорий
+                /*
+                let send = [];
+                this.tree.forEach(function (el) {
+                    el.sub.forEach(function (sub_cat) {
+                        if (sub_cat.check)
+                            send.push(sub_cat);
+                    })
+                })
+                this.$emit('event_category_filter', $event.target.value);*/
+            },
         },
         mounted: function () {
-            this.cats = this.tree;
-        }
+            this.tree = data_json;
+            this.show_child = this.tree.child;
+            this.show_parent = this.tree;
+        },
+    }
+    let data_json = {
+        id: 0,
+        name: "root",
+        img: "",
+        child: [
+            {
+                id: 1,
+                name: "Автомобили СТО",
+                img: "",
+                child: [
+                    {
+                        id: 6,
+                        name: "Форд",
+                        img: "",
+                        check: false,
+                        child: [
+
+                        ]
+                    },
+                    {
+                        id: 7,
+                        name: "Седан",
+                        img: "",
+                        check: false,
+                        child: [
+
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "Книги",
+                img: "",
+                child: [
+                    {
+                        id: 8,
+                        name: "Фантастика",
+                        img: "",
+                        check: false,
+                        child: [
+                            {
+                                id: 8,
+                                name: "123",
+                                img: "",
+                                check: false,
+                                child: [
+
+                                ]
+                            },
+                            {
+                                id: 9,
+                                name: "321",
+                                img: "",
+                                check: false,
+                                child: [
+
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 9,
+                        name: "Приключения",
+                        img: "",
+                        check: false,
+                        child: [
+
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 3,
+                name: "Одежда",
+                img: "",
+                check: false,
+                child: [
+                    {
+                        id: 6,
+                        name: "Майки",
+                        img: "",
+                        check: false,
+                        child: [
+
+                        ]
+                    },
+                    {
+                        id: 7,
+                        name: "Джинсы",
+                        img: "",
+                        check: false,
+                        child: [
+
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 4,
+                name: "еще кат. 1",
+                img: "",
+                check: false,
+                child: [
+
+                ]
+            },
+            {
+                id: 5,
+                name: "еще кат. 2",
+                img: "",
+                check: false,
+                child: [
+
+                ]
+            }
+        ]
     }
 </script>
 
