@@ -9,7 +9,8 @@
             </div>
         </div>
         <div class="app--categories--menu">
-            <button v-for="item in show_child"
+            <button v-for="(item, index) in show_child"
+                    v-show="isShowItem(index)"
                     @click="click_on_category(item)"
                     class="app--categories-item"
                     :class="{red: item.check}">
@@ -17,8 +18,8 @@
                 <p>{{item.name}}</p>
             </button>
         </div>
-        <button>left</button>
-        <button>right</button>
+        <button v-if="left > 0" @click="clk_left">left</button>
+        <button v-if="right < show_child.length" @click="clk_right">right</button>
         <button @click="search">Найти</button>
         <button @click="clear(tree)">Очистить</button>
     </div>
@@ -34,7 +35,9 @@
                 show_parent: null,
                 show_child: null,
                 tree: null,
-                checked: []
+                checked: [],
+                left: 0,
+                right: 2
             }
         },
         methods:{
@@ -70,6 +73,17 @@
             search: function () {
                 //отправка выделенных подкатегорий
                 this.$emit('eventfilter', this.checked);
+            },
+            isShowItem: function (index) {
+                return (index <= this.right && index >= this.left)
+            },
+            clk_left: function (i) {
+                this.left--;
+                this.right--;
+            },
+            clk_right: function (i) {
+                this.left++;
+                this.right++;
             },
         },
         mounted: function () {
