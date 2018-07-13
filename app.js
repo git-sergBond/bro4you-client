@@ -616,6 +616,10 @@ return responce;
     is_service_AND_equals_coords(item){
       return this.is_service(item) && this.is_equals_coords(item.coords);
     },
+      swithcat: function(categories){
+        // переключили категории
+          console.log(categories);
+      },
     //-----------------ИНИЦИАЛИЗАТОРЫ---------------------
     initHandler: function (myMap) {
       //Инициализация карты и прочей фигни

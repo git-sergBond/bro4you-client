@@ -27,7 +27,10 @@
             <p @click='click_btn_search'>
                 <img src="images/icons/search.png"> Найти</p>
         </div>
-        <category v-show="show_category_trig" class="app--categories--position"></category>
+        <category v-show="show_category_trig"
+                  class="app--categories--position"
+                  @eventfilter = "swithcat"
+        ></category>
         <div class="map-comp"
             @mouseup='mouseup_event_DrawPolygonByFinger'
             @mousedown='mousedown_event_DrawPolygonByFinger'

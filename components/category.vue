@@ -69,7 +69,7 @@
             },
             search: function () {
                 //отправка выделенных подкатегорий
-                this.$emit('event_category_filter', this.checked);
+                this.$emit('eventfilter', this.checked);
             },
         },
         mounted: function () {
