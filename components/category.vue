@@ -1,7 +1,7 @@
 <template>
     <div class="app--categories">
         <div class="app--categories--parent">
-            <div v-if="show_parent != null"
+            <div v-if="show_parent.name != 'root'"
                     @click="on_click_parent_cat"
                     class="app--categories-item">
                 <img :src="show_parent.img"/>
@@ -20,7 +20,7 @@
         <button>left</button>
         <button>right</button>
         <button @click="search">Найти</button>
-        <button @click="clear">Очистить</button>
+        <button @click="clear(tree)">Очистить</button>
     </div>
 </template>
 
@@ -30,7 +30,7 @@
         name: "category",
         data: function () {
             return {
-                parent: null,
+                parent: [],
                 show_parent: null,
                 show_child: null,
                 tree: null,
@@ -39,44 +39,37 @@
         },
         methods:{
             click_on_category: function (item) {
-                if(item.child.length > 0){
+                if (item.child.length > 0){
                     this.show_child = item.child;
-                    this.parent = this.show_parent;
+                    this.parent.push(this.show_parent);
                     this.show_parent = item;
                 } else {
                     item.check = !item.check;
                     let index = this.checked.indexOf(item);
-                    if(index == -1){
+                    if (index == -1){
                         this.checked.push(item);
-                    }else {
-                        //del
+                    } else {
+                        this.checked.splice(index,1);
                     }
                 }
             },
             on_click_parent_cat: function () {
-                this.show_parent = this.parent;
-                this.show_child = this.parent.child;
+                this.show_parent = this.parent.pop();
+                this.show_child = this.show_parent.child;
             },
-            clear: function () {
+            clear: function (branch) {
                 //очистка выделенных подкатегорий
-                /*
-                this.tree.forEach(function (el) {
-                    el.sub.forEach(function (sub_cat) {
-                        sub_cat.check = false;
+                branch.check = false;
+                let context = this;
+                if(branch.child.length > 0) {
+                    branch.child.forEach(function (el) {
+                        context.clear(el);
                     })
-                })*/
+                }
             },
             search: function () {
                 //отправка выделенных подкатегорий
-                /*
-                let send = [];
-                this.tree.forEach(function (el) {
-                    el.sub.forEach(function (sub_cat) {
-                        if (sub_cat.check)
-                            send.push(sub_cat);
-                    })
-                })
-                this.$emit('event_category_filter', $event.target.value);*/
+                this.$emit('event_category_filter', this.checked);
             },
         },
         mounted: function () {
