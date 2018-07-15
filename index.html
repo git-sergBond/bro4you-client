@@ -11,97 +11,10 @@
 </head>
 <body> 
     <div id="app" >
-        <!--div v-for='pm in placemarks_preload'>
-          <static-map :z=13 :W=300 :H=200 :info="pm"></static-map>  
-          <hr>
-        </div-->
-        <div class="search">
-            <button @click="show_category_trig = !show_category_trig">Откр. категории</button>
-            <div>
-                <select v-model='cur_category' @change="change_category_event">
-                    <option disabled value="">Выберите категорию</option>
-                    <option v-for="cat in categories">{{ cat }}</option>
-                </select>
-            </div>
-            <input type="text" v-model="message">
-            <p @click='click_btn_search'>
-                <img src="images/icons/search.png"> Найти</p>
-        </div>
-        <category v-show="show_category_trig"
-                  class="app--categories--position"
-                  @eventfilter = "swithcat"
-        ></category>
-        <div class="map-comp"
-            @mouseup='mouseup_event_DrawPolygonByFinger'
-            @mousedown='mousedown_event_DrawPolygonByFinger'
-            ><yandex-map class="ymap" zoom="8" :controls="['zoomControl']" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
-            <div class="price-filter" v-show='rang_price != null'>
-                <span>Цена от</span>
-                <input type="number" v-model='low_price' @change='change_txt_priceFilter'>
-                <span>до</span>
-                <input type="number" v-model='high_price' @change='change_txt_priceFilter'>
-                <p> Цвет:
-                    <span v-for='(price, index) in rang_price'
-                    :style="{'background-color': colors[index]}"
-                    >{{ price }}</span>
-                </p>
-            </div>
-            <div class="place-info" v-for='item in placemarks' v-show='is_equals_coords(item.coords)'>
-                <button class="quit"
-                    @click="cur_point = null">×</button> 
-                    <p>
-                            <b>{{item.name}}</b>
-                    </p>
-                <carousel Cwidth='230px' :images="item.imageUrl"></carousel>
-                <p>
-                    <br>{{item.address}}
-                    <br>{{item.phoneNumber}}
-                    <br>{{item.price}} (Руб.)
-                    <br>
-                    <span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }"><i class="fa fa-star fa-lg" style="font: 24px/1 FontAwesome;">★</i></span>
-                    <span>Отзывы ({{item.countReviews}})</span>
-                </p>          
-            </div>
-            <div class="map-comp--buttons">
-                <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
-                <button v-show='stateApp == 1 || stateApp == 2 || stateApp == 3 ' @click='click_btn_Clear' class="white-button">Очистить</button>
-                <button v-show='stateApp == 0' @click='click_btn_choose_region' class="white-button">Выбрать регионы</button>
-                <button v-show='stateApp == 3' @click='click_btn_show_result_for_regions' class="white-button">Показать результат</button>
-            </div>
-        </div>
-        <div style="margin: 10px 1.3rem 0 1.3rem">
-            <div  v-show='placemarks.length != 0 && tags.length != 0'>
-                <p><b>Уточните категорию</b></p>
-                <div class="app--categories">
-                    <p v-for='tag in tags' @click='click_btn_changeTag(tag)' class="white-button" :class="{'on-card': tag == cur_tag}" >{{ tag }}</p>
-                    <p @click='click_btn_ShowAllTags' class="white-button" :class="{'on-card': 'All' == cur_tag}">Показать все</p>
-                </div>  
-            </div>
-            
-            <div class="app--near-you" v-show='shares.length != 0'>
-                <p >
-                    <b>Рядом с вами</b>
-                </p>
-                <div class="card-container">
-                    <div v-for='item in shares' @click="click_on_card(item.coords)" class="card"
-                        :class="{'on-card': is_equals_coords(item.coords)}">
-                        <div class="info_with_photo">
-                            <img :src="item.imageUrl">
-                            <p style="margin-left: 32%">
-                                <b>{{item.name}}</b>
-                                <br>{{item.address}}
-                                <br>{{item.phoneNumber}}
-                                <br><span v-for='i in [1,2,3,4,5]' :class="{ 'on-star': (i <= item.stars) }" style="font: 1.2rem FontAwesome;">★</span>
-                                <span>Отзывы ({{item.countReviews}})</span>
-                            </p>
-                        </div>
-                        <p class="green-button">
-                            <img src="images/icons/let.png"> Написать сообщение
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <router-link to="/staticMap">Пример показа статических снимков из карт</router-link>
+        <router-link to="/mainPage">Главная страница</router-link>
+        <router-link to="/registrationPlaceMarks">Регистрация метки и ее индексация</router-link>
+        <router-view></router-view>
     </div>
     <script src="dist/bundle.js"></script>
 </body>
