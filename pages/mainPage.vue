@@ -840,14 +840,7 @@
 
 
 </script>
-
-<style scoped>
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
-    }
-    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-        opacity: 0;
-    }
+<style>
     .my-hint {
         display: inline-block;
         position: relative;
@@ -870,6 +863,15 @@
         margin-left: 173px;
         padding-top: 3px;
     }
+</style>
+
+<style scoped>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0;
+    }
     .place-info .quit{
         background-color: white;
         margin-left: 93%;
@@ -880,7 +882,7 @@
         display: flex;
     }
 
-    .white-button{
+    .white-button {
         margin-right: 2rem;
         padding: 0.5rem;
         padding-left: 1.3rem;
