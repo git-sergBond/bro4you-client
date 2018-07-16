@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="search">
-            <button @click="show_category_trig = !show_category_trig">&#9776;</button>
             <div>
                 <select v-model='cur_category' @change="change_category_event">
                     <option disabled value="">Выберите категорию</option>
@@ -9,12 +8,13 @@
                 </select>
             </div>
             <input type="text" v-model="message">
-            <p @click='click_btn_search'>
-                <img src="images/icons/search.png"></p>
+            <img src="images/icons/search.png" @click='click_btn_search'>
+            <button @click="show_category_trig = !show_category_trig">&#9776;</button>
         </div>
         <category v-show="show_category_trig"
                   class="app--categories--position"
-                  @eventfilter = "swithcat"></category>
+                  @eventfilter = "swithcat"
+        ></category>
         <div class="map-comp"
              @mouseup='mouseup_event_DrawPolygonByFinger'
              @mousedown='mousedown_event_DrawPolygonByFinger'>
@@ -1016,7 +1016,7 @@
         margin-left: 10px;
         width: 60%;
     }
-    .search p{
+    .search img{
         display: flex;
         justify-content: center; /*Центрирование по горизонтали*/
         align-items: center;     /*Центрирование по вертикали */
@@ -1029,8 +1029,6 @@
         border-top: 0;
         border-bottom: 0;
         font-size: 1.5em;
-    }
-    .search p img{
         width: 1.3em;
     }
     .price-filter{
@@ -1090,6 +1088,10 @@
         align-items: center;
         justify-content: center;
         background-color: white;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    .app--categories--position{
+        z-index: 2;
+        position: absolute;
     }
 </style>

@@ -4,10 +4,10 @@
     <list default="true" id="30011467-55f1-4b5b-b6bd-a49db8891194" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/staticMap.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/staticMap.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/categories.json" beforeDir="false" afterPath="$PROJECT_DIR$/test_data/categories.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/bundle.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/listPlaceMarks.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/listPlaceMarks.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mainPage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
@@ -37,22 +37,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="listPlaceMarks.vue" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pages/listPlaceMarks.vue">
+      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+            <state relative-caret-position="30">
+              <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+              <folding>
+                <element signature="e#5143#5193#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="164" column="18" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="18" />
+            <state relative-caret-position="375">
+              <caret line="25" column="27" lean-forward="true" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
               <folding>
-                <element signature="e#5143#5193#0" expanded="true" />
+                <element signature="e#0#22#0" expanded="true" />
+                <element signature="e#107#163#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -61,29 +65,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="104" selection-start-line="9" selection-start-column="104" selection-end-line="9" selection-end-column="104" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="24" column="10" lean-forward="true" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="staticMap.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/components/staticMap.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+            <state relative-caret-position="255">
+              <caret line="17" column="11" lean-forward="true" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -118,6 +101,8 @@
       <find>event_category_filter</find>
       <find>cur_category</find>
       <find>staticMap</find>
+      <find>app--categories--position</find>
+      <find>.search</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -139,12 +124,12 @@
         <option value="$PROJECT_DIR$/main.css" />
         <option value="$PROJECT_DIR$/components/listPlaceMarks.vue" />
         <option value="$PROJECT_DIR$/components/mainPage.vue" />
-        <option value="$PROJECT_DIR$/pages/mainPage.vue" />
         <option value="$PROJECT_DIR$/pages/registrationPlaceMarks.vue" />
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/components/staticMap.vue" />
         <option value="$PROJECT_DIR$/pages/listPlaceMarks.vue" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/app.js" />
+        <option value="$PROJECT_DIR$/pages/mainPage.vue" />
       </list>
     </option>
   </component>
@@ -191,11 +176,6 @@
               <item name="map-comp" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="map-comp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="map-comp" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -212,6 +192,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test_data" />
       <recent name="$PROJECT_DIR$/pages" />
       <recent name="$PROJECT_DIR$/components" />
       <recent name="$PROJECT_DIR$/../registration-placemark-comp/src" />
@@ -264,12 +245,12 @@
       <workItem from="1531458074684" duration="12267000" />
       <workItem from="1531476790375" duration="599000" />
       <workItem from="1531667230985" duration="13060000" />
-      <workItem from="1531728672103" duration="2386000" />
+      <workItem from="1531728672103" duration="5311000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="93610000" />
+    <option name="totallyTimeSpent" value="96535000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -336,6 +317,7 @@
           <caret line="616" column="30" selection-start-line="616" selection-start-column="30" selection-end-line="616" selection-end-column="30" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#107#163#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -360,6 +342,7 @@
           <caret line="616" column="30" lean-forward="true" selection-start-line="616" selection-start-column="30" selection-end-line="616" selection-end-column="30" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#107#163#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -384,6 +367,7 @@
           <caret line="298" column="23" selection-start-line="298" selection-start-column="4" selection-end-line="298" selection-end-column="23" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#107#163#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -422,6 +406,7 @@
           <caret line="173" column="33" selection-start-line="173" selection-start-column="6" selection-end-line="173" selection-end-column="38" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#107#163#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -460,6 +445,7 @@
           <caret line="173" column="33" selection-start-line="173" selection-start-column="6" selection-end-line="173" selection-end-column="38" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#107#163#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -542,7 +528,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data/package.json" />
-    <entry file="file://$PROJECT_DIR$/components/categories.json">
+    <entry file="file://$PROJECT_DIR$/test_data/categories.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="335">
           <caret line="76" column="1" lean-forward="true" selection-end-line="76" selection-end-column="1" />
@@ -583,44 +569,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/pages/listPlaceMarks.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="104" selection-start-line="9" selection-start-column="104" selection-end-line="9" selection-end-column="104" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="24" column="10" lean-forward="true" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="120">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/components/staticMap.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+        <state relative-caret-position="210">
+          <caret line="14" column="8" lean-forward="true" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="27" lean-forward="true" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#107#163#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="11" lean-forward="true" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="164" column="18" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="18" />
+        <state relative-caret-position="30">
+          <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
           <folding>
             <element signature="e#5143#5193#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pages/listPlaceMarks.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
         </state>
       </provider>
     </entry>
