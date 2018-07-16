@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30011467-55f1-4b5b-b6bd-a49db8891194" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/components/shares.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/shares.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/mainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mainPage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" afterDir="false" />
     </list>
@@ -32,11 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="1003" column="5" selection-start-line="1003" selection-start-column="5" selection-end-line="1003" selection-end-column="5" />
+            <state relative-caret-position="156">
+              <caret line="888" column="5" lean-forward="true" selection-start-line="886" selection-start-column="4" selection-end-line="888" selection-end-column="5" />
               <folding>
                 <element signature="n#style#0;n#i#0;n#span#0;n#p#1;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -74,6 +75,15 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="shares.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/components/shares.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="349">
+              <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -87,7 +97,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>event_category_filter</find>
       <find>cur_category</find>
       <find>staticMap</find>
       <find>app--categories--position</find>
@@ -116,6 +125,7 @@
       <find>getShares_from_server</find>
       <find>make_shares_hint</find>
       <find>is_eq</find>
+      <find>on-</find>
       <find>my-hint</find>
     </findStrings>
     <replaceStrings>
@@ -145,9 +155,9 @@
         <option value="$PROJECT_DIR$/pages/listPlaceMarks.vue" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/app.js" />
-        <option value="$PROJECT_DIR$/components/shares.vue" />
         <option value="$PROJECT_DIR$/components/category.vue" />
         <option value="$PROJECT_DIR$/pages/mainPage.vue" />
+        <option value="$PROJECT_DIR$/components/shares.vue" />
       </list>
     </option>
   </component>
@@ -268,7 +278,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="111409000" />
+    <option name="totallyTimeSpent" value="111596000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -675,24 +685,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/shares.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="24" column="16" lean-forward="true" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/components/category.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2171">
-          <caret line="60" column="51" lean-forward="true" selection-start-line="60" selection-start-column="51" selection-end-line="60" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="1003" column="5" selection-start-line="1003" selection-start-column="5" selection-end-line="1003" selection-end-column="5" />
+        <state relative-caret-position="156">
+          <caret line="888" column="5" lean-forward="true" selection-start-line="886" selection-start-column="4" selection-end-line="888" selection-end-column="5" />
           <folding>
             <element signature="n#style#0;n#i#0;n#span#0;n#p#1;n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -717,6 +713,20 @@
             <element signature="e#19519#19770#0" />
             <element signature="e#20186#20700#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/category.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2171">
+          <caret line="60" column="51" lean-forward="true" selection-start-line="60" selection-start-column="51" selection-end-line="60" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/shares.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="83" column="5" selection-start-line="83" selection-start-column="5" selection-end-line="83" selection-end-column="5" />
         </state>
       </provider>
     </entry>
