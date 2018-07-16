@@ -1,15 +1,10 @@
 <template>
     <div>
+
         <div class="search">
-            <div>
-                <select v-model='cur_category' @change="change_category_event">
-                    <option disabled value="">Выберите категорию</option>
-                    <option v-for="cat in categories">{{ cat }}</option>
-                </select>
-            </div>
+            <button @click="show_category_trig = !show_category_trig">&#9776;</button>
             <input type="text" v-model="message">
             <img src="images/icons/search.png" @click='click_btn_search'>
-            <button @click="show_category_trig = !show_category_trig">&#9776;</button>
         </div>
         <category v-show="show_category_trig"
                   class="app--categories--position"
@@ -62,45 +57,25 @@
             </div>
         </div>
         <div style="margin: 10px 1.3rem 0 1.3rem">
-            <div  v-show='placemarks.length != 0 && tags.length != 0'>
+            <div  v-show='placemarks.length != 0 && categories.length != 0'>
                 <p><b>Уточните категорию</b></p>
                 <div class="app--categories">
-                    <p v-for='tag in tags' @click='click_btn_changeTag(tag)' class="white-button" :class="{'on-card': tag == cur_tag}" >{{ tag }}</p>
-                    <p @click='click_btn_ShowAllTags' class="white-button" :class="{'on-card': 'All' == cur_tag}">Показать все</p>
+                    <p v-for='tag in categories' @click='click_btn_changeTag(tag)' class="white-button" :class="{'on-card': tag == cur_category}" >{{ tag }}</p>
+                    <p @click='click_btn_ShowAllTags' class="white-button" :class="{'on-card': 'All' == cur_category}">Показать все</p>
                 </div>
             </div>
-            <div class="app--near-you" v-show='shares.length != 0'>
-                <p >
-                    <b>Рядом с вами</b>
-                </p>
-                <div class="card-container">
-                    <div v-for='item in shares'
-                         @click="click_on_card(item.coords)"
-                         class="card"
-                         :class="{'on-card': is_equals_coords(item.coords)}">
-                        <div class="info_with_photo">
-                            <img :src="item.imageUrl">
-                            <p style="margin-left: 32%">
-                                <b>{{item.name}}</b>
-                                <br>{{item.address}}
-                                <br>{{item.phoneNumber}}
-                                <br><span v-for='i in [1,2,3,4,5]'
-                                          :class="{ 'on-star': (i <= item.stars) }"
-                                          style="font: 1.2rem FontAwesome;">★</span>
-                                <span>Отзывы ({{item.countReviews}})</span>
-                            </p>
-                        </div>
-                        <p class="green-button">
-                            <img src="images/icons/let.png"> Написать сообщение
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <shares class="app--near-you"
+                    :coords="cur_point"
+                    :shares_data="shares_d"
+                    :F_is_equals_coords="is_equals_coords"
+                    @click_on_card="click_on_card"
+            ></shares>
         </div>
     </div>
 </template>
 
 <script>
+    import shares from '../components/shares.vue';
     import carousel from '../components/carousel.vue';
     import category from '../components/category.vue';
     export default {
@@ -111,7 +86,7 @@
                 message: 'Введите название услуги',
                 mapInstanse: null,
                 coords: [54.82896654088406, 39.831893822753904],//начальный фокус на карте
-
+                shares_d: [],
                 //-------------GeoObjects---------
                 ExtremePoins: {//определение квадрата поиска, (максимальные точки)
                     //максимальные точки в квадрате
@@ -126,7 +101,7 @@
                 poly_line: [],
                 cur_point: null,//текущая выделенная метка на карте (нужно для подсветки)
                 placemarks: [],//координаты услуг+данные ---------->services
-                shares: [],//инфа о услугах
+
                 polygonEdit: null,//gполигон для редактирования
                 line: null,//линия для обвода мышкой
                 lineStringGeometry: null,//геометрия для линии обвода мышкой
@@ -144,11 +119,8 @@
                 |   Исправить термины ТЕГ на КАТЕГОРИЯ
                 |
                  */
-                //для фильтра пот категорий
-                tags: [],
-                cur_tag: [],
-                show_category_trig: true,
                 //для фильтра категорий
+                show_category_trig: true,//+
                 categories: [],
                 cur_category: 'All',
                 //для фильтра цен
@@ -163,8 +135,9 @@
             }
         },
         components: {
-            carousel: carousel,
-            category: category
+            carousel,
+            category,
+            shares
         },
         methods: {
             //--------------РАБОТА С ГЕО ОБЪЕКТАМИ---------------
@@ -231,7 +204,48 @@
                 //получить данные о рекламе и акциях в звдвнном районе
                 console.log('requset to server (bounds rect)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
                 console.log('... become response (json array sahres with info)')//<-----------------  жду ответа
-                return shares;
+                return [
+                    {
+                        coords: [55.05980129774418, 40.562484643066426],
+                        name: 'Маникюр - 30%',
+                        imageUrl: 'images/car1.jpg',
+                        address: 'Белгород, улица Щорса, 123Б',
+                        phoneNumber: '+ 7 (XXX) XX - 55',
+                        countReviews: 123,
+                        stars: 4,
+                        url: '#1'
+                    },
+                    {
+                        coords: [60.05980129774418, 40.562484643066426],
+                        name: 'СТО - 30%',
+                        imageUrl: 'images/car1.jpg',
+                        address: 'Белгород, улица Щорса, 123Б',
+                        phoneNumber: '+ 7 (XXX) XX - 55',
+                        countReviews: 123,
+                        stars: 3,
+                        url: '#1'
+                    },
+                    {
+                        coords: [60.05980129774418, 50.562484643066426],
+                        name: 'Автомойка - 30%',
+                        imageUrl: 'images/car1.jpg',
+                        address: 'Белгород, улица Щорса, 123Б',
+                        phoneNumber: '+ 7 (XXX) XX - 55',
+                        countReviews: 123,
+                        stars: 5,
+                        url: '#1'
+                    },
+                    {
+                        coords: [60.05980129774418, 60.562484643066426],
+                        name: 'Ногти - 30%',
+                        imageUrl: 'images/car1.jpg',
+                        address: 'Белгород, улица Щорса, 123Б',
+                        phoneNumber: '+ 7 (XXX) XX - 55',
+                        countReviews: 123,
+                        stars: 2,
+                        url: '#1'
+                    }
+                ];
             },
             //-------- ОБВОДКА ОБЛАСТИ ---------------------------
             intit_events_DrawPolygonByFinger() {
@@ -271,9 +285,8 @@
                 //очищаем все метки и полигоны с карты
                 //делаем похожую на начальную страницу
                 this.stateApp = 0;
-                this.cur_tag = 'All';
+                this.cur_category = 'All';
                 this.filter();
-                this.tags = [];
                 this.ClearMap();
                 this.polygonEdit = null;
                 this.mapInstanse.geoObjects.add(this.line);
@@ -299,7 +312,7 @@
                     this.placemarks = this.getInfoForPoligon_from_server(this.message, this.poly_line);
                 }
                 this.add_placemarks_on_map(this.placemarks);
-                this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+                this.categories = this.get_categoryes_from_placemarks(this.placemarks);
                 this.click_btn_ShowAllTags();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
             },
@@ -314,7 +327,7 @@
                     this.placemarks = this.get_Categories_and_polygon_from_server(this.cur_category, this.poly_line);
                 }
                 this.add_placemarks_on_map(this.placemarks);
-                this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+                this.categories = this.get_categoryes_from_placemarks(this.placemarks);
                 this.click_btn_ShowAllTags();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
             },
@@ -342,7 +355,7 @@
                 this.add_actions_info();
                 this.add_placemarks_on_map(this.placemarks);
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
-                this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+                this.categories = this.get_categoryes_from_placemarks(this.placemarks);
                 this.click_btn_ShowAllTags();
                 //добавляем каждый регион на карту
                 checked_regions.forEach(region => {
@@ -358,25 +371,27 @@
                         let point = collection.get(j);
                         point.options.set('visible', false);
                         this.placemarks.forEach(el => {
-                            if(el.tag == this.cur_tag
+                            if(el.tag == this.cur_category
                                 && el.price >= this.low_price
                                 && el.price <= this.high_price
                                 && el.coords == point.geometry.getCoordinates()){
                                 point.options.set('visible', true);
                             }
                         });
-                        if(this.cur_tag == 'All') point.options.set('visible', true);
+                        if(this.cur_category == 'All') point.options.set('visible', true);
                     }
                 }
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
-                this.cur_tag = tag;//запомнили фильтр тегов
+                this.cur_category = tag;//запомнили фильтр тегов
                 this.filter();
             },
             click_btn_ShowAllTags: function(){
                 //Очистить фильтр уточнения всех меток
-                this.cur_tag = 'All';
+                //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                //this.cur_category = 'All';
+                //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 this.filter();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
             },
@@ -403,7 +418,7 @@
                     if(this.is_equals_coords(el.coords))
                     {
                         dot = 'Dot';// выделение текущей меткя
-                        this.cur_tag = el.tag;// переключение  на вкладку с меткой
+                        this.cur_category = el.tag;// переключение  на вкладку с меткой
                     }
                     this.set_color_pmark(collection,coord_0,coord_1,el.color+dot);
                 });
@@ -422,16 +437,16 @@
                     }
                 }
             },
-            make_service_hint: function () {
+            make_shares_hint: function () {
                 // Создание макета содержимого хинта.
                 // Макет создается через фабрику макетов с помощью текстового шаблона.
                 let HintLayout = ymaps.templateLayoutFactory.createClass(
                     "<div class='my-hint'>" +
-                    "<img src = '{{ properties.imageUrl[0] }}'>"+
+                    "<img src = '{{ properties.imageUrl }}'>"+
                     "<p><b>{{ properties.name }}</b>" +
                     "<br/>{{ properties.address }}" +
                     "<br/>{{ properties.phoneNumber }}" +
-                    "<br/><b>{{ properties.price }} Руб.</b>" +
+                    "<br/><b>АКЦИЯ</b> " +
                     "</p></div>", {
                         // Определяем метод getShape, который
                         // будет возвращать размеры макета хинта.
@@ -455,16 +470,16 @@
                 );
                 return HintLayout;
             },
-            make_shares_hint: function () {
+            make_service_hint: function () {
                 // Создание макета содержимого хинта.
                 // Макет создается через фабрику макетов с помощью текстового шаблона.
                 let HintLayout = ymaps.templateLayoutFactory.createClass(
                     "<div class='my-hint'>" +
-                    "<img src = '{{ properties.imageUrl }}'>"+
+                    "<img src = '{{ properties.imageUrl[0] }}'>"+
                     "<p><b>{{ properties.name }}</b>" +
                     "<br/>{{ properties.address }}" +
                     "<br/>{{ properties.phoneNumber }}" +
-                    "<br/><b>АКЦИЯ</b> " +
+                    "<br/><b>{{ properties.price }} Руб.</b>" +
                     "</p></div>", {
                         // Определяем метод getShape, который
                         // будет возвращать размеры макета хинта.
@@ -654,7 +669,7 @@
                 this.add_placemarks_on_map(this.placemarks);//добавили избыточное колличество точек на карту
                 // что бы не нарушить последовательность, тут вынесена строка *577*
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
-                this.tags = this.get_categoryes_from_placemarks(this.placemarks);
+                this.categories = this.get_categoryes_from_placemarks(this.placemarks);
                 this.click_btn_ShowAllTags();
                 this.polygonEdit =  this.NewPolygon(simple_line);
                 // *577* строка вынесена, тк принимает вторым аргументом полигон
@@ -677,11 +692,8 @@
                 if (coords[0] == this.cur_point[0] && coords[1] == this.cur_point[1]) return true;
                 return false;
             },
-            is_share(item){
-                return item.type == 'shares';
-            },
             is_share_AND_equals_coords(item){
-                return this.is_share(item) && this.is_equals_coords(item.coords);
+                return shares.is_share(item) && this.is_equals_coords(item.coords);
             },
             is_service(item){
                 return item.type == 'service';
@@ -701,10 +713,9 @@
                 this.add_actions_info();
                 this.categories = this.getCategoties_from_server();
             },
-            add_actions_info(){
-                //добавление Акций при загрузке компонента
-                this.shares = this.getShares_from_server();
-                this.add_placemarks_on_map(this.shares);
+            add_actions_info: function(shares_data){
+                this.shares_d = this.getShares_from_server();
+                this.add_placemarks_on_map(this.shares_d);
             },
             //----------------РЕГИОНЫ------------------------------
             init_regions: function(){
@@ -740,49 +751,6 @@
             }
         }
     }
-
-    var shares = [
-        {
-            coords: [55.05980129774418, 40.562484643066426],
-            name: 'Маникюр - 30%',
-            imageUrl: 'images/car1.jpg',
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 55',
-            countReviews: 123,
-            stars: 4,
-            url: '#1'
-        },
-        {
-            coords: [60.05980129774418, 40.562484643066426],
-            name: 'СТО - 30%',
-            imageUrl: 'images/car1.jpg',
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 55',
-            countReviews: 123,
-            stars: 3,
-            url: '#1'
-        },
-        {
-            coords: [60.05980129774418, 50.562484643066426],
-            name: 'Автомойка - 30%',
-            imageUrl: 'images/car1.jpg',
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 55',
-            countReviews: 123,
-            stars: 5,
-            url: '#1'
-        },
-        {
-            coords: [60.05980129774418, 60.562484643066426],
-            name: 'Ногти - 30%',
-            imageUrl: 'images/car1.jpg',
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 55',
-            countReviews: 123,
-            stars: 2,
-            url: '#1'
-        }
-    ];
     var responce = [
         {
             coords: [57.05980129774418, 40.562484643066426],
@@ -911,10 +879,7 @@
     .app--categories{
         display: flex;
     }
-    .card-container{
-        display: flex;
-        justify-content: space-around;
-    }
+
     .white-button{
         margin-right: 2rem;
         padding: 0.5rem;
@@ -922,53 +887,7 @@
         padding-right: 1.3rem;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-    .card{
-        margin-right: 1rem;
-        max-width: 270px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-    .card:hover{
-        box-shadow: 0 0 20px rgb(58, 128, 2);
-    }
     /*инфа внутри карточки*/
-    info_with_photo{
-        padding-top: 0.2rem;
-        width: 100%;
-    }
-    .info_with_photo img{
-        width: 30%;
-        float: left;
-    }
-    .info_with_photo p{
-        margin: 0;
-    }
-    .on-card{
-        border: 2px solid green;
-        transform: scale(1.1);
-        box-shadow: 0 0 20px rgba(1, 255, 56, 0.801);
-    }
-    .card img{
-        float: left;
-        max-width: 30%;
-    }
-    .green-button{
-        display: flex;
-        justify-content: center; /*Центрирование по горизонтали*/
-        align-items: center;     /*Центрирование по вертикали */
-        color: white;
-        background-color: rgb(6, 139, 6);
-        clear: left;
-        margin: 0;
-        padding-top: 0.3rem;
-        padding-bottom: 0.3rem;
-    }
-    .green-button span{
-        margin-left: 0.5rem;
-    }
-    .green-button img{
-        width: 1.5rem;
-        height: 1.5rem;
-    }
     .on-star{
         color: red;
     }
@@ -977,6 +896,8 @@
     }
     /*поиск на странице*/
     .search{
+        position: absolute;
+        z-index: 2;
         width: 100%;
         box-shadow: 0 0 20px gray;
         padding-bottom: 10px;
@@ -984,24 +905,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-    .search div{
-        border: 1px solid gray;
-        border-top: 0px;
-        border-left: 0px;
-        border-bottom: 0px;
-        padding-right: 0.7rem;
-    }
-    select{
-        border: 1px solid gray;
-        border-top: 0px;
-        border-left: 0px;
-        border-right: 0px;
-        background: white;
-        font-size: 1.5em;
-        margin: 0;
-        padding-top: 0.3rem;
-        padding-bottom: 0.3rem;
     }
     input[type="text"] {
         border-width: 1px;
@@ -1031,6 +934,7 @@
         font-size: 1.5em;
         width: 1.3em;
     }
+    /*фильтр цены*/
     .price-filter{
         position: absolute;
         top: 10%;
@@ -1093,5 +997,7 @@
     .app--categories--position{
         z-index: 2;
         position: absolute;
+        top: 50px;
+        left: 50px;
     }
 </style>
