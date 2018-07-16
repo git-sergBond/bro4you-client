@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 //
 import YmapPlugin from 'vue-yandex-maps';
 //
-import staticMap from './pages/listPlaceMarks.vue';
+import listPlaceMarks from './pages/listPlaceMarks.vue';
 import mainPage from './pages/mainPage.vue';
 import registrationPlaceMarks from './pages/registrationPlaceMarks.vue';
 //
@@ -11,7 +11,7 @@ Vue.use(YmapPlugin);
 Vue.use(VueRouter);
 //
 const routes = [
-    { path: '/staticMap', component: staticMap },
+    { path: '/listPlaceMarks', component: listPlaceMarks },
     { path: '/mainPage', component: mainPage },
     { path: '/registrationPlaceMarks', component: registrationPlaceMarks }
 ]
@@ -24,3 +24,4 @@ new Vue({
     //el: "#app",
     router
 }).$mount('#app');
+Vue.config.devtools = true;

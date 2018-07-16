@@ -14,6 +14,7 @@
 
 <script>
 export default {
+    name: 'staticMap',
     props: ['z', 'info', 'W', 'H'],
     data: function(){
         return {

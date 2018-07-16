@@ -1,9 +1,7 @@
 <template>
     <div>
         <div v-for='pm in placemarks_preload'>
-            <static-map :z=13
-                        :W=300 :H=200
-                        :info="pm"></static-map>
+            <static-map :z=13 :W=300 :H=200 :info="pm"></static-map>
             <hr>
         </div>
     </div>
@@ -13,7 +11,7 @@
     import staticMap from '../components/staticMap.vue';
     export default {
         name: "listPlaceMarks",
-        comments:{
+        components:{
             staticMap: staticMap
         },
         data: function () {
@@ -42,7 +40,7 @@
                         stars: 3,
                         url: '#1'
                     }
-                ],
+                ]
             }
         }
     }
