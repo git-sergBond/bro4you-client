@@ -1,15 +1,6 @@
 <template>
     <div>
 
-        <div class="search">
-            <button @click="show_category_trig = !show_category_trig">&#9776;</button>
-            <input type="text" v-model="message">
-            <img src="images/icons/search.png" @click='click_btn_search'>
-        </div>
-        <category v-show="show_category_trig"
-                  class="app--categories--position"
-                  @eventfilter = "swithcat"
-        ></category>
         <div class="map-comp"
              @mouseup='mouseup_event_DrawPolygonByFinger'
              @mousedown='mousedown_event_DrawPolygonByFinger'>
@@ -18,17 +9,17 @@
                         :controls="['zoomControl']"
                         :coords="coords"
                         @map-was-initialized="initHandler"></yandex-map>
-            <div class="price-filter" v-show='rang_price != null'>
-                <span>Цена от</span>
-                <input type="number" v-model='low_price' @change='change_txt_priceFilter'>
-                <span>до</span>
-                <input type="number" v-model='high_price' @change='change_txt_priceFilter'>
-                <p> Цвет:
-                    <span v-for='(price, index) in rang_price'
-                          :style="{'background-color': colors[index]}">{{ price }}</span>
-                </p>
+        </div>
+
+        <div class="search">
+                <button @click="show_category_trig = !show_category_trig">&#9776;</button>
+                <input type="text" v-model="message">
+                <img src="images/icons/search.png" @click='click_btn_search'>
             </div>
-            <div class="place-info"
+
+        <category class="app--categories" v-show="show_category_trig" @eventfilter = "swithcat"></category>
+
+        <div class="place-info"
                  v-for='item in placemarks'
                  v-show='is_equals_coords(item.coords)'>
                 <button class="quit"
@@ -44,33 +35,45 @@
                     <br>
                     <span v-for='i in [1,2,3,4,5]'
                           :class="{ 'on-star': (i <= item.stars) }">
-                        <i class="fa fa-star fa-lg" style="font: 24px/1 FontAwesome;">★</i>
-                    </span>
+                    <i class="fa fa-star fa-lg" style="font: 24px/1 FontAwesome;">★</i>
+                </span>
                     <span>Отзывы ({{item.countReviews}})</span>
                 </p>
             </div>
-            <div class="map-comp--buttons">
+
+        <div class="map-comp--buttons">
                 <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
                 <button v-show='stateApp == 1 || stateApp == 2 || stateApp == 3 ' @click='click_btn_Clear' class="white-button">Очистить</button>
                 <button v-show='stateApp == 0' @click='click_btn_choose_region' class="white-button">Выбрать регионы</button>
                 <button v-show='stateApp == 3' @click='click_btn_show_result_for_regions' class="white-button">Показать результат</button>
             </div>
-        </div>
-        <div style="margin: 10px 1.3rem 0 1.3rem">
-            <div  v-show='placemarks.length != 0 && categories.length != 0'>
-                <p><b>Уточните категорию</b></p>
-                <div class="app--categories">
-                    <p v-for='tag in categories' @click='click_btn_changeTag(tag)' class="white-button" :class="{'on-card': tag == cur_category}" >{{ tag }}</p>
-                    <p @click='click_btn_ShowAllTags' class="white-button" :class="{'on-card': 'All' == cur_category}">Показать все</p>
+
+        <div class="categori-filter">
+                <div v-show='placemarks.length != 0 && categories.length != 0'>
+                    <p><b>Уточните категорию</b></p>
+                    <div class="clarefy--categories">
+                        <p v-for='tag in categories' @click='click_btn_changeTag(tag)' class="white-button" :class="{'on-card': tag == cur_category}" >{{ tag }}</p>
+                        <p @click='click_btn_ShowAllTags' class="white-button" :class="{'on-card': 'All' == cur_category}">Показать все</p>
+                    </div>
                 </div>
+                <shares class="app--near-you"
+                        :coords="cur_point"
+                        :shares_data="shares_d"
+                        :F_is_equals_coords="is_equals_coords"
+                        @click_on_card="click_on_card"
+                ></shares>
             </div>
-            <shares class="app--near-you"
-                    :coords="cur_point"
-                    :shares_data="shares_d"
-                    :F_is_equals_coords="is_equals_coords"
-                    @click_on_card="click_on_card"
-            ></shares>
-        </div>
+
+        <div class="price-filter" v-show='rang_price != null'>
+                <span>Цена от</span>
+                <input type="number" v-model='low_price' @change='change_txt_priceFilter'>
+                <span>до</span>
+                <input type="number" v-model='high_price' @change='change_txt_priceFilter'>
+                <p> Цвет:
+                    <span v-for='(price, index) in rang_price'
+                          :style="{'background-color': colors[index]}">{{ price }}</span>
+                </p>
+            </div>
     </div>
 </template>
 
@@ -866,14 +869,19 @@
 </style>
 
 <style scoped>
+    .app--categories, .place-info, .map-comp--buttons, .price-filter, .search, .categori-filter{
+        z-index: 2;
+        position: absolute;
+    }
+    .categori-filter{
+        margin: 10px 1.3rem 0 1.3rem;
+        right: 0;
+        bottom: 2%;
+    }
     .place-info .quit{
         background-color: white;
         margin-left: 93%;
         border-width: 0; font-size: 2rem
-    }
-    /**/
-    .app--categories{
-        display: flex;
     }
 
     .white-button {
@@ -892,9 +900,8 @@
     }
     /*поиск на странице*/
     .search{
-        position: absolute;
-        z-index: 2;
         width: 100%;
+        top: 0;
         box-shadow: 0 0 20px gray;
         padding-bottom: 10px;
         margin-bottom: 10px;
@@ -932,9 +939,8 @@
     }
     /*фильтр цены*/
     .price-filter{
-        position: absolute;
         top: 10%;
-        left: 2.3%;
+        left: 50%;
         background-color: white;
         padding: 0.3rem;
         box-shadow: 0 0 10px black
@@ -957,13 +963,12 @@
     /**/
     .map-comp--buttons
     {
-        position: absolute;
         top: 50%;
         width: 100%;
         text-align: center;
     }
     .map-comp {
-        height: 50vh ;
+        height: 99vh ;
     }
     p, h1, a{
         font-family: 'Comfortaa', cursive;
@@ -977,11 +982,9 @@
         width: 100%;
         height: 100%;
     }
-    .map-comp .place-info{
-        position: absolute;
+    .place-info{
         top: 9%;
         right: 0;
-        height: 50%;
         width: 25vw;
         display: flex;
         flex-direction: column;
@@ -990,10 +993,11 @@
         background-color: white;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-    .app--categories--position{
-        z-index: 2;
-        position: absolute;
+    .app--categories{
         top: 50px;
-        left: 50px;
+        left: 70px;
+    }
+    .clarefy--categories{
+        display: flex;
     }
 </style>
