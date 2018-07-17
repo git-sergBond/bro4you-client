@@ -72,7 +72,7 @@
             },
             search: function () {
                 //отправка выделенных подкатегорий
-                this.$emit('eventfilter', this.checked);
+                this.$emit('event_category_filter', this.checked);
             },
             isShowItem: function (index) {
                 return (index <= this.right && index >= this.left)

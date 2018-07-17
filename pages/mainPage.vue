@@ -17,7 +17,7 @@
                 <img src="images/icons/search.png" @click='click_btn_search'>
             </div>
 
-        <category class="app--categories" v-show="show_category_trig" @eventfilter = "swithcat"></category>
+        <category class="app--categories" v-show="show_category_trig" @event_category_filter = "swithcat"></category>
 
         <div class="place-info"
                  v-for='item in placemarks'
@@ -200,9 +200,10 @@
 // NOP
                 return responce;
             },
+            /*
             getCategoties_from_server: function(){
                 return ['Магазины Авто', 'Еда', 'Одежда', 'Ищут работу', "Транспорт", "Развлечения", "Драгоценности", "Банкоматы"];
-            },
+            },*/
             getShares_from_server: function(bounds){
                 //получить данные о рекламе и акциях в звдвнном районе
                 console.log('requset to server (bounds rect)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
@@ -374,7 +375,7 @@
                         let point = collection.get(j);
                         point.options.set('visible', false);
                         this.placemarks.forEach(el => {
-                            if(el.tag == this.cur_category
+                            if( (this.cur_category.indexOf(el.tag)!=-1)//+
                                 && el.price >= this.low_price
                                 && el.price <= this.high_price
                                 && el.coords == point.geometry.getCoordinates()){
@@ -387,14 +388,12 @@
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
-                this.cur_category = tag;//запомнили фильтр тегов
+                this.cur_category.push(tag);//+ запомнили фильтр тего
                 this.filter();
             },
             click_btn_ShowAllTags: function(){
                 //Очистить фильтр уточнения всех меток
-                //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                //this.cur_category = 'All';
-                //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                this.cur_category = 'All';
                 this.filter();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
             },
@@ -706,6 +705,9 @@
             },
             swithcat: function(categories){
                 // переключили категории
+                // services  <----------X server
+                this.cur_category = "All";
+                this.categories = categories;
                 console.log(categories);
             },
             //-----------------ИНИЦИАЛИЗАТОРЫ---------------------
@@ -714,7 +716,7 @@
                 this.mapInstanse = myMap;
                 this.intit_events_DrawPolygonByFinger();
                 this.add_actions_info();
-                this.categories = this.getCategoties_from_server();
+               // this.categories = this.getCategoties_from_server();
             },
             add_actions_info: function(shares_data){
                 this.shares_d = this.getShares_from_server();
@@ -764,7 +766,7 @@
             countReviews: 0,
             price: 7000,
             stars: 2,
-            tag: 'Книги',
+            tag: 'Форд',
             url: '#1'
         },
         {
@@ -776,7 +778,7 @@
             countReviews: 43,
             price: 10000,
             stars: 5,
-            tag: 'Игрушки',
+            tag: 'Приключения',
             url: '#2'
         },
         {
@@ -788,7 +790,7 @@
             countReviews: 43,
             price: 9000,
             stars: 5,
-            tag: 'Игрушки',
+            tag: 'Майки',
             url: '#2'
         },
         {
@@ -800,7 +802,7 @@
             countReviews: 43,
             price: 7500,
             stars: 5,
-            tag: 'Игрушки',
+            tag: 'Джинсы',
             url: '#2'
         },
         {
@@ -812,7 +814,7 @@
             countReviews: 43,
             price: 7000,
             stars: 5,
-            tag: 'Игрушки',
+            tag: 'Джинсы',
             url: '#2'
         },
         {
@@ -824,7 +826,7 @@
             countReviews: 1000,
             price: 6000,
             stars: 3,
-            tag: 'Развлечения',
+            tag: 'Майки',
             url: '#3'
         },
         {
@@ -836,7 +838,7 @@
             countReviews: 1000,
             price: 5000,
             stars: 3,
-            tag: 'Развлечения',
+            tag: 'Приключения',
             url: '#3'
         }
     ];
@@ -900,6 +902,7 @@
     }
     /*поиск на странице*/
     .search{
+        background-color: white;
         width: 100%;
         top: 0;
         box-shadow: 0 0 20px gray;
@@ -943,7 +946,8 @@
         left: 50%;
         background-color: white;
         padding: 0.3rem;
-        box-shadow: 0 0 10px black
+        box-shadow: 0 0 10px black;
+        background-color: white;
     }
     .price-filter input[type='number']{
         border: 0 solid black;
@@ -955,6 +959,7 @@
         margin-top: 5px;
     }
     .price-filter p span{
+
         border-radius: 5px;
         padding: 2px;
         margin-right: 3px;
@@ -963,6 +968,7 @@
     /**/
     .map-comp--buttons
     {
+        background-color: white;
         top: 50%;
         width: 100%;
         text-align: center;
@@ -994,10 +1000,12 @@
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
     .app--categories{
+        background-color: white;
         top: 50px;
         left: 70px;
     }
     .clarefy--categories{
+        background-color: white;
         display: flex;
     }
 </style>
