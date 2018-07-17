@@ -979,7 +979,7 @@
     /**/
     .map-comp--buttons
     {
-        background-color: white;
+        background-color: transparent;
         top: 50%;
         width: 100%;
         text-align: center;
