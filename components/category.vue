@@ -69,6 +69,8 @@
                         context.clear(el);
                     })
                 }
+                this.checked = [];
+                this.search();
             },
             search: function () {
                 //отправка выделенных подкатегорий

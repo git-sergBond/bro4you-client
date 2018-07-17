@@ -36,8 +36,8 @@
       <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="315" column="30" selection-start-line="315" selection-start-column="30" selection-end-line="315" selection-end-column="30" />
+            <state relative-caret-position="171">
+              <caret line="714" column="87" selection-start-line="714" selection-start-column="87" selection-end-line="714" selection-end-column="87" />
               <folding>
                 <element signature="n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
                 <element signature="n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" />
@@ -81,8 +81,8 @@
       <file leaf-file-name="category.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/components/category.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="74" column="49" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="49" />
+            <state relative-caret-position="60">
+              <caret line="43" column="40" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -109,16 +109,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>share</find>
-      <find>card-container</find>
-      <find>card</find>
       <find>class</find>
       <find>info_with_photo</find>
       <find>add_shares_info</find>
       <find>add_sha</find>
       <find>add_placemarks_on_map</find>
       <find>emm</find>
-      <find>click_on_card</find>
       <find>is_equals_coords</find>
       <find>add_actions_info</find>
       <find>getShares_from_server</find>
@@ -139,6 +135,10 @@
       <find>getCategoties_from_server</find>
       <find>event_category_filter</find>
       <find>get_categoryes_from_placemarks</find>
+      <find>sw</find>
+      <find>show_</find>
+      <find>click_on_card</find>
+      <find>click_btn_changeTag</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -290,7 +290,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="120653000" />
+    <option name="totallyTimeSpent" value="123349000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -709,15 +709,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/components/category.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="74" column="49" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="49" />
+        <state relative-caret-position="60">
+          <caret line="43" column="40" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="315" column="30" selection-start-line="315" selection-start-column="30" selection-end-line="315" selection-end-column="30" />
+        <state relative-caret-position="171">
+          <caret line="714" column="87" selection-start-line="714" selection-start-column="87" selection-end-line="714" selection-end-column="87" />
           <folding>
             <element signature="n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" />

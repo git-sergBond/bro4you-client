@@ -388,12 +388,18 @@
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
-                this.cur_category.push(tag);//+ запомнили фильтр тего
+                let i = this.cur_category.indexOf(tag);
+                if(i == -1)
+                    this.cur_category.push(tag);//+ запомнили фильтр тего
+                else
+                    this.cur_category.splice(i,1);//далили
+                console.log(this.cur_category)
                 this.filter();
             },
             click_btn_ShowAllTags: function(){
                 //Очистить фильтр уточнения всех меток
-                this.cur_category = 'All';
+                this.cur_category = this.get_categoryes_from_placemarks(this.placemarks);
+                this.categories =  this.get_categoryes_from_placemarks(this.placemarks);
                 this.filter();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
             },
@@ -706,8 +712,9 @@
             swithcat: function(categories){
                 // переключили категории
                 // services  <----------X server
-                this.cur_category = "All";
-                this.categories = categories;
+                this.cur_category = this.get_categoryes_from_placemarks(this.placemarks);
+
+                this.categories = categories.map(e => e.name);
                 console.log(categories);
             },
             //-----------------ИНИЦИАЛИЗАТОРЫ---------------------
