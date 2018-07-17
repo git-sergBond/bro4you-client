@@ -334,8 +334,8 @@
                     this.placemarks = this.get_Categories_and_polygon_from_server(this.cur_category, this.poly_line);
                 }
                 this.add_placemarks_on_map(this.placemarks);
-                this.categories = this.get_categoryes_from_placemarks(this.placemarks);
-                this.click_btn_ShowAllTags();
+                //this.categories = this.get_categoryes_from_placemarks(this.placemarks);
+                //this.click_btn_ShowAllTags();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
             },
             click_btn_choose_region: function(){
@@ -715,6 +715,7 @@
             swithcat: function(categories){
                 // переключили категории
                 // services  <----------X server
+                this.change_category_event();
                 this.cur_category = this.get_categoryes_from_placemarks(this.placemarks);
 
                 this.categories = categories.map(e => e.name);
