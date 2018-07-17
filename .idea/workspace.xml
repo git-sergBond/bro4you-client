@@ -36,8 +36,8 @@
       <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="714" column="87" selection-start-line="714" selection-start-column="87" selection-end-line="714" selection-end-column="87" />
+            <state relative-caret-position="226">
+              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
               <folding>
                 <element signature="n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
                 <element signature="n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" />
@@ -81,8 +81,8 @@
       <file leaf-file-name="category.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/components/category.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="43" column="40" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
+            <state relative-caret-position="291">
+              <caret line="73" column="39" lean-forward="true" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -109,7 +109,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>class</find>
       <find>info_with_photo</find>
       <find>add_shares_info</find>
       <find>add_sha</find>
@@ -139,6 +138,7 @@
       <find>show_</find>
       <find>click_on_card</find>
       <find>click_btn_changeTag</find>
+      <find>click_btn_ShowAllTags</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -290,7 +290,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="123349000" />
+    <option name="totallyTimeSpent" value="123737000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -709,15 +709,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/components/category.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="43" column="40" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
+        <state relative-caret-position="291">
+          <caret line="73" column="39" lean-forward="true" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="714" column="87" selection-start-line="714" selection-start-column="87" selection-end-line="714" selection-end-column="87" />
+        <state relative-caret-position="226">
+          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
           <folding>
             <element signature="n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#1;n#div#1;n#div#0;n#template#0;n#!!top" />

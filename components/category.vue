@@ -71,6 +71,7 @@
                 }
                 this.checked = [];
                 this.search();
+                this.$emit('event-clear');
             },
             search: function () {
                 //отправка выделенных подкатегорий

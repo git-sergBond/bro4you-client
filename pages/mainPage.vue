@@ -17,7 +17,10 @@
                 <img src="images/icons/search.png" @click='click_btn_search'>
             </div>
 
-        <category class="app--categories" v-show="show_category_trig" @event_category_filter = "swithcat"></category>
+        <category class="app--categories"
+                  v-show="show_category_trig"
+                  @event_category_filter = "swithcat"
+                  @event-clear="click_btn_ShowAllTags"></category>
 
         <div class="place-info"
                  v-for='item in placemarks'
