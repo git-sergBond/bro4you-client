@@ -29,7 +29,7 @@
     export default {
         name: "placeInfoMap",
         props: ['P_placemarks','P_cur_point', 'F_is_equals_coords'],
-        comments: {
+        components: {
             carousel
         }
     }
