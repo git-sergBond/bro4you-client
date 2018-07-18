@@ -26,11 +26,15 @@
                         :F_is_equals_coords="is_equals_coords" >
         </place-info-map>
 
-        <filters-map class="categori-filter"
+        <filters-map
                      :P_placemarks='placemarks'
-                     :categories='categories' :cur_category='cur_category'
+                     :P_categories='categories' :P_cur_category='cur_category'
+                     @event_click_btn_changeTag="click_btn_changeTag"
+                     @event_click_btn_ShowAllTags="click_btn_ShowAllTags"
                      :P_rang_price='rang_price'
-                     :P_low_price='low_price' :P_high_price='high_price'>
+                     :P_low_price='low_price' :P_high_price='high_price'
+                     :P_colors="colors"
+                     @event_change_txt_priceFilter = "change_txt_priceFilter" >
         </filters-map>
 
         <shares class="app--near-you"
