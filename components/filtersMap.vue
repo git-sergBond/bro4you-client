@@ -11,7 +11,9 @@
                :class="{'on-card': 'All' == P_cur_category}">Показать все</p>
         </div>
     </div>
-    <div class="price-filter" v-show='P_rang_price != null'>
+    <div class="price-filter" >
+         <!--v-show='P_rang_price != null'-->
+
         <span>Цена от</span>
         <input type="number"
                v-model='P_low_price'

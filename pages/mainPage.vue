@@ -29,7 +29,8 @@
         <filters-map class="categori-filter"
                      :P_placemarks='placemarks'
                      :categories='categories' :cur_category='cur_category'
-                     :P_rang_price='rang_price' :P_low_price='low_price' :P_high_price='high_price'>
+                     :P_rang_price='rang_price'
+                     :P_low_price='low_price' :P_high_price='high_price'>
         </filters-map>
 
         <shares class="app--near-you"
