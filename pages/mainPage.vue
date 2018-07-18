@@ -1,89 +1,52 @@
 <template>
     <div>
-
         <div class="map-comp"
-             @mouseup='mouseup_event_DrawPolygonByFinger'
-             @mousedown='mousedown_event_DrawPolygonByFinger'>
-            <yandex-map class="ymap"
-                        zoom="8"
-                        :controls="['zoomControl']"
-                        :coords="coords"
+             @mouseup='mouseup_event_DrawPolygonByFinger' @mousedown='mousedown_event_DrawPolygonByFinger'>
+            <yandex-map class="ymap" zoom="8"
+                        :controls="['zoomControl']" :coords="coords"
                         @map-was-initialized="initHandler"></yandex-map>
         </div>
 
-        <div class="search">
-                <button @click="show_category_trig = !show_category_trig">&#9776;</button>
-                <input type="text" v-model="message">
-                <img src="images/icons/search.png" @click='click_btn_search'>
-            </div>
+        <div class="top-panel">
+            <search-map :P_message="message"
+                        @event_show_category_trig="show_category_trig = !show_category_trig" @event_click_btn_search="click_btn_search" ></search-map>
 
-        <category class="app--categories"
-                  v-show="show_category_trig"
-                  @event_category_filter = "swithcat"
-                  @event-clear="click_btn_ShowAllTags"></category>
-
-        <div class="place-info"
-                 v-for='item in placemarks'
-                 v-show='is_equals_coords(item.coords)'>
-                <button class="quit"
-                        @click="cur_point = null">×</button>
-                <p>
-                    <b>{{item.name}}</b>
-                </p>
-                <carousel Cwidth='230px' :images="item.imageUrl"></carousel>
-                <p>
-                    <br>{{item.address}}
-                    <br>{{item.phoneNumber}}
-                    <br>{{item.price}} (Руб.)
-                    <br>
-                    <span v-for='i in [1,2,3,4,5]'
-                          :class="{ 'on-star': (i <= item.stars) }">
-                    <i class="fa fa-star fa-lg" style="font: 24px/1 FontAwesome;">★</i>
-                </span>
-                    <span>Отзывы ({{item.countReviews}})</span>
-                </p>
+            <div class="top-panel--buttons">
+                <button v-show='stateApp == 0' @click='click_btn_Start_Edit'>Нарисовать область</button>
+                <button v-show='stateApp == 1 || stateApp == 2 || stateApp == 3 ' @click='click_btn_Clear'>Очистить</button>
+                <button v-show='stateApp == 0' @click='click_btn_choose_region'>Выбрать регионы</button>
+                <button v-show='stateApp == 3' @click='click_btn_show_result_for_regions'>Показать результат</button>
             </div>
+        </div>
 
-        <div class="map-comp--buttons">
-                <button v-show='stateApp == 0' @click='click_btn_Start_Edit' class="white-button">Нарисовать область</button>
-                <button v-show='stateApp == 1 || stateApp == 2 || stateApp == 3 ' @click='click_btn_Clear' class="white-button">Очистить</button>
-                <button v-show='stateApp == 0' @click='click_btn_choose_region' class="white-button">Выбрать регионы</button>
-                <button v-show='stateApp == 3' @click='click_btn_show_result_for_regions' class="white-button">Показать результат</button>
-            </div>
+        <category class="app--categories" v-show="show_category_trig" @event_category_filter = "swithcat" @event-clear="click_btn_ShowAllTags"></category>
 
-        <div class="categori-filter">
-                <div v-show='placemarks.length != 0 && categories.length != 0'>
-                    <p><b>Уточните категорию</b></p>
-                    <div class="clarefy--categories">
-                        <p v-for='tag in categories' @click='click_btn_changeTag(tag)' class="white-button" :class="{'on-card': tag == cur_category}" >{{ tag }}</p>
-                        <p @click='click_btn_ShowAllTags' class="white-button" :class="{'on-card': 'All' == cur_category}">Показать все</p>
-                    </div>
-                </div>
-                <shares class="app--near-you"
-                        :coords="cur_point"
-                        :shares_data="shares_d"
-                        :F_is_equals_coords="is_equals_coords"
-                        @click_on_card="click_on_card"
-                ></shares>
-            </div>
+        <place-info-map class="place-info"
+                        :P_placemarks="placemarks" :P_cur_point="cur_point"
+                        :F_is_equals_coords="is_equals_coords" >
+        </place-info-map>
 
-        <div class="price-filter" v-show='rang_price != null'>
-                <span>Цена от</span>
-                <input type="number" v-model='low_price' @change='change_txt_priceFilter'>
-                <span>до</span>
-                <input type="number" v-model='high_price' @change='change_txt_priceFilter'>
-                <p> Цвет:
-                    <span v-for='(price, index) in rang_price'
-                          :style="{'background-color': colors[index]}">{{ price }}</span>
-                </p>
-            </div>
+        <filters-map class="categori-filter"
+                     :P_placemarks='placemarks'
+                     :categories='categories' :cur_category='cur_category'
+                     :P_rang_price='rang_price' :P_low_price='low_price' :P_high_price='high_price'>
+        </filters-map>
+
+        <shares class="app--near-you"
+                :coords="cur_point"
+                :shares_data="shares_d"
+                :F_is_equals_coords="is_equals_coords"
+                @click_on_card="click_on_card"
+        ></shares>
     </div>
 </template>
 
 <script>
     import shares from '../components/shares.vue';
-    import carousel from '../components/carousel.vue';
     import category from '../components/category.vue';
+    import searchMap from '../components/searchMap.vue';
+    import filtersMap from '../components/filtersMap.vue';
+    import placeInfoMap from '../components/placeInfoMap.vue'
     export default {
         name: "mainPage",
         //el: '',
@@ -141,9 +104,11 @@
             }
         },
         components: {
-            carousel,
             category,
-            shares
+            shares,
+            searchMap,
+            filtersMap,
+            placeInfoMap
         },
         methods: {
             //--------------РАБОТА С ГЕО ОБЪЕКТАМИ---------------
@@ -882,111 +847,27 @@
 </style>
 
 <style scoped>
-    .app--categories, .place-info, .map-comp--buttons, .price-filter, .search, .categori-filter{
+    .top-panel{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        top: 0;
+        left: 0;
+    }
+    .top-panel--buttons{
+        display: flex;
+    }
+    /**/
+    .app--categories, .place-info, .top-panel{
         z-index: 2;
         position: absolute;
     }
-    .categori-filter{
-        margin: 10px 1.3rem 0 1.3rem;
-        right: 0;
-        bottom: 2%;
-    }
-    .place-info .quit{
-        background-color: white;
-        margin-left: 93%;
-        border-width: 0; font-size: 2rem
-    }
-
-    .white-button {
-        margin-right: 2rem;
-        padding: 0.5rem;
-        padding-left: 1.3rem;
-        padding-right: 1.3rem;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
     /*инфа внутри карточки*/
-    .on-star{
-        color: red;
-    }
-    .white-button:hover{
-        box-shadow: 0 0 20px rgb(58, 128, 2);
-    }
-    /*поиск на странице*/
-    .search{
-        background-color: white;
-        width: 100%;
-        top: 0;
-        box-shadow: 0 0 20px gray;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    input[type="text"] {
-        border-width: 1px;
-        border-color: gray;
-        border-top: 0px;
-        border-left: 0px;
-        border-right: 0px;
-        font-size: 1.5em;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        margin-right: 10px;
-        margin-left: 10px;
-        width: 60%;
-    }
-    .search img{
-        display: flex;
-        justify-content: center; /*Центрирование по горизонтали*/
-        align-items: center;     /*Центрирование по вертикали */
-        margin: 0;
-        padding-top: 0.1rem;
-        padding-bottom: 0.2rem;
-        padding-left: 0.7em;
-        border: 1px solid gray;
-        border-right: 0;
-        border-top: 0;
-        border-bottom: 0;
-        font-size: 1.5em;
-        width: 1.3em;
-    }
-    /*фильтр цены*/
-    .price-filter{
-        top: 10%;
-        left: 50%;
-        background-color: white;
-        padding: 0.3rem;
-        box-shadow: 0 0 10px black;
-        background-color: white;
-    }
-    .price-filter input[type='number']{
-        border: 0 solid black;
-        border-bottom-width: 1px;
-        width: 4rem;
-    }
-    .price-filter p{
-        margin: 0;
-        margin-top: 5px;
-    }
-    .price-filter p span{
-
-        border-radius: 5px;
-        padding: 2px;
-        margin-right: 3px;
-        color: white;
+    .place-info{
+        top: 9%;
+        right: 0;
     }
     /**/
-    .map-comp--buttons
-    {
-        background-color: transparent;
-        top: 50%;
-        width: 100%;
-        text-align: center;
-    }
-    .map-comp {
-        height: 99vh ;
-    }
     p, h1, a{
         font-family: 'Comfortaa', cursive;
         margin-left: 0.2rem;
@@ -995,28 +876,12 @@
     h1{
         font-size: 1.1em
     }
-    .map-comp .ymap {
+    .ymap {
         width: 100%;
-        height: 100%;
-    }
-    .place-info{
-        top: 9%;
-        right: 0;
-        width: 25vw;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        height: 99vh ;
     }
     .app--categories{
-        background-color: white;
         top: 50px;
         left: 70px;
-    }
-    .clarefy--categories{
-        background-color: white;
-        display: flex;
     }
 </style>
