@@ -2,13 +2,12 @@
     <div class="search">
         <input type="text"
                v-model="message">
-        <img src="images/icons/search.png"
+        <div class="button-right-f"
              @click="$emit('event_click_btn_search')">
-        <div class="button-right"
-                @click="$emit('event_show_category_trig')">
-            <div class="bold-txt">&#9776;</div>
+            <img src="images/icons/search.png"/>
         </div>
-        <div class="triangle-right"></div>
+        <div class="button-right"
+             @click="$emit('event_show_category_trig')">&#9776;</div>
     </div>
 </template>
 
@@ -19,29 +18,45 @@
     }
 </script>
 
-<style scoped>
-    .button-right{
+<style  scoped>
+    .button-right, .button-right-f{
+        --bcolor: white;
+        --spadding: 1.2rem;
+        padding-left: var(--spadding);
+        padding-right: var(--spadding);
         height: 100%;
-        background-color: white;
-        display: flex;
-        align-items: center;
-        line-height: 0;
-    }
-    .triangle-right{
-        content: '';
-        width: 0;
-        height: 0;
-        border: 1.7rem solid transparent;
-        border-left-color: white;
-    }
-    .bold-txt{
+        background-color: var(--bcolor);
+
+        color: black;
         font-weight: bold;
-        font-weight: bold;
-        font-size: 1.7rem;
-        line-height: 0;
+        font-size: 1.5rem;
+    }
+    .button-right:after{
+        --proporions: 1.3em;
+        content: "";
+        position: absolute;
+        top: 4px;
+        margin-left: 5px;
+        width: var(--proporions);
+        height: var(--proporions);
+        background-color: var(--bcolor);
+        transform: rotate(45deg);
+    }
+    .button-right-f:after{
+        --proporions: 1.2em;
+        content: "";
+        position: absolute;
+        top: 5px;
+        margin-left: 20px;
+        width: var(--proporions);
+        height: var(--proporions);
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-top-color: black;
+        border-right-color: black;
+        transform: rotate(45deg);
     }
     .search{
-        box-shadow: 0 0 20px gray;
         display: flex;
         align-items: center;
     }
@@ -55,10 +70,6 @@
         display: flex;
         justify-content: center; /*Центрирование по горизонтали*/
         align-items: center;     /*Центрирование по вертикали */
-        margin: 0;
-        padding-top: 0.1rem;
-        padding-bottom: 0.1rem;
-        font-size: 1.5em;
         width: 1.3em;
     }
 </style>

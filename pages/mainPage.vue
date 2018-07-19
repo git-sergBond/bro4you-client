@@ -856,7 +856,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        top: 0;
+        top: 3px;
         left: 0;
     }
     .top-panel--buttons{
