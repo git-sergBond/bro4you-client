@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30011467-55f1-4b5b-b6bd-a49db8891194" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/searchMap.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/searchMap.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" afterDir="false" />
     </list>
@@ -35,8 +36,8 @@
       <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="861" column="24" lean-forward="true" selection-start-line="861" selection-start-column="24" selection-end-line="861" selection-end-column="24" />
+            <state relative-caret-position="64">
+              <caret line="850" column="5" lean-forward="true" selection-start-line="850" selection-start-column="5" selection-end-line="850" selection-end-column="5" />
               <folding>
                 <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
               </folding>
@@ -47,8 +48,8 @@
       <file leaf-file-name="searchMap.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/components/searchMap.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="49" column="23" selection-start-line="49" selection-start-column="23" selection-end-line="49" selection-end-column="23" />
+            <state relative-caret-position="45">
+              <caret line="35" column="23" lean-forward="true" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -253,12 +254,12 @@
       <workItem from="1531667230985" duration="13060000" />
       <workItem from="1531728672103" duration="5311000" />
       <workItem from="1531896240364" duration="21583000" />
-      <workItem from="1532025625361" duration="4387000" />
+      <workItem from="1532025625361" duration="5203000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="151490000" />
+    <option name="totallyTimeSpent" value="152306000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -675,8 +676,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="861" column="24" lean-forward="true" selection-start-line="861" selection-start-column="24" selection-end-line="861" selection-end-column="24" />
+        <state relative-caret-position="64">
+          <caret line="850" column="5" lean-forward="true" selection-start-line="850" selection-start-column="5" selection-end-line="850" selection-end-column="5" />
           <folding>
             <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
           </folding>
@@ -685,8 +686,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/components/searchMap.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="49" column="23" selection-start-line="49" selection-start-column="23" selection-end-line="49" selection-end-column="23" />
+        <state relative-caret-position="45">
+          <caret line="35" column="23" lean-forward="true" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
         </state>
       </provider>
     </entry>

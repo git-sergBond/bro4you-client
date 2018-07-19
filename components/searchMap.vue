@@ -7,7 +7,7 @@
             <img src="images/icons/search.png"/>
         </div>
         <div class="button-right"
-             @click="$emit('event_show_category_trig')">&#9776;</div>
+             @click="$emit('event_show_category_trig')"><span>&#9776;</span></div>
     </div>
 </template>
 
@@ -30,13 +30,15 @@
         color: black;
         font-weight: bold;
         font-size: 1.5rem;
+        display: flex;
+        align-items: center;
     }
     .button-right:after{
-        --proporions: 1.3em;
+        --proporions: 1.2em;
         content: "";
         position: absolute;
-        top: 4px;
-        margin-left: 5px;
+        top: 5px;
+        margin-left: 26px;
         width: var(--proporions);
         height: var(--proporions);
         background-color: var(--bcolor);
