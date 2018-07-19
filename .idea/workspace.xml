@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30011467-55f1-4b5b-b6bd-a49db8891194" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/searchMap.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/searchMap.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/mainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mainPage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
@@ -33,11 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="64">
-              <caret line="850" column="5" lean-forward="true" selection-start-line="850" selection-start-column="5" selection-end-line="850" selection-end-column="5" />
+            <state relative-caret-position="224">
+              <caret line="886" column="26" lean-forward="true" selection-start-line="886" selection-start-column="26" selection-end-line="886" selection-end-column="26" />
               <folding>
                 <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
               </folding>
@@ -45,11 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="searchMap.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="searchMap.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/components/searchMap.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="35" column="23" lean-forward="true" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
+            <state relative-caret-position="-120">
+              <caret line="21" column="4" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="59" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -130,8 +129,8 @@
         <option value="$PROJECT_DIR$/components/placeInfoMap.vue" />
         <option value="$PROJECT_DIR$/components/carousel.vue" />
         <option value="$PROJECT_DIR$/components/filtersMap.vue" />
-        <option value="$PROJECT_DIR$/pages/mainPage.vue" />
         <option value="$PROJECT_DIR$/components/searchMap.vue" />
+        <option value="$PROJECT_DIR$/pages/mainPage.vue" />
       </list>
     </option>
   </component>
@@ -254,12 +253,12 @@
       <workItem from="1531667230985" duration="13060000" />
       <workItem from="1531728672103" duration="5311000" />
       <workItem from="1531896240364" duration="21583000" />
-      <workItem from="1532025625361" duration="5203000" />
+      <workItem from="1532025625361" duration="7671000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="152306000" />
+    <option name="totallyTimeSpent" value="154774000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -674,20 +673,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
+    <entry file="file://$PROJECT_DIR$/components/searchMap.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="850" column="5" lean-forward="true" selection-start-line="850" selection-start-column="5" selection-end-line="850" selection-end-column="5" />
-          <folding>
-            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
-          </folding>
+        <state relative-caret-position="-120">
+          <caret line="21" column="4" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="59" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/searchMap.vue">
+    <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="35" column="23" lean-forward="true" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
+        <state relative-caret-position="224">
+          <caret line="886" column="26" lean-forward="true" selection-start-line="886" selection-start-column="26" selection-end-line="886" selection-end-column="26" />
+          <folding>
+            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
+          </folding>
         </state>
       </provider>
     </entry>

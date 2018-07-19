@@ -12,10 +12,10 @@
                         @event_show_category_trig="show_category_trig = !show_category_trig" @event_click_btn_search="click_btn_search" ></search-map>
 
             <div class="top-panel--buttons">
-                <button v-show='stateApp == 0' @click='click_btn_Start_Edit'>Нарисовать область</button>
-                <button v-show='stateApp == 1 || stateApp == 2 || stateApp == 3 ' @click='click_btn_Clear'>Очистить</button>
-                <button v-show='stateApp == 0' @click='click_btn_choose_region'>Выбрать регионы</button>
-                <button v-show='stateApp == 3' @click='click_btn_show_result_for_regions'>Показать результат</button>
+                <div class="button-left" v-show='stateApp == 0' @click='click_btn_Start_Edit'><span>Нарисовать область</span></div>
+                <div class="button-left" v-show='stateApp == 1 || stateApp == 2 || stateApp == 3 ' @click='click_btn_Clear'><span>Очистить</span></div>
+                <div class="button-left-f" v-show='stateApp == 0' @click='click_btn_choose_region'><span>Выбрать регионы</span></div>
+                <div class="button-left-f" v-show='stateApp == 3' @click='click_btn_show_result_for_regions'><span>Показать результат</span></div>
             </div>
         </div>
 
@@ -852,6 +852,46 @@
 </style>
 
 <style scoped>
+    /*начало для кнопок для правоговерхнего угла*/
+    .button-left, .button-left-f{
+        --bcolor: white;
+        --spadding: 1.2rem;
+        padding-right: var(--spadding);
+        height: 100%;
+        background-color: var(--bcolor);
+
+        color: black;
+        font-weight: bold;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    .button-left:before{
+        --proporions: 1.7rem;
+        content: "";
+        position: relative;
+        top: 0px;
+        left: -20px;
+        margin-left: 6px;
+        width: var(--proporions);
+        height: var(--proporions);
+        background-color: var(--bcolor);
+        transform: rotate(45deg);
+    }
+    .button-left-f:before{
+        --proporions: 1.7rem;
+        content: "";
+        position: relative;
+        top: 0px;
+        width: var(--proporions);
+        height: var(--proporions);
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-bottom-color: black;
+        border-left-color: black;
+        transform: rotate(45deg);
+    }
+    /*конец кнопок*/
     .top-panel{
         width: 100%;
         display: flex;
