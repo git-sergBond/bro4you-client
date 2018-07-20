@@ -907,7 +907,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        top: 3px;
+        top: 5px;
         left: 0;
     }
     .top-panel--buttons{
@@ -937,7 +937,7 @@
         height: 99vh ;
     }
     .app--categories{
-        top: 50px;
-        left: 70px;
+        top: 30%;
+        left: 30%;
     }
 </style>

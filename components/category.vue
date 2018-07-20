@@ -9,19 +9,25 @@
             </div>
         </div>
         <div class="app--categories--menu">
-            <button v-for="(item, index) in show_child"
+            <div v-for="(item, index) in show_child"
                     v-show="isShowItem(index)"
                     @click="click_on_category(item)"
                     class="app--categories-item"
                     :class="{red: item.check}">
                 <img :src="item.img"/>
                 <p>{{item.name}}</p>
-            </button>
+            </div>
         </div>
-        <button v-if="left > 0" @click="clk_left">left</button>
-        <button v-if="right < show_child.length" @click="clk_right">right</button>
-        <button @click="search">Найти</button>
-        <button @click="clear(tree)">Очистить</button>
+        <div class="buttons-menu">
+            <div class="button-skew">
+                <p @click="search">Найти</p>
+                <p @click="clear(tree)">Очистить</p>
+            </div>
+            <div class="button-skew">
+                <p v-if="left > 0" @click="clk_left">left</p>
+                <p v-if="right < show_child.length" @click="clk_right">right</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -222,7 +228,107 @@
     .app--categories--parent{
         display: flex;
     }
+    .app--categories--parent {
+        margin-bottom: 30px;
+    }
     .red{
         color: green;
+    }
+    .app--categories--menu {
+        display: flex;
+        position: relative;
+        left: 50px;
+    }
+    .app--categories-item p {
+        text-align: center;
+    }
+    .app--categories-item {
+        width: 100px;
+        height: 55px;
+        background: white;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 4px;
+        box-shadow: 0px 0px 30px 1px;
+    }
+    .app--categories-item:before {
+        content: "";
+        position: absolute;
+        top: -25px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-bottom: 25px solid white;
+    }
+    .app--categories-item:after {
+        content: "";
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-top: 25px solid white;
+    }
+    /* кнопки */
+    .buttons-menu{
+        margin: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .button-skew{
+        display: flex;
+        margin-left: 20px;
+        margin-right: 40px;
+    }
+    .button-skew p{
+        display:inline-block;
+        vertical-align:top;
+        padding:0 20px;
+        height:40px;
+        color:#fff;
+        text-decoration:none;
+        font-family:Arial, sans-serif;
+        font-size:14px;
+        line-height:40px;
+        font-weight:bold;
+        letter-spacing:0.05em;
+        text-transform:uppercase;
+        background:#00B98B;
+        text-align:center;
+        position:relative;
+    }
+    .button-skew p:hover {
+        opacity:0.8;
+    }
+    .button-skew p:before {
+        content:'';
+        display:block;
+        clear:both;
+        width:0;
+        height:0;
+        border-left:30px solid transparent;
+        border-bottom:40px solid #00B98B;
+        position:absolute;
+        top:0;
+        left:-30px;
+    }
+    .button-skew p:after {
+        content:'';
+        display:block;
+        clear:both;
+        width:0;
+        height:0;
+        border-right:30px solid transparent;
+        border-top:40px solid #00B98B;
+        position:absolute;
+        top:0;
+        right:-30px;
     }
 </style>
