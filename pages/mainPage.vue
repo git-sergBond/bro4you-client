@@ -856,7 +856,7 @@
     .button-left, .button-left-f{
         --bcolor: white;
         --spadding: 1.2rem;
-        padding-right: var(--spadding);
+        /*padding-right: var(--spadding);*/
         height: 100%;
         background-color: var(--bcolor);
 
@@ -865,24 +865,35 @@
         font-size: 1rem;
         display: flex;
         align-items: center;
+
+        /*box-shadow: 2px 1px 2px black;*/
+        /*box-shadow: 10px 1px 10px 1px black;*/
+
+        box-shadow: 5px 1px 10px -2px black;
+
+        box-shadow: 10px 1px 10px -2px black;
+
     }
     .button-left:before{
         --proporions: 1.7rem;
         content: "";
         position: relative;
         top: 0px;
-        left: -20px;
-        margin-left: 6px;
+
+        margin-left: 1px;
+        left: -14px;
         width: var(--proporions);
         height: var(--proporions);
         background-color: var(--bcolor);
         transform: rotate(45deg);
+        box-shadow: -2px 2px 2px -3px black;
     }
     .button-left-f:before{
         --proporions: 1.7rem;
         content: "";
         position: relative;
         top: 0px;
+        left: 10px;
         width: var(--proporions);
         height: var(--proporions);
         background-color: transparent;

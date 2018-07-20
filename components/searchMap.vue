@@ -32,6 +32,7 @@
         font-size: 1.5rem;
         display: flex;
         align-items: center;
+        box-shadow: 5px 1px 10px -2px black;
     }
     .button-right:after{
         --proporions: 1.2em;
@@ -43,6 +44,7 @@
         height: var(--proporions);
         background-color: var(--bcolor);
         transform: rotate(45deg);
+        box-shadow: 5px -5px 5px -5px black;
     }
     .button-right-f:after{
         --proporions: 1.2em;
