@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30011467-55f1-4b5b-b6bd-a49db8891194" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/components/category.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/category.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/mainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mainPage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" afterDir="false" />
     </list>
@@ -36,8 +35,8 @@
       <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="688" lean-forward="true" selection-start-line="688" selection-end-line="688" />
+            <state relative-caret-position="94">
+              <caret line="949" column="18" selection-start-line="949" selection-start-column="18" selection-end-line="949" selection-end-column="18" />
               <folding>
                 <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
               </folding>
@@ -82,7 +81,6 @@
       <find>category</find>
       <find>add_</find>
       <find>getCategoties_from_server</find>
-      <find>event_category_filter</find>
       <find>get_categoryes_from_placemarks</find>
       <find>sw</find>
       <find>show_</find>
@@ -97,6 +95,7 @@
       <find>P_cur_category</find>
       <find>.top-panel</find>
       <find>show_category_trig</find>
+      <find>event_category_filter</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -255,12 +254,12 @@
       <workItem from="1531728672103" duration="5311000" />
       <workItem from="1531896240364" duration="21583000" />
       <workItem from="1532025625361" duration="9145000" />
-      <workItem from="1532061601584" duration="7269000" />
+      <workItem from="1532061601584" duration="8008000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="163517000" />
+    <option name="totallyTimeSpent" value="164256000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -684,8 +683,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="688" lean-forward="true" selection-start-line="688" selection-end-line="688" />
+        <state relative-caret-position="94">
+          <caret line="949" column="18" selection-start-line="949" selection-start-column="18" selection-end-line="949" selection-end-column="18" />
           <folding>
             <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
           </folding>

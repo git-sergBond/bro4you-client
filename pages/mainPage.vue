@@ -914,8 +914,12 @@
         display: flex;
     }
     /**/
-    .app--categories, .place-info, .top-panel{
+    .place-info, .top-panel{
         z-index: 2;
+        position: absolute;
+    }
+    .app--categories{
+        z-index: 4;
         position: absolute;
     }
     /*инфа внутри карточки*/
@@ -943,6 +947,7 @@
     /*эффект затенения в меню*/
     .backdrop {
         position: fixed;
+        z-index: 3;
         left: -100%;
         top: 0;
         width: 100%;
