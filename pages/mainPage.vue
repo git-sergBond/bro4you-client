@@ -6,7 +6,6 @@
                         :controls="['zoomControl']" :coords="coords"
                         @map-was-initialized="initHandler"></yandex-map>
         </div>
-
         <div class="top-panel">
             <search-map :P_message="message"
                         @event_show_category_trig="show_category_trig = !show_category_trig" @event_click_btn_search="click_btn_search" ></search-map>
@@ -18,7 +17,7 @@
                 <div class="button-left-f" v-show='stateApp == 3' @click='click_btn_show_result_for_regions'><span>Показать результат</span></div>
             </div>
         </div>
-
+        <div class="backdrop" :class="{'backdrop-on': show_category_trig}"></div>
         <category class="app--categories" v-show="show_category_trig" @event_category_filter = "swithcat" @event-clear="click_btn_ShowAllTags"></category>
 
         <place-info-map class="place-info"
@@ -94,7 +93,7 @@
                 |
                  */
                 //для фильтра категорий
-                show_category_trig: true,//+
+                show_category_trig: false,//+
                 categories: [],
                 cur_category: 'All',
                 //для фильтра цен
@@ -689,6 +688,7 @@
                 this.cur_category = this.get_categoryes_from_placemarks(this.placemarks);
 
                 this.categories = categories.map(e => e.name);
+                this.show_category_trig = !this.show_category_trig;
                 console.log(categories);
             },
             //-----------------ИНИЦИАЛИЗАТОРЫ---------------------
@@ -939,5 +939,21 @@
     .app--categories{
         top: 30%;
         left: 30%;
+    }
+    /*эффект затенения в меню*/
+    .backdrop {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .backdrop-on {
+        left: 0;
+        opacity: 1;
     }
 </style>

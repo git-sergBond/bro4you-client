@@ -33,11 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3">
-              <caret line="906" column="19" selection-start-line="906" selection-start-column="19" selection-end-line="906" selection-end-column="19" />
+            <state relative-caret-position="176">
+              <caret line="688" lean-forward="true" selection-start-line="688" selection-end-line="688" />
               <folding>
                 <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
               </folding>
@@ -45,14 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="category.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="category.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/components/category.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
-              <folding>
-                <element signature="n#script#0;n#!!top" />
-              </folding>
+            <state relative-caret-position="75">
+              <caret line="83" column="49" selection-start-line="83" selection-start-column="28" selection-end-line="83" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -70,7 +67,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>add_actions_info</find>
       <find>getShares_from_server</find>
       <find>make_shares_hint</find>
       <find>is_eq</find>
@@ -100,6 +96,7 @@
       <find>box</find>
       <find>P_cur_category</find>
       <find>.top-panel</find>
+      <find>show_category_trig</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -133,8 +130,8 @@
         <option value="$PROJECT_DIR$/components/carousel.vue" />
         <option value="$PROJECT_DIR$/components/filtersMap.vue" />
         <option value="$PROJECT_DIR$/components/searchMap.vue" />
-        <option value="$PROJECT_DIR$/pages/mainPage.vue" />
         <option value="$PROJECT_DIR$/components/category.vue" />
+        <option value="$PROJECT_DIR$/pages/mainPage.vue" />
       </list>
     </option>
   </component>
@@ -258,12 +255,12 @@
       <workItem from="1531728672103" duration="5311000" />
       <workItem from="1531896240364" duration="21583000" />
       <workItem from="1532025625361" duration="9145000" />
-      <workItem from="1532061601584" duration="6490000" />
+      <workItem from="1532061601584" duration="7269000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="162738000" />
+    <option name="totallyTimeSpent" value="163517000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -678,22 +675,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
+    <entry file="file://$PROJECT_DIR$/components/category.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3">
-          <caret line="906" column="19" selection-start-line="906" selection-start-column="19" selection-end-line="906" selection-end-column="19" />
-          <folding>
-            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
-          </folding>
+        <state relative-caret-position="75">
+          <caret line="83" column="49" selection-start-line="83" selection-start-column="28" selection-end-line="83" selection-end-column="49" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/category.vue">
+    <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="28" column="18" selection-start-line="28" selection-start-column="18" selection-end-line="28" selection-end-column="18" />
+        <state relative-caret-position="176">
+          <caret line="688" lean-forward="true" selection-start-line="688" selection-end-line="688" />
           <folding>
-            <element signature="n#script#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#template#0;n#!!top" />
           </folding>
         </state>
       </provider>
