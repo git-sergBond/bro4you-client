@@ -25,6 +25,8 @@
                         :F_is_equals_coords="is_equals_coords" >
         </place-info-map>
 
+        <!-- фильтры начало-->
+
         <div class="filter-buttons">
             <div class="angle-hex-left">
                 <img class="img-format" src="images/icons/filter.png"/>
@@ -51,12 +53,16 @@
                      @event_change_txt_priceFilter = "change_txt_priceFilter" >
         </filters-map>
 
+        <!-- фильтры конец-->
         <shares class="app--near-you"
                 :coords="cur_point"
                 :shares_data="shares_d"
                 :F_is_equals_coords="is_equals_coords"
                 @click_on_card="click_on_card"
         ></shares>
+        <div class="logo">
+            <img src="images/rast.jpg"/>
+        </div>
     </div>
 </template>
 
@@ -1054,6 +1060,35 @@
     .filter-buttons .img-format{
         --proporions: 32px;
         width: var(--proporions);
+        height: var(--proporions);
+    }
+    /*логотип*/
+    .logo{
+        position: absolute;
+        bottom: 0;
+        left: 45%;
+        --proporions: 40px;
+        box-shadow: 0 0 50px;
+        height: var(--proporions);
+    }
+    .logo:after, .logo:before{
+        content: "";
+        width: 0;
+        height: 0;
+        position: absolute;
+        bottom: 0;
+    }
+    .logo:after{
+        right: -15px;
+        border-right: 15px solid transparent;
+        border-bottom: var(--proporions) solid white;
+    }
+    .logo:before{
+        left: -15px;
+        border-left:  15px solid transparent;
+        border-bottom: var(--proporions) solid white;
+    }
+    .logo img{
         height: var(--proporions);
     }
 </style>
