@@ -25,6 +25,21 @@
                         :F_is_equals_coords="is_equals_coords" >
         </place-info-map>
 
+        <div class="filter-buttons">
+            <div class="angle-hex-left">
+                <img class="img-format" src="images/icons/filter.png"/>
+            </div>
+            <div class="angle-hex-item item1">
+                <img class="img-format" src="images/icons/price.png"/>
+            </div>
+            <div class="angle-hex-item item2">
+                <img class="img-format" src="images/icons/region.png"/>
+            </div>
+            <div class="angle-hex-item item3">
+                <img class="img-format" src="images/icons/catergories.png"/>
+            </div>
+        </div>
+
         <filters-map
                      :P_placemarks='placemarks'
                      :P_categories='categories' :P_cur_category='cur_category'
@@ -851,7 +866,7 @@
     }
 </style>
 
-<style scoped>
+<style scoped >
     /*начало для кнопок для правоговерхнего угла*/
     .button-left, .button-left-f{
         --bcolor: white;
@@ -954,11 +969,91 @@
         height: 100%;
         background: rgba(0,0,0,0.7);
         opacity: 0;
+        transition: left 0.3s ease;
         transition: opacity 0.3s ease;
     }
 
     .backdrop-on {
         left: 0;
         opacity: 1;
+    }
+    /* кнопки для вызова фильтров */
+    .filter-buttons{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 200px;
+        height: 200px;
+    }
+    .filter-buttons .angle-hex-item, .filter-buttons .angle-hex-left{
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        --proporions: 40px;
+        width: var(--proporions);
+        /*height: var(--proporions);*/
+    }
+    .filter-buttons .angle-hex-left{
+        left: 0;
+        bottom: 0;
+        box-shadow: 0 0 80px;
+    }
+    .filter-buttons .angle-hex-item[class*='item']{
+        box-shadow: 0 0 50px;
+    }
+    .filter-buttons .angle-hex-item.item1{
+        transform: rotate(13deg);
+        bottom: 80px;
+        left: 10px;
+    }
+    .filter-buttons .angle-hex-item.item2{
+        transform: rotate(45deg);
+        bottom: 54px;
+        left: 54px;
+    }
+    .filter-buttons .angle-hex-item.item3{
+        transform: rotate(77deg);
+        bottom: 10px;
+        left: 80px;
+    }
+    .filter-buttons .angle-hex-item:after{
+        top: -10px;
+        border-bottom: 10px solid white;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+    }
+    .filter-buttons .angle-hex-item:before{
+        bottom: -10px;
+        border-top: 10px solid white;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+    }
+    .filter-buttons .angle-hex-left:after,
+    .filter-buttons .angle-hex-left:before,
+    .filter-buttons .angle-hex-item:after,
+    .filter-buttons .angle-hex-item:before{
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+    }
+    .filter-buttons .angle-hex-left:after{
+        border-right:  15px solid transparent;
+        border-bottom: 32px solid white; /* var(--proporions) */
+        top: 0;
+        right: -15px;
+    }
+    .filter-buttons .angle-hex-left:before{
+        border-right: var(--proporions) solid transparent;
+        border-bottom: 15px solid white;
+        top: -15px;
+        left: 0;
+    }
+    .filter-buttons .img-format{
+        --proporions: 32px;
+        width: var(--proporions);
+        height: var(--proporions);
     }
 </style>
