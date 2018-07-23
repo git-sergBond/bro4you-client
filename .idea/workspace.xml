@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30011467-55f1-4b5b-b6bd-a49db8891194" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/components/filterPrice.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/filterPrice.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/filtersMap.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/filtersMap.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/mainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mainPage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" afterDir="false" />
     </list>
@@ -33,35 +35,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="1121" column="32" selection-start-line="1121" selection-start-column="32" selection-end-line="1121" selection-end-column="32" />
+            <state relative-caret-position="181">
+              <caret line="403" column="30" lean-forward="true" selection-start-line="403" selection-start-column="30" selection-end-line="403" selection-end-column="30" />
               <folding>
-                <element signature="n#filters-map#0;n#div#0;n#template#0;n#!!top" />
                 <element signature="n#shares#0;n#div#0;n#template#0;n#!!top" />
                 <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#script#0;n#!!top" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="filterPrice.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/components/filterPrice.vue">
+      <file leaf-file-name="filtersMap.vue" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/components/filtersMap.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="category.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/components/category.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="58" column="48" selection-start-line="58" selection-start-column="48" selection-end-line="58" selection-end-column="48" />
+            <state relative-caret-position="225">
+              <caret line="66" column="24" selection-start-line="66" selection-start-column="24" selection-end-line="66" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -79,8 +70,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>make_shares_hint</find>
-      <find>is_eq</find>
       <find>on-</find>
       <find>.search</find>
       <find>pp--categories--position</find>
@@ -109,6 +98,8 @@
       <find>show_category_trig</find>
       <find>event_category_filter</find>
       <find>.footer</find>
+      <find>filter-form</find>
+      <find>change_txt_priceFilter</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -140,11 +131,11 @@
         <option value="$PROJECT_DIR$/components/filtersOnMap.vue" />
         <option value="$PROJECT_DIR$/components/placeInfoMap.vue" />
         <option value="$PROJECT_DIR$/components/carousel.vue" />
-        <option value="$PROJECT_DIR$/components/filtersMap.vue" />
         <option value="$PROJECT_DIR$/components/searchMap.vue" />
         <option value="$PROJECT_DIR$/components/category.vue" />
         <option value="$PROJECT_DIR$/components/filterPrice.vue" />
         <option value="$PROJECT_DIR$/pages/mainPage.vue" />
+        <option value="$PROJECT_DIR$/components/filtersMap.vue" />
       </list>
     </option>
   </component>
@@ -195,12 +186,6 @@
               <item name="map-comp" type="b2602c69:ProjectViewProjectNode" />
               <item name="map-comp" type="462c0819:PsiDirectoryNode" />
               <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="map-comp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="map-comp" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-              <item name="icons" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="map-comp" type="b2602c69:ProjectViewProjectNode" />
@@ -286,12 +271,12 @@
       <workItem from="1532251540601" duration="4418000" />
       <workItem from="1532288187704" duration="11354000" />
       <workItem from="1532335729351" duration="717000" />
-      <workItem from="1532337942213" duration="8133000" />
+      <workItem from="1532337942213" duration="15169000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="190351000" />
+    <option name="totallyTimeSpent" value="197387000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -304,7 +289,7 @@
       <window_info anchor="bottom" id="Run" order="2" weight="0.0" />
       <window_info id="npm" order="2" sideWeight="0.5032787" side_tool="true" weight="0.27853152" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.4964086" visible="true" weight="0.2672131" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4967213" visible="true" weight="0.25219473" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4967213" visible="true" weight="0.25219473" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.32960895" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -368,10 +353,8 @@
         <state relative-caret-position="320">
           <caret line="889" column="25" lean-forward="true" selection-start-line="889" selection-start-column="25" selection-end-line="889" selection-end-column="25" />
           <folding>
-            <element signature="n#filters-map#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#shares#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#script#0;n#!!top" />
           </folding>
         </state>
       </provider>
@@ -681,13 +664,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/filtersMap.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="28" lean-forward="true" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -702,13 +678,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/category.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="58" column="48" selection-start-line="58" selection-start-column="48" selection-end-line="58" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/components/filterPrice.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -716,16 +685,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
+    <entry file="file://$PROJECT_DIR$/components/category.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="1121" column="32" selection-start-line="1121" selection-start-column="32" selection-end-line="1121" selection-end-column="32" />
+        <state relative-caret-position="80">
+          <caret line="319" column="14" lean-forward="true" selection-start-line="278" selection-start-column="4" selection-end-line="333" selection-end-column="5" />
           <folding>
-            <element signature="n#filters-map#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#shares#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
             <element signature="n#script#0;n#!!top" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="403" column="30" lean-forward="true" selection-start-line="403" selection-start-column="30" selection-end-line="403" selection-end-column="30" />
+          <folding>
+            <element signature="n#shares#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/filtersMap.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="66" column="24" selection-start-line="66" selection-start-column="24" selection-end-line="66" selection-end-column="24" />
         </state>
       </provider>
     </entry>

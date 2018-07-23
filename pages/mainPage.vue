@@ -28,32 +28,21 @@
         <!-- фильтры начало-->
 
         <div class="filter-buttons">
-            <div class="angle-hex-left">
+            <div class="angle-hex-left" @click="num_filter = 0">
                 <img class="img-format" src="images/icons/filter.png"/>
             </div>
-            <div class="angle-hex-item item1">
+            <div class="angle-hex-item item1" @click="num_filter = 1">
                 <img class="img-format" src="images/icons/price.png"/>
             </div>
-            <div class="angle-hex-item item2">
+            <div class="angle-hex-item item2" @click="num_filter = 2">
                 <img class="img-format" src="images/icons/region.png"/>
             </div>
-            <div class="angle-hex-item item3">
+            <div class="angle-hex-item item3" @click="num_filter = 3">
                 <img class="img-format" src="images/icons/catergories.png"/>
             </div>
         </div>
-        <div class="filter-form" >
-            <div class="header">
-
-            </div>
-            <div class="body">
-
-            </div>
-            <div class="footer">
-
-            </div>
-        </div>
-
-        <filters-map
+        <filters-map class="filter-form" v-if="num_filter != 0"
+                     :P_num_filter="num_filter"
                      :P_placemarks='placemarks'
                      :P_categories='categories' :P_cur_category='cur_category'
                      @event_click_btn_changeTag="click_btn_changeTag"
@@ -128,6 +117,7 @@
                 show_category_trig: false,//+
                 categories: [],
                 cur_category: 'All',
+                num_filter: 0,//выбор фильтра 0-нет 1-деньги 2-регионы 3-категории
                 //для фильтра цен
                 low_price: 0,
                 high_price: 0,
@@ -407,8 +397,10 @@
                 this.filter();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
             },
-            change_txt_priceFilter: function(){
+            change_txt_priceFilter: function(e){
                 //Метод оставляет только те метки которые соответствуют услуге с заданной стоимостью
+                this.low_price  = e.low_price;
+                this.high_price = e.high_price;
                 this.filter();
             },
             //------------Обработчики остальных объектов ---------
@@ -1088,77 +1080,6 @@
         margin: auto;
         height: var(--proporions);
         width: var(--proporions);
-    }
-    .filter-form .header, .filter-form .footer{
-        position: absolute;
-        width: var(--width-head-and-foot);
-        height: var(--height-head-and-foot);
-        left: var(--pleft-head-and-foot);
-        background-color: white;
-    }
-    /*header*/
-    .filter-form .header{
-        top: 0px;
-    }
-    .filter-form .header:after, .filter-form .header:before{
-        content: "";
-        position: absolute;
-        bottom: 0;
-        border-bottom: var(--height-head-and-foot) solid white;
-    }
-    .filter-form .header:before{
-        left: -50px;
-        border-left: var(--pleft-head-and-foot) solid transparent;
-    }
-    .filter-form .header:after{
-        right: -50px;
-        border-right: var(--pleft-head-and-foot) solid transparent;
-    }
-    /*footer*/
-    .filter-form .footer{
-        bottom: 0px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .filter-form .footer:after, .filter-form .footer:before{
-        content: "";
-        position: absolute;
-        bottom: 0;
-        border-top: var(--height-head-and-foot) solid white;
-    }
-    .filter-form .footer:before{
-        left: -50px;
-        border-left: var(--pleft-head-and-foot) solid transparent;
-    }
-    .filter-form .footer:after{
-        right: -50px;
-        border-right: var(--pleft-head-and-foot) solid transparent;
-    }
-    /*body*/
-    .filter-form .body{
-        position: absolute;
-        background-color: white;
-        top: var(--height-head-and-foot);
-        width: var(--proporions);
-        height: 300px;
-        z-index: 4;
-        box-shadow: 0px 0px 20px -5px black;
-    }
-    .filter-form .body:before, .filter-form .body:after{
-        content: "";
-        position: absolute;
-        top: 0;
-        border-top: 150px solid transparent;
-        border-bottom: 150px solid transparent;
-    }
-    .filter-form .body:after{
-        right: -60px;
-        border-left: 60px solid white;
-    }
-    .filter-form .body:before{
-        left: -60px;
-        border-right: 60px solid white;
     }
     /*логотип*/
     .logo{
