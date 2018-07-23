@@ -50,7 +50,9 @@
                      :P_rang_price='rang_price'
                      :P_low_price='low_price' :P_high_price='high_price'
                      :P_colors="colors"
-                     @event_change_txt_priceFilter = "change_txt_priceFilter" >
+                     @event_change_txt_priceFilter = "change_txt_priceFilter"
+                     :P_filter_regions="filter_regions"
+                     @event_click_btn_changeRegion="click_btn_changeRegion" >
         </filters-map>
 
         <!-- фильтры конец-->
@@ -125,6 +127,7 @@
                 rang_price: null,
                 //для фильтра регионов
                 regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
+                filter_regions: null,// [{name, link ,check},{}]
                 osmId: null,
                 region_name: null
             }
@@ -356,8 +359,15 @@
                 this.categories = this.get_categoryes_from_placemarks(this.placemarks);
                 this.click_btn_ShowAllTags();
                 //добавляем каждый регион на карту
+                this.filter_regions = [];//сохраняем информацию для фильтра по регионам
                 checked_regions.forEach(region => {
                     this.mapInstanse.geoObjects.add(region);
+                    //сохраняем информацию для фильтра по регионам
+                    this.filter_regions.push({
+                        name: region.properties.get('name'),
+                        link: region,
+                        check: true
+                    });
                 });
                 this.stateApp = 0;
             },
@@ -714,6 +724,9 @@
                 this.categories = categories.map(e => e.name);
                 this.show_category_trig = !this.show_category_trig;
                 console.log(categories);
+            },
+            click_btn_changeRegion: function(region){
+                alert(1)
             },
             //-----------------ИНИЦИАЛИЗАТОРЫ---------------------
             initHandler: function (myMap) {

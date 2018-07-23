@@ -10,8 +10,8 @@
                     <input type="number" v-model='P_high_price'>
                 </div>
             </div>
-            <div v-show="P_num_filter == 2">
-                регионы
+            <div class="center" v-show="P_num_filter == 2">
+                Фильтр по регионам. (скоро тут появится возможность фильтрации по городам)
             </div>
             <div class="center" v-show="P_num_filter == 3">
                  <p>
@@ -27,8 +27,17 @@
                       :style="{'background-color': P_colors[index]}">{{ price }}</span>
                 <p>скоро тут будет график и чекбоксы :)</p>
             </div>
-            <div v-show="P_num_filter == 2">
-                регионы
+            <div class="center" v-show="P_num_filter == 2">
+                <p><b>Регионы</b></p>
+                <ul>
+                    <li v-for='region in P_filter_regions'
+                        @click="changeRegion(region)">
+                            <span class="checkbox__fake">
+                                <span v-show="region.check" class="b-checkbox__fake-on"></span>
+                            </span>
+                        {{ region.name }}
+                    </li>
+                </ul>
             </div>
             <div class="center" v-show="P_num_filter == 3">
                 <div v-show='P_placemarks.length != 0 && P_categories.length != 0'>
@@ -42,9 +51,6 @@
                             {{ tag }}
                         </li>
                     </ul>
-                    <!--
-            :class="{'on-card': 'All' == P_cur_category}"
-            -->
                 </div>
             </div>
         </div>
@@ -61,7 +67,8 @@
     export default {
         name: "filtersMap",
         props: ['P_categories', 'P_placemarks', 'P_cur_category', 'P_rang_price', 'P_low_price', 'P_high_price', 'P_colors',
-            'P_num_filter'
+            'P_num_filter',
+            'P_filter_regions'
         ],
         methods: {
             submit: function () {
@@ -93,6 +100,10 @@
                     else
                         return true;
                 }
+            },
+            changeRegion: function (region) {
+                region.check = !region.check;
+                this.$emit('event_click_btn_changeRegion', region)
             }
         }
     }
