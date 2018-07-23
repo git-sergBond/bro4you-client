@@ -42,7 +42,6 @@
             </div>
         </div>
         <div class="filter-form" >
-            <!--div>FILTER LOGIC</div-->
             <div class="header">
 
             </div>
@@ -1118,6 +1117,9 @@
     /*footer*/
     .filter-form .footer{
         bottom: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .filter-form .footer:after, .filter-form .footer:before{
         content: "";
