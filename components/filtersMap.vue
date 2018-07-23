@@ -13,8 +13,10 @@
             <div v-show="P_num_filter == 2">
                 регионы
             </div>
-            <div v-show="P_num_filter == 2">
-                 категории
+            <div class="center" v-show="P_num_filter == 3">
+                 <p>
+                     Здесь вы можете отфильтровать метки по интересующим вас категориям
+                 </p>
             </div>
         </div>
         <div class="body">
@@ -23,23 +25,25 @@
                 <span class="price-color"
                       v-for='(price, index) in P_rang_price'
                       :style="{'background-color': P_colors[index]}">{{ price }}</span>
+                <p>скоро тут будет график и чекбоксы :)</p>
             </div>
             <div v-show="P_num_filter == 2">
                 регионы
             </div>
-            <div v-show="P_num_filter == 2">
+            <div class="center" v-show="P_num_filter == 3">
                 <div v-show='P_placemarks.length != 0 && P_categories.length != 0'>
                     <p><b>Уточните категорию</b></p>
-                    <p v-for='tag in P_categories'
-                       @click="$emit('event_click_btn_changeTag', tag)">
-                        {{ tag }}
-                    </p>
-                    <p @click="$emit('event_click_btn_ShowAllTags')">
-                        Показать все
-                    </p>
+                    <ul>
+                        <li v-for='tag in P_categories'
+                            @click="$emit('event_click_btn_changeTag', tag)">
+                            <span class="checkbox__fake">
+                                <span v-show="isOnCategory(tag)" class="b-checkbox__fake-on"></span>
+                            </span>
+                            {{ tag }}
+                        </li>
+                    </ul>
                     <!--
             :class="{'on-card': 'All' == P_cur_category}"
-            :class="{'on-card': tag == P_cur_category}"
             -->
                 </div>
             </div>
@@ -47,7 +51,7 @@
         <div class="footer buttons-menu">
             <div class="button-skew">
                 <p @click="submit">Найти</p>
-                <p >Очистить</p>
+                <p @click="clear">Очистить</p>
             </div>
         </div>
     </div>
@@ -66,6 +70,28 @@
                         low_price: this.P_low_price,
                         high_price: this.P_high_price
                     });
+                }
+            },
+            clear: function(){
+                if(this.P_num_filter == 1){//money
+
+                }
+                if(this.P_num_filter == 2){//area
+
+                }
+                if(this.P_num_filter == 3){//categorise
+                    this.$emit('event_click_btn_ShowAllTags');
+                }
+            },
+            isOnCategory: function (tag) {
+                if(this.P_cur_category.length == this.P_categories.length)
+                    return true;
+                else {
+                    let index = this.P_cur_category.indexOf(tag);
+                    if(index == -1)
+                        return false;
+                    else
+                        return true;
                 }
             }
         }
@@ -169,6 +195,29 @@
         margin-right: 3px;
         color: white;
     }
+    /*списки с чек боксами*/
+    li {
+        list-style-type: none;
+        margin-bottom: 3px;
+    }
+    .checkbox__fake {
+        position: relative;
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        border: 1px solid #c4c4c4;
+        background-color: #fff;
+        top: 0.5em;
+    }
+    .b-checkbox__fake-on {
+        position: absolute;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='23' viewBox='0 0 21 23'%3E%3Cpath d='M20.966 3.178L17.62 1.045l-9.623 15.48-4.973-5.516L0 13.85 8.384 23z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        top: -3px;
+        right: -2px;
+        width: 21px;
+        height: 23px;
+        }
     /* кнопки */
     .buttons-menu{
         display: flex;
