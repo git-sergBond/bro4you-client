@@ -41,6 +41,18 @@
                 <img class="img-format" src="images/icons/catergories.png"/>
             </div>
         </div>
+        <div class="filter-form" >
+            <!--div>FILTER LOGIC</div-->
+            <div class="header">
+
+            </div>
+            <div class="body">
+
+            </div>
+            <div class="footer">
+
+            </div>
+        </div>
 
         <filters-map
                      :P_placemarks='placemarks'
@@ -1006,8 +1018,11 @@
         bottom: 0;
         box-shadow: 0 0 80px;
     }
-    .filter-buttons .angle-hex-item[class*='item']{
-        box-shadow: 0 0 50px;
+    .filter-buttons .angle-hex-item{
+        box-shadow: 0 0 50px black;
+    }
+    .filter-buttons .angle-hex-item:hover{
+        box-shadow: 0 0 50px green;
     }
     .filter-buttons .angle-hex-item.item1{
         transform: rotate(13deg);
@@ -1061,6 +1076,87 @@
         --proporions: 32px;
         width: var(--proporions);
         height: var(--proporions);
+    }
+    /*поле отображения фильтра*/
+    .filter-form {
+        --proporions: 500px;
+        --width-head-and-foot: 400px;
+        --height-head-and-foot: 100px;
+        --pleft-head-and-foot: 50px;
+        position: absolute;
+        top: 10%;
+        left: 25%;
+        margin: auto;
+        height: var(--proporions);
+        width: var(--proporions);
+    }
+    .filter-form .header, .filter-form .footer{
+        position: absolute;
+        width: var(--width-head-and-foot);
+        height: var(--height-head-and-foot);
+        left: var(--pleft-head-and-foot);
+        background-color: white;
+    }
+    /*header*/
+    .filter-form .header{
+        top: 0px;
+    }
+    .filter-form .header:after, .filter-form .header:before{
+        content: "";
+        position: absolute;
+        bottom: 0;
+        border-bottom: var(--height-head-and-foot) solid white;
+    }
+    .filter-form .header:before{
+        left: -50px;
+        border-left: var(--pleft-head-and-foot) solid transparent;
+    }
+    .filter-form .header:after{
+        right: -50px;
+        border-right: var(--pleft-head-and-foot) solid transparent;
+    }
+    /*footer*/
+    .filter-form .footer{
+        bottom: 0px;
+    }
+    .filter-form .footer:after, .filter-form .footer:before{
+        content: "";
+        position: absolute;
+        bottom: 0;
+        border-top: var(--height-head-and-foot) solid white;
+    }
+    .filter-form .footer:before{
+        left: -50px;
+        border-left: var(--pleft-head-and-foot) solid transparent;
+    }
+    .filter-form .footer:after{
+        right: -50px;
+        border-right: var(--pleft-head-and-foot) solid transparent;
+    }
+    /*body*/
+    .filter-form .body{
+        position: absolute;
+        background-color: white;
+        top: var(--height-head-and-foot);
+        width: var(--proporions);
+        height: 300px;
+        z-index: 4;
+        box-shadow: 0px 0px 20px -5px black;
+    }
+    .filter-form .body:before, .filter-form .body:after{
+        content: "";
+        position: absolute;
+        top: 0;
+        border-top: 150px solid transparent;
+        border-bottom: 150px solid transparent;
+    }
+    .filter-form .body:after{
+        right: -60px;
+        border-left: 60px solid white;
+    }
+    .filter-form .body:before{
+        left: -60px;
+        border-right: 60px solid white;
     }
     /*логотип*/
     .logo{
