@@ -369,11 +369,38 @@
                         check: true
                     });
                 });
+                this.filter();
                 this.stateApp = 0;
             },
             filter: function(){
-                //фильтр для категорий и цен
-                let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
+                let collection = ymaps.geoQuery(this.mapInstanse.geoObjects)
+                    .search('geometry.type = "Point"')
+                    .setOptions('visible', false)//очищаем все на карте
+                    .map(point => { // фильтр регионов
+                        if(this.filter_regions == null) return point;
+                        //.search('geometry.type = "Point"');
+                        let contains = false;
+                        /*
+                        this.filter_regions.forEach(region => {
+                        if(region.check != false) {
+                        //let res = collection.searchInside(region.link);
+                        if(region.link.contains(point)) contains = true;
+                        }
+                        });*/
+                        if(contains == true) return point;
+                        return null;
+                    })
+                    .each(point => {//фильтр для категорий и цен
+                    this.placemarks.forEach(el => {
+                        if( (this.cur_category.indexOf(el.tag)!=-1)//+
+                            && el.price >= this.low_price
+                            && el.price <= this.high_price
+                            && el.coords == point.geometry.getCoordinates()){
+                            point.options.set('visible', true);
+                        }
+                    });
+                })
+                /*
                 for (let j = 0; j < collection.getLength(); j++) {
                     if (collection.get(j).geometry.getType() === "Point") {
                         let point = collection.get(j);
@@ -386,9 +413,10 @@
                                 point.options.set('visible', true);
                             }
                         });
-                        if(this.cur_category == 'All') point.options.set('visible', true);
+                        // [ - ] if(this.cur_category == 'All') point.options.set('visible', true);
                     }
-                }
+                }*/
+                //collection.setOptions('visible', true);//свечиваем
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
@@ -725,8 +753,9 @@
                 this.show_category_trig = !this.show_category_trig;
                 console.log(categories);
             },
-            click_btn_changeRegion: function(region){
-                alert(1)
+            click_btn_changeRegion: function(P_filter_regions){
+                this.filter_regions = P_filter_regions;
+                this.filter();
             },
             //-----------------ИНИЦИАЛИЗАТОРЫ---------------------
             initHandler: function (myMap) {

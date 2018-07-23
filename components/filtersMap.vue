@@ -103,7 +103,7 @@
             },
             changeRegion: function (region) {
                 region.check = !region.check;
-                this.$emit('event_click_btn_changeRegion', region)
+                this.$emit('event_click_btn_changeRegion', this.P_filter_regions)
             }
         }
     }
