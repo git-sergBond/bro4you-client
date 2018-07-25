@@ -20,10 +20,18 @@
         <div class="backdrop" :class="{'backdrop-on': show_category_trig}"></div>
         <category class="app--categories" v-show="show_category_trig" @event_category_filter = "swithcat" @event-clear="click_btn_ShowAllTags"></category>
 
+        <!-- боковая информационная панель -->
+        <div class="info-mark">
+            <div class="button">
+                <img src="images/icons/left-row.png">
+            </div>
+        </div>
         <place-info-map class="place-info"
                         :P_placemarks="placemarks" :P_cur_point="cur_point"
                         :F_is_equals_coords="is_equals_coords" >
         </place-info-map>
+        <!-- боковая информационная панель конец-->
+
 
         <!-- фильтры начало-->
 
@@ -949,6 +957,46 @@
 </style>
 
 <style scoped >
+    /*Информационная панель*/
+    .info-mark{
+        position: absolute;
+        top: 30%;
+        right: 0;
+    }
+    .info-mark .button{
+        position: absolute;
+        top: 50%;
+        height: 32px;
+        width: 32px;
+        left: -32px;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 10px 0 30px 1px;
+    }
+    .info-mark .button:before, .info-mark .button:after{
+        content: "";
+        position: absolute;
+        right: 0;
+    }
+    .info-mark .button:before{
+        top: -15px;
+        border-bottom: 15px solid white;
+        border-left: 32px solid transparent;
+    }
+    .info-mark .button:after{
+        bottom: -15px;
+        border-top: 15px solid white;
+        border-left: 32px solid transparent;
+    }
+    .info-mark .button img{
+        height: 40px;
+        width: 32px;
+    }
+    .info-mark .button img.reverce{
+
+    }
     /*скроллбар*/
     ::-webkit-scrollbar {
         width: 12px;
