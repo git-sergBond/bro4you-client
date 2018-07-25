@@ -56,12 +56,20 @@
         </filters-map>
 
         <!-- фильтры конец-->
-        <shares class="app--near-you"
-                :coords="cur_point"
-                :shares_data="shares_d"
-                :F_is_equals_coords="is_equals_coords"
-                @click_on_card="click_on_card"
-        ></shares>
+        <!-- Блок акций -->
+        <div class="shares">
+            <div class="shares--button" @click="trigShares = !trigShares" >
+                <p >Здесь вы можете посмотреть скидки</p>
+            </div>
+                <shares v-show="trigShares" class="shares--scroll"
+                        :coords="cur_point"
+                        :shares_data="shares_d"
+                        :F_is_equals_coords="is_equals_coords"
+                        @click_on_card="click_on_card"
+                ></shares>
+        </div>
+        <!-- блок акций конец -->
+
         <div class="logo">
             <img src="images/rast.jpg"/>
         </div>
@@ -129,7 +137,9 @@
                 regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
                 filter_regions: null,// [{name, link ,check},{}]
                 osmId: null,
-                region_name: null
+                region_name: null,
+                //триггеры областей
+                trigShares: false
             }
         },
         components: {
@@ -376,22 +386,31 @@
                 let collection = ymaps.geoQuery(this.mapInstanse.geoObjects)
                     .search('geometry.type = "Point"')
                     .setOptions('visible', false)//очищаем все на карте
-                    .map(point => { // фильтр регионов
-                        if(this.filter_regions == null) return point;
+                    /*
+                    .each(point => { // фильтр регионов
+                        if(this.filter_regions == null) return;
                         //.search('geometry.type = "Point"');
                         let contains = false;
-                        /*
+                        //let coords = point.get('coords');
                         this.filter_regions.forEach(region => {
-                        if(region.check != false) {
+                            if(region.check != false) {
+                           if(region.check != false) {
                         //let res = collection.searchInside(region.link);
-                        if(region.link.contains(point)) contains = true;
-                        }
-                        });*/
-                        if(contains == true) return point;
-                        return null;
-                    })
+                                console.log(coords);
+                                if(region.link.geometry.contains(coords)) contains = true;
+                            }
+                        });
+                        if(contains == true) return;
+                        point.properties.set("del",true);
+                       // point.removeFrom(context);
+                    })*/
+                    //добавлять свойство означающее прохождение проверки
+                    //или удалаяять объект из коллекции или коллекцию объектов
+                    //result then func
                     .each(point => {//фильтр для категорий и цен
-                    this.placemarks.forEach(el => {
+                        //let coords = point.getCoordinates();
+                        //if (point.properties.get('del') != true) return;
+                        this.placemarks.forEach(el => {
                         if( (this.cur_category.indexOf(el.tag)!=-1)//+
                             && el.price >= this.low_price
                             && el.price <= this.high_price
@@ -400,6 +419,18 @@
                         }
                     });
                 })
+/*
+                    .each(point => {//фильтр для категорий и цен
+                        if (point.properties.get('del') != true) point.options.set('visible', true);//return;
+                        return;
+                        this.placemarks.forEach(el => {
+                            if( (this.cur_category.indexOf(el.tag)!=-1)//+
+                                && el.price >= this.low_price && el.price <= this.high_price
+                                && el.coords == point.geometry.getCoordinates())
+                                point.options.set('visible', true);
+                        });
+                    })
+*/
                 /*
                 for (let j = 0; j < collection.getLength(); j++) {
                     if (collection.get(j).geometry.getType() === "Point") {
@@ -918,6 +949,65 @@
 </style>
 
 <style scoped >
+    /*скроллбар*/
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    }
+    /*Акции*/
+    .shares{
+        --height-area: 300px;
+        --width-area: 300px;
+        --height-button: 32px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 0;
+        width: 0;
+        overflow: visible;
+    }
+    .shares--button{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: var(--width-area);
+        height: var(--height-button);
+        background-color: white;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: -8px 3px 30px -3px black;
+    }
+    .shares--button p {
+        margin: 0;
+    }
+    .shares--button:after{
+        content: "";
+        position: absolute;
+        left: -15px;
+        border-left: 15px solid transparent;
+        border-bottom: var(--height-button) solid white;
+    }
+    .shares--scroll{
+        position: absolute;
+        right: 0;
+        bottom: var(--height-button);
+        width: var(--width-area);
+        height: var(--height-area);
+        overflow-y: scroll;
+        display: flex;
+        justify-content: center;
+    }
     /*начало для кнопок для правоговерхнего угла*/
     .button-left, .button-left-f{
         --bcolor: white;

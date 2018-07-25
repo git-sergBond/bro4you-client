@@ -1,8 +1,5 @@
 <template>
     <div>
-    <p >
-        <b>Рядом с вами</b>
-    </p>
     <div class="card-container">
         <div v-for='item in shares_data'
              @click="$emit('click_on_card',item.coords)"
@@ -42,11 +39,12 @@
 <style scoped>
     .card-container{
         display: flex;
-        justify-content: space-around;
+        flex-direction: column;
+        justify-content: center;
     }
     .card{
+        margin-bottom: 10px;
         background-color: white;
-        margin-right: 1rem;
         max-width: 270px;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
@@ -55,7 +53,6 @@
     }
     .on-card{
         border: 2px solid green;
-        transform: scale(1.1);
         box-shadow: 0 0 20px rgba(1, 255, 56, 0.801);
     }
     .card img{
