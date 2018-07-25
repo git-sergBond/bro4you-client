@@ -21,15 +21,13 @@
         <category class="app--categories" v-show="show_category_trig" @event_category_filter = "swithcat" @event-clear="click_btn_ShowAllTags"></category>
 
         <!-- боковая информационная панель -->
-        <div class="info-mark">
-            <div class="button">
-                <img src="images/icons/left-row.png">
-            </div>
-        </div>
-        <place-info-map class="place-info"
+
+        <place-info-map class="info-mark"
+                        @event_close_p="close_info_p"
                         :P_placemarks="placemarks" :P_cur_point="cur_point"
                         :F_is_equals_coords="is_equals_coords" >
         </place-info-map>
+
         <!-- боковая информационная панель конец-->
 
 
@@ -136,6 +134,7 @@
                 categories: [],
                 cur_category: 'All',
                 num_filter: 0,//выбор фильтра 0-нет 1-деньги 2-регионы 3-категории
+                save_old_p: null,//сохранить старое значение точки
                 //для фильтра цен
                 low_price: 0,
                 high_price: 0,
@@ -147,7 +146,7 @@
                 osmId: null,
                 region_name: null,
                 //триггеры областей
-                trigShares: false
+                trigShares: false,
             }
         },
         components: {
@@ -158,6 +157,18 @@
             placeInfoMap
         },
         methods: {
+            close_info_p: function(){
+                this.save_old_p=[
+                    this.cur_point[0],
+                    this.cur_point[1]
+                ];
+                this.cur_point=null;
+            },
+            open_info_p: function(){
+                if(this.cur_point==null){
+                    this.cur_point = this.save_old_p;
+                }
+            },
             //--------------РАБОТА С ГЕО ОБЪЕКТАМИ---------------
             NewPolygon: function (arrayPoints) {
                 //Создает новый полигон
@@ -960,42 +971,42 @@
     /*Информационная панель*/
     .info-mark{
         position: absolute;
-        top: 30%;
-        right: 0;
+        top: 25%;
+        right: 0px;
     }
-    .info-mark .button{
+    .info-mark--button{
         position: absolute;
-        top: 50%;
+        top: 30%;
         height: 32px;
         width: 32px;
-        left: -32px;
+        right: -32px;
         background-color: white;
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 10px 0 30px 1px;
     }
-    .info-mark .button:before, .info-mark .button:after{
+    .info-mark--button:before, .info-mark--button:after{
         content: "";
         position: absolute;
         right: 0;
     }
-    .info-mark .button:before{
+    .info-mark--button:before{
         top: -15px;
         border-bottom: 15px solid white;
         border-left: 32px solid transparent;
     }
-    .info-mark .button:after{
+    .info-mark--button:after{
         bottom: -15px;
         border-top: 15px solid white;
         border-left: 32px solid transparent;
     }
-    .info-mark .button img{
+    .info-mark--button img{
         height: 40px;
         width: 32px;
     }
-    .info-mark .button img.reverce{
-
+    .info-mark--button img.reverce{
+        transform: scale(-1, 1);
     }
     /*скроллбар*/
     ::-webkit-scrollbar {
@@ -1118,18 +1129,13 @@
         display: flex;
     }
     /**/
-    .place-info, .top-panel{
+    .top-panel{
         z-index: 2;
         position: absolute;
     }
     .app--categories{
         z-index: 4;
         position: absolute;
-    }
-    /*инфа внутри карточки*/
-    .place-info{
-        top: 9%;
-        right: 0;
     }
     /**/
     p, h1, a{

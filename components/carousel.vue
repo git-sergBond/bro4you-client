@@ -6,8 +6,12 @@
     :src='img'
     :width="Cwidth"
     height="170px">
-    <div class="btn left" @click="before_image"></div>
-    <div class="btn right" @click="after_image"></div>
+    <div class="btn left" @click="before_image">
+      <img src="images/icons/arrow-left.png">
+    </div>
+    <div class="btn right" @click="after_image">
+      <img src="images/icons/arrow-right.png">
+    </div>
   </div>
 </template>
 
@@ -43,10 +47,13 @@ module.exports = {
 .btn{
   position: absolute;
   height: 100%;
-  width: 20px;
+  width: 30px;
   margin: 0;
   text-align: center;
   background-color: rgba(128, 128, 128, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .btn:hover{
   background-color: rgba(128, 128, 128, 0.6);
@@ -63,26 +70,6 @@ module.exports = {
   top: 0;
   line-height: 0;
 }
-.left::after {
-  content: '';
-  position: absolute;
-  top:50%;
-  left: 0;
-  width: 0; 
-  height: 0; 
-  border-width: 0;
-  border: 10px solid transparent;
-  border-right: 10px solid white; 
-}
-.right:after {
-  content: '';
-  position: absolute;
-  top:50%;
-  right: 0;
-  width: 0; 
-  height: 0; 
-  border: 10px solid transparent;
-  border-left: 10px solid white; 
-}
+
 </style>
 
