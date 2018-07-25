@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30011467-55f1-4b5b-b6bd-a49db8891194" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/carousel.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/carousel.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/placeInfoMap.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/placeInfoMap.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/bundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/icons/Arrow-blue-LEFT-27x97px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/icons/Arrow-blue-RIGHT-27x97px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/mainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mainPage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
@@ -41,8 +35,8 @@
       <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="972" column="14" lean-forward="true" selection-start-line="972" selection-start-column="14" selection-end-line="972" selection-end-column="14" />
+            <state relative-caret-position="264">
+              <caret line="969" column="15" lean-forward="true" selection-start-line="969" selection-start-column="15" selection-end-line="969" selection-end-column="15" />
               <folding>
                 <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
               </folding>
@@ -50,11 +44,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="filtersMap.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/components/filtersMap.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="192">
+              <caret line="61" column="14" lean-forward="true" selection-start-line="56" selection-start-column="8" selection-end-line="61" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="placeInfoMap.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/components/placeInfoMap.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="43" column="26" lean-forward="true" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+            <state relative-caret-position="222">
+              <caret line="57" column="38" selection-start-line="57" selection-start-column="38" selection-end-line="57" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -283,12 +286,12 @@
       <workItem from="1532408890948" duration="5187000" />
       <workItem from="1532424949091" duration="6499000" />
       <workItem from="1532506198806" duration="8101000" />
-      <workItem from="1532515605921" duration="4914000" />
+      <workItem from="1532515605921" duration="6993000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="243556000" />
+    <option name="totallyTimeSpent" value="245635000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -655,13 +658,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/filtersMap.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="42" column="37" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/components/category.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -676,10 +672,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/components/filtersMap.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="61" column="14" lean-forward="true" selection-start-line="56" selection-start-column="8" selection-end-line="61" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="972" column="14" lean-forward="true" selection-start-line="972" selection-start-column="14" selection-end-line="972" selection-end-column="14" />
+        <state relative-caret-position="264">
+          <caret line="969" column="15" lean-forward="true" selection-start-line="969" selection-start-column="15" selection-end-line="969" selection-end-column="15" />
           <folding>
             <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
           </folding>
@@ -688,8 +691,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/components/placeInfoMap.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="43" column="26" lean-forward="true" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+        <state relative-caret-position="222">
+          <caret line="57" column="38" selection-start-line="57" selection-start-column="38" selection-end-line="57" selection-end-column="38" />
         </state>
       </provider>
     </entry>

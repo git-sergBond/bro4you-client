@@ -24,6 +24,14 @@
             <div class="button revievs"  @click="$emit('event_close_p')" >
                 <P>{{item.countReviews}}</P>
             </div>
+            <div class="ender"></div>
+            <div class="footer buttons-menu">
+                <div class="button-skew">
+                    <p >Заказать</p>
+                    <p >Подробнее</p>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -40,6 +48,96 @@
 </script>
 
 <style scoped>
+    /*блок который заканчивает кнопки*/
+    .ender{
+        position: absolute;
+        bottom: -20px;
+        height: 20px;
+        width: 266px;
+        background-color: white;
+        box-shadow: 3px 7px 20px -1px;
+    }
+    .ender:before {
+        content:'';
+        display:block;
+        clear:both;
+        width:0;
+        height:0;
+        border-left:17px solid transparent;
+        border-top:21px solid white;
+        position:absolute;
+        top:0;
+        left:-17px;
+    }
+    .ender:after {
+        content:'';
+        display:block;
+        clear:both;
+        width:0;
+        height:0;
+        border-right:17px solid transparent;
+        border-top:21px solid white;
+        position:absolute;
+        top:0;
+        right:-17px;
+    }
+    /* кнопки */
+    .buttons-menu{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: -50px;
+    }
+    .button-skew{
+        display: flex;
+        margin: 10px;
+    }
+    .button-skew p{
+        display:inline-block;
+        vertical-align:top;
+        padding:0 15px;
+        height:40px;
+        color:#fff;
+        text-decoration:none;
+        font-family:Arial, sans-serif;
+        font-size:13px;
+        line-height:40px;
+        font-weight:bold;
+        letter-spacing:0.05em;
+        text-transform:uppercase;
+        background:#00B98B;
+        text-align:center;
+        position:relative;
+    }
+    .button-skew p:hover {
+        opacity:0.8;
+    }
+    .button-skew p:before {
+        content:'';
+        display:block;
+        clear:both;
+        width:0;
+        height:0;
+        border-left:30px solid transparent;
+        border-top:40px solid #00B98B;
+        position:absolute;
+        top:0;
+        left:-30px;
+    }
+    .button-skew p:after {
+        content:'';
+        display:block;
+        clear:both;
+        width:0;
+        height:0;
+        border-right:30px solid transparent;
+        border-top:40px solid #00B98B;
+        position:absolute;
+        top:0;
+        right:-30px;
+    }
+    /**/
     .stars{
         position: absolute;
         left: -32px;
@@ -59,12 +157,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 10px 0 30px 1px;
+        box-shadow: -7px 1px 25px -5px;
     }
     .close{
         top: 30px;
     }
     .revievs{
+        font-family:Arial, sans-serif;
         bottom: 30px;
         font-size: 1.5rem;
         font-weight: bold;
