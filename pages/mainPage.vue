@@ -415,6 +415,7 @@
                         let cat = p.properties.get('category');
                         if(categoties.indexOf(cat)!=-1) p.options.set('visible', true);
                     })
+                // добавить фильтр в заданной области
                     //.setOptions('visible', true)//высвечиваем оставшиеся
                     /*
                     .map(point => {
@@ -560,16 +561,55 @@
                 return HintLayout;
             },
             //---------------- ОТРИСОВКА ОБЛАСТИ НА КАРТЕ---------
+            getInfoRegionFromPoint: function(p){
+                let mapInst = this.mapInstanse;
+                //оптимизировать загрузку полигонов
+                //сделать ее при старте приложения, а не при каждой отрисовке точки
+                let regions = ymaps.geoQuery(ymaps.regions.load('RU'))
+                    .each(reg => {
+                        reg.geometry.setMap(mapInst);
+                        reg.geometry.options.setParent(mapInst.options);})
+                    .searchContaining(p)
+                    /*.each(reg => {
+                        alert(reg.properties.get('name'));
+                    })*/
+                    let regon = null;
+                    regions.then(e=>{
+                        alert(regions.get(0).properties.get('name'))
+                    })
+                /*
+                ymaps.regions.load('RU', {
+                    lang: 'ru',
+                    quality: 1
+                }).then(this.remember_regions, function () {
+                    alert('No response');
+                });*/
+/*
+
+                ymaps.geoQuery(ymaps.regions.load('RU')).each(reg => {
+                    let myPolygonGeometry = reg.geometry;
+                    myPolygonGeometry.setMap(mapInst);
+                    myPolygonGeometry.options.setParent(mapInst.options);
+                    alert(myPolygonGeometry.contains(p.geometry.getCoordinates())+' fdfdfghj');
+                    //return reg.properties.get('name');
+                }).then(a => {
+                    return 0;
+                })
+
+*/
+            },
             add_placemarks_on_map: function(arr_placemarks){
                 //добавление меток на карту и информации о них
                 let HintShare = this.make_service_hint();
                 let HintServ = this.make_shares_hint();
                 let myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
+
                 arr_placemarks.forEach(placemark => {
                     let p = new ymaps.Placemark(placemark.coords, {}, {
                         hintLayout: (placemark.price == null || placemark.price == undefined) ? HintServ : HintShare
                     });
                     myCollection.add(p);//добавляем каждую точку в коллекцию
+                    this.getInfoRegionFromPoint(p);
                     p.properties.set({
                         name: placemark.name,
                         imageUrl: placemark.imageUrl,
@@ -578,7 +618,8 @@
                         countReviews: placemark.countReviews,
                         price: placemark.price,
                         stars: placemark.stars,
-                        category: placemark.category
+                        category: placemark.category,
+                        region: ''
                     });
                     p.events.add('click', this.click_Placemark);
                     this.mapInstanse.geoObjects.add(p);

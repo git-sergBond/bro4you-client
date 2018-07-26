@@ -35,8 +35,8 @@
       <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="420" column="42" lean-forward="true" selection-start-line="420" selection-start-column="42" selection-end-line="420" selection-end-column="42" />
+            <state relative-caret-position="195">
+              <caret line="571" column="40" lean-forward="true" selection-start-line="571" selection-start-column="40" selection-end-line="577" selection-end-column="37" />
               <folding>
                 <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
               </folding>
@@ -84,7 +84,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>regions</find>
       <find>region</find>
       <find>click_btn_changeRegion</find>
       <find>click_btn_changeTag</find>
@@ -114,6 +113,7 @@
       <find>.price</find>
       <find>tag</find>
       <find>.tag</find>
+      <find>.prope</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -287,12 +287,12 @@
       <workItem from="1532424949091" duration="6499000" />
       <workItem from="1532506198806" duration="8101000" />
       <workItem from="1532515605921" duration="6993000" />
-      <workItem from="1532636471481" duration="8404000" />
+      <workItem from="1532636471481" duration="12694000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="254039000" />
+    <option name="totallyTimeSpent" value="258329000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -689,8 +689,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="420" column="42" lean-forward="true" selection-start-line="420" selection-start-column="42" selection-end-line="420" selection-end-column="42" />
+        <state relative-caret-position="195">
+          <caret line="571" column="40" lean-forward="true" selection-start-line="571" selection-start-column="40" selection-end-line="577" selection-end-column="37" />
           <folding>
             <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
           </folding>
