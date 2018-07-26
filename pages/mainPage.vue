@@ -402,71 +402,35 @@
                 this.stateApp = 0;
             },
             filter: function(){
+                let categoties = this.cur_category;
                 let collection = ymaps.geoQuery(this.mapInstanse.geoObjects)
                     .search('geometry.type = "Point"')
+                    .search(`properties.price > 0`)//удаляем акции из выбрки
                     .setOptions('visible', false)//очищаем все на карте
-                    /*
-                    .each(point => { // фильтр регионов
-                        if(this.filter_regions == null) return;
-                        //.search('geometry.type = "Point"');
-                        let contains = false;
-                        //let coords = point.get('coords');
-                        this.filter_regions.forEach(region => {
-                            if(region.check != false) {
-                           if(region.check != false) {
-                        //let res = collection.searchInside(region.link);
-                                console.log(coords);
-                                if(region.link.geometry.contains(coords)) contains = true;
-                            }
-                        });
-                        if(contains == true) return;
-                        point.properties.set("del",true);
-                       // point.removeFrom(context);
-                    })*/
-                    //добавлять свойство означающее прохождение проверки
-                    //или удалаяять объект из коллекции или коллекцию объектов
-                    //result then func
-                    .each(point => {//фильтр для категорий и цен
-                        //let coords = point.getCoordinates();
-                        //if (point.properties.get('del') != true) return;
-                        this.placemarks.forEach(el => {
-                        if( (this.cur_category.indexOf(el.tag)!=-1)//+
-                            && el.price >= this.low_price
-                            && el.price <= this.high_price
-                            && el.coords == point.geometry.getCoordinates()){
-                            point.options.set('visible', true);
-                        }
-                    });
-                })
-/*
-                    .each(point => {//фильтр для категорий и цен
-                        if (point.properties.get('del') != true) point.options.set('visible', true);//return;
-                        return;
-                        this.placemarks.forEach(el => {
-                            if( (this.cur_category.indexOf(el.tag)!=-1)//+
-                                && el.price >= this.low_price && el.price <= this.high_price
-                                && el.coords == point.geometry.getCoordinates())
-                                point.options.set('visible', true);
-                        });
+                    //фильтр цен
+                    .search(`properties.price >= ${this.low_price}`)
+                    .search(`properties.price <= ${this.high_price}`)
+                    //фильтр категорий
+                    .each(p => {
+                        let cat = p.properties.get('category');
+                        if(categoties.indexOf(cat)!=-1) p.options.set('visible', true);
                     })
-*/
-                /*
-                for (let j = 0; j < collection.getLength(); j++) {
-                    if (collection.get(j).geometry.getType() === "Point") {
-                        let point = collection.get(j);
-                        point.options.set('visible', false);
-                        this.placemarks.forEach(el => {
-                            if( (this.cur_category.indexOf(el.tag)!=-1)//+
-                                && el.price >= this.low_price
-                                && el.price <= this.high_price
-                                && el.coords == point.geometry.getCoordinates()){
-                                point.options.set('visible', true);
-                            }
-                        });
-                        // [ - ] if(this.cur_category == 'All') point.options.set('visible', true);
-                    }
-                }*/
-                //collection.setOptions('visible', true);//свечиваем
+                    //.setOptions('visible', true)//высвечиваем оставшиеся
+                    /*
+                    .map(point => {
+                        // фильтр регионов
+                        point.properties.set("del_frm",false);
+                        if(this.filter_regions != null) {
+                            let coords = point.geometry.getCoordinates() //point.get('coords');
+                            this.filter_regions.forEach(region => {
+                                if(region.link.geometry.contains(coords) && region.check != false) point.properties.set("del_frm",true);
+                            });
+                        }
+                        return point;
+                        //.search('properties.del != true')
+                        //фильтр для категорий и цен
+                        console.log(point.properties.get('del_frm') + " asdasdasdas")
+                    })*/
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
@@ -510,7 +474,7 @@
                     if(this.is_equals_coords(el.coords))
                     {
                         dot = 'Dot';// выделение текущей меткя
-                        this.cur_category = el.tag;// переключение  на вкладку с меткой
+                        this.cur_category = el.category;// переключение  на вкладку с меткой
                     }
                     this.set_color_pmark(collection,coord_0,coord_1,el.color+dot);
                 });
@@ -614,6 +578,7 @@
                         countReviews: placemark.countReviews,
                         price: placemark.price,
                         stars: placemark.stars,
+                        category: placemark.category
                     });
                     p.events.add('click', this.click_Placemark);
                     this.mapInstanse.geoObjects.add(p);
@@ -637,7 +602,7 @@
                 //что бы уточнить
                 let tags = [];
                 for (let i = 0; i < placemarks.length; i++) {
-                    let tag = placemarks[i].tag;
+                    let tag = placemarks[i].category;
                     if(tags.indexOf(tag) === -1) tags.push(tag);
                 }
                 return tags;
@@ -863,7 +828,7 @@
             countReviews: 0,
             price: 7000,
             stars: 2,
-            tag: 'Форд',
+            category: 'Форд',
             url: '#1'
         },
         {
@@ -875,7 +840,7 @@
             countReviews: 43,
             price: 10000,
             stars: 5,
-            tag: 'Приключения',
+            category: 'Приключения',
             url: '#2'
         },
         {
@@ -887,7 +852,7 @@
             countReviews: 43,
             price: 9000,
             stars: 5,
-            tag: 'Майки',
+            category: 'Майки',
             url: '#2'
         },
         {
@@ -899,7 +864,7 @@
             countReviews: 43,
             price: 7500,
             stars: 5,
-            tag: 'Джинсы',
+            category: 'Джинсы',
             url: '#2'
         },
         {
@@ -911,7 +876,7 @@
             countReviews: 43,
             price: 7000,
             stars: 5,
-            tag: 'Джинсы',
+            category: 'Джинсы',
             url: '#2'
         },
         {
@@ -923,7 +888,7 @@
             countReviews: 1000,
             price: 6000,
             stars: 3,
-            tag: 'Майки',
+            category: 'Майки',
             url: '#3'
         },
         {
@@ -935,7 +900,7 @@
             countReviews: 1000,
             price: 5000,
             stars: 3,
-            tag: 'Приключения',
+            category: 'Приключения',
             url: '#3'
         }
     ];
