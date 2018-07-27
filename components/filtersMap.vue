@@ -1,5 +1,8 @@
 <template>
     <div class="filter-form" >
+        <div class="button close" @click="$emit('event_close')" >
+            <img  src="images/icons/close52.png">
+        </div>
         <div class="header" >
             <div class="center" v-show="P_num_filter == 1">
                 <p>Фильтр по стоимости</p>
@@ -110,6 +113,43 @@
 </script>
 
 <style scoped>
+    .button{
+        position: absolute;
+        height: 32px;
+        width: 32px;
+        left: -32px;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: -7px 1px 25px -5px;
+    }
+    .close{
+        top: 0px;
+        left: 350px;
+        z-index: 6;
+        transform: rotate(-90deg);
+    }
+    .button:before, .button:after{
+        content: "";
+        position: absolute;
+        right: 0;
+    }
+    .button:before{
+        top: -15px;
+        border-bottom: 15px solid white;
+        border-left: 32px solid transparent;
+    }
+    .button:after{
+        bottom: -15px;
+        border-top: 15px solid white;
+        border-left: 32px solid transparent;
+    }
+    .button img{
+        height: 32px;
+        width: 32px;
+    }
+    /**/
     .filter-form .header, .filter-form .footer{
         position: absolute;
         width: var(--width-head-and-foot);

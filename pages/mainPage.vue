@@ -49,6 +49,7 @@
             </div>
         </div>
         <filters-map class="filter-form" v-if="num_filter != 0"
+                     @event_close="num_filter = 0"
                      :P_num_filter="num_filter"
                      :P_placemarks='placemarks'
                      :P_categories='categories' :P_cur_category='cur_category'
