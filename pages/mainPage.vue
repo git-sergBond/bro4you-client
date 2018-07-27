@@ -561,44 +561,22 @@
                 return HintLayout;
             },
             //---------------- ОТРИСОВКА ОБЛАСТИ НА КАРТЕ---------
-            getInfoRegionFromPoint: function(p){
+            getInfoRegionFromPoint: async function(p){
                 let mapInst = this.mapInstanse;
-                //оптимизировать загрузку полигонов
-                //сделать ее при старте приложения, а не при каждой отрисовке точки
-                let regions = ymaps.geoQuery(ymaps.regions.load('RU'))
-                    .each(reg => {
-                        reg.geometry.setMap(mapInst);
-                        reg.geometry.options.setParent(mapInst.options);})
-                    .searchContaining(p)
-                    /*.each(reg => {
-                        alert(reg.properties.get('name'));
-                    })*/
-                    let regon = null;
+                // !!! оптимизировать загрузку полигонов
+                // !!! сделать ее при старте приложения, а не при каждой отрисовке точкиegion
+                return new Promise((resolve, reject) => {
+                    let regions = ymaps.geoQuery(ymaps.regions.load('RU'))
+                        .each(reg => {
+                            reg.geometry.setMap(mapInst);
+                            reg.geometry.options.setParent(mapInst.options);})
+                        .searchContaining(p);
                     regions.then(e=>{
-                        alert(regions.get(0).properties.get('name'))
+                        resolve(regions.get(0).properties.get('name'))
                     })
-                /*
-                ymaps.regions.load('RU', {
-                    lang: 'ru',
-                    quality: 1
-                }).then(this.remember_regions, function () {
-                    alert('No response');
-                });*/
-/*
-
-                ymaps.geoQuery(ymaps.regions.load('RU')).each(reg => {
-                    let myPolygonGeometry = reg.geometry;
-                    myPolygonGeometry.setMap(mapInst);
-                    myPolygonGeometry.options.setParent(mapInst.options);
-                    alert(myPolygonGeometry.contains(p.geometry.getCoordinates())+' fdfdfghj');
-                    //return reg.properties.get('name');
-                }).then(a => {
-                    return 0;
                 })
-
-*/
             },
-            add_placemarks_on_map: function(arr_placemarks){
+            add_placemarks_on_map: async function(arr_placemarks){
                 //добавление меток на карту и информации о них
                 let HintShare = this.make_service_hint();
                 let HintServ = this.make_shares_hint();
@@ -609,7 +587,6 @@
                         hintLayout: (placemark.price == null || placemark.price == undefined) ? HintServ : HintShare
                     });
                     myCollection.add(p);//добавляем каждую точку в коллекцию
-                    this.getInfoRegionFromPoint(p);
                     p.properties.set({
                         name: placemark.name,
                         imageUrl: placemark.imageUrl,
@@ -621,6 +598,9 @@
                         category: placemark.category,
                         region: ''
                     });
+                    this.getInfoRegionFromPoint(p).then((res)=>{
+                        p.properties.set('region',res);
+                    })
                     p.events.add('click', this.click_Placemark);
                     this.mapInstanse.geoObjects.add(p);
                 });
