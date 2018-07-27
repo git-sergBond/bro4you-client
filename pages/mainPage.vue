@@ -403,6 +403,7 @@
             },
             filter: function(){
                 let categoties = this.cur_category;
+                let filter_regions = this.filter_regions;
                 let collection = ymaps.geoQuery(this.mapInstanse.geoObjects)
                     .search('geometry.type = "Point"')
                     .search(`properties.price > 0`)//удаляем акции из выбрки
@@ -410,28 +411,22 @@
                     //фильтр цен
                     .search(`properties.price >= ${this.low_price}`)
                     .search(`properties.price <= ${this.high_price}`)
-                    //фильтр категорий
                     .each(p => {
+                        //фильтр категорий
                         let cat = p.properties.get('category');
-                        if(categoties.indexOf(cat)!=-1) p.options.set('visible', true);
+                        if(categoties.indexOf(cat)==-1) return;
+                        //регионов
+                        let reg = p.properties.get('region');
+                        if(filter_regions != null){
+                            let reg_res = false;
+                            filter_regions.forEach(region => {
+                                if(region.check != false) reg_res = true;
+                            });
+                            if(reg_res==false) return;
+                        }
+                        p.options.set('visible', true);
                     })
                 // добавить фильтр в заданной области
-                    //.setOptions('visible', true)//высвечиваем оставшиеся
-                    /*
-                    .map(point => {
-                        // фильтр регионов
-                        point.properties.set("del_frm",false);
-                        if(this.filter_regions != null) {
-                            let coords = point.geometry.getCoordinates() //point.get('coords');
-                            this.filter_regions.forEach(region => {
-                                if(region.link.geometry.contains(coords) && region.check != false) point.properties.set("del_frm",true);
-                            });
-                        }
-                        return point;
-                        //.search('properties.del != true')
-                        //фильтр для категорий и цен
-                        console.log(point.properties.get('del_frm') + " asdasdasdas")
-                    })*/
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте

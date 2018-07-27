@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30011467-55f1-4b5b-b6bd-a49db8891194" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/mainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/mainPage.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../registration-placemark-comp/src/main.js" afterDir="false" />
     </list>
@@ -36,8 +35,8 @@
       <file leaf-file-name="mainPage.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="415" column="56" selection-start-line="415" selection-start-column="56" selection-end-line="415" selection-end-column="56" />
+            <state relative-caret-position="345">
+              <caret line="428" column="53" selection-start-line="428" selection-start-column="53" selection-end-line="428" selection-end-column="53" />
               <folding>
                 <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
               </folding>
@@ -289,12 +288,12 @@
       <workItem from="1532506198806" duration="8101000" />
       <workItem from="1532515605921" duration="6993000" />
       <workItem from="1532636471481" duration="13834000" />
-      <workItem from="1532665476898" duration="3346000" />
+      <workItem from="1532665476898" duration="4152000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="262815000" />
+    <option name="totallyTimeSpent" value="263621000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -691,8 +690,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pages/mainPage.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="415" column="56" selection-start-line="415" selection-start-column="56" selection-end-line="415" selection-end-column="56" />
+        <state relative-caret-position="345">
+          <caret line="428" column="53" selection-start-line="428" selection-start-column="53" selection-end-line="428" selection-end-column="53" />
           <folding>
             <element signature="n#div#4;n#div#0;n#template#0;n#!!top" />
           </folding>
