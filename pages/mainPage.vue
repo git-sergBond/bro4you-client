@@ -6,6 +6,7 @@
                         :controls="['zoomControl']" :coords="coords"
                         @map-was-initialized="initHandler"></yandex-map>
         </div>
+        <authorization class="authorization"></authorization>
         <div class="top-panel">
             <search-map :P_message="message"
                         @event_show_category_trig="show_category_trig = !show_category_trig" @event_click_btn_search="click_btn_search" ></search-map>
@@ -88,6 +89,7 @@
     import searchMap from '../components/searchMap.vue';
     import filtersMap from '../components/filtersMap.vue';
     import placeInfoMap from '../components/placeInfoMap.vue'
+    import  authorization from '../components/authorization.vue';
     export default {
         name: "mainPage",
         //el: '',
@@ -154,7 +156,8 @@
             shares,
             searchMap,
             filtersMap,
-            placeInfoMap
+            placeInfoMap,
+            authorization
         },
         methods: {
             close_info_p: function(){
@@ -402,6 +405,9 @@
                 this.stateApp = 0;
             },
             filter: function(){
+                //!!! добавить фильтр в заданной области
+                //!!! 1 выбор регионов возможно багует
+                //!!! регионы багуют
                 let categoties = this.cur_category;
                 let filter_regions = this.filter_regions;
                 let collection = ymaps.geoQuery(this.mapInstanse.geoObjects)
@@ -426,7 +432,6 @@
                         }
                         p.options.set('visible', true);
                     })
-                // добавить фильтр в заданной области
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
@@ -949,6 +954,12 @@
 </style>
 
 <style scoped >
+    /**/
+    .authorization{
+        position: absolute;
+        bottom: 100px;
+        left: 46.6%;
+    }
     /*Информационная панель*/
     .info-mark{
         position: absolute;
