@@ -146,9 +146,9 @@
                 //для фильтра регионов
                 noVisibleRegions: null,
                 regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
-                filter_regions: null,// [{name, link ,check},{}]
-                osmId: null,
-                region_name: null,
+                filter_regions: null,// [{name ,check},{}]
+                //osmId: null,
+                //region_name: null,
                 //триггеры областей
                 trigShares: false,
             }
@@ -397,11 +397,7 @@
                 checked_regions.forEach(region => {
                     this.mapInstanse.geoObjects.add(region);
                     //сохраняем информацию для фильтра по регионам
-                    this.filter_regions.push({
-                        name: region.properties.get('name'),
-                        link: region,
-                        check: true
-                    });
+                    this.filter_regions.push({ name: region.properties.get('name'), check: true });
                 });
                 this.filter();
                 this.stateApp = 0;
@@ -593,9 +589,8 @@
                 let HintShare = this.make_service_hint();
                 let HintServ = this.make_shares_hint();
                 let myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
-
-                //arr_placemarks.forEach(async placemark => {
-                    for(let placemark of arr_placemarks){
+                let filter_regions = this.filter_regions = [];//сохраняем информацию для фильтра по регионам
+                for(let placemark of arr_placemarks){
                     let p = new ymaps.Placemark(placemark.coords, {}, {
                         hintLayout: (placemark.price == null || placemark.price == undefined) ? HintServ : HintShare
                     });
@@ -611,18 +606,21 @@
                         category: placemark.category,
                         region: ''
                     });
-                    /*
-                    this.getInfoRegionFromPoint(p).then((res)=>{
-                        p.properties.set('region',res);
-                    })*/
-                    console.log('before');
-                    let res = await this.getInfoRegionFromPoint(p);
-                    p.properties.set('region',res);
-                    console.log('after push');
+                    
+                    //сохраняем информацию для фильтра по регионам
+                    let reg = await this.getInfoRegionFromPoint(p);
+                    p.properties.set('region',reg);
+                   
+                    if(filter_regions.indexOf(reg)==-1){
+                        filter_regions.push({
+                            name: reg,
+                            check: true
+                        }); 
+                    }
+                    
                     p.events.add('click', this.click_Placemark);
                     this.mapInstanse.geoObjects.add(p);
-                }//);
-                console.log('END')
+                }
                 return myCollection;
             },
             alg_simplifi_line(arr_in){
@@ -845,9 +843,9 @@
                 //если кликнули по региону, то
                 //запомнили в перемнных id и имя региона
                 let region = event.get('target');
-                this.osmId = region.properties.get('osmId');
-                this.region_name = region.properties.get('name');
-                console.log(this.region_name + ' -> ' + this.osmId);//debug
+                //this.osmId = region.properties.get('osmId');
+                //this.region_name = region.properties.get('name');
+                //console.log(this.region_name + ' -> ' + this.osmId);//debug
                 if(region.options.get('fillColor')!='#66FF0099'){
                     region.options.set('fillColor','#66FF0099');
                     region.properties.set('user_check',true);
