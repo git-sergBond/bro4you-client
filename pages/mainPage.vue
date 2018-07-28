@@ -333,7 +333,7 @@
                 this.mapInstanse.behaviors.disable('drag');
                 this.stateApp = 1;
             },
-            click_btn_search: function(event){
+            click_btn_search: async function(event){
                 //Кликнули на кнопку найти
                 //если не указана область то
                 //    передаем левую верхнюю и правую нижнюю координату области видимости
@@ -346,12 +346,12 @@
                 }else{
                     this.placemarks = this.getInfoForPoligon_from_server(this.message, this.poly_line);
                 }
-                this.add_placemarks_on_map(this.placemarks);
+                await this.add_placemarks_on_map(this.placemarks);
                 this.categories = this.get_categoryes_from_placemarks(this.placemarks);
                 this.click_btn_ShowAllTags();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
             },
-            change_category_event: function(){
+            change_category_event: async function(){
                 //событие выбора категории из чекбокса
                 this.ClearMap();
                 this.add_actions_info();
@@ -361,7 +361,7 @@
                 }else{
                     this.placemarks = this.get_Categories_and_polygon_from_server(this.cur_category, this.poly_line);
                 }
-                this.add_placemarks_on_map(this.placemarks);
+                await this.add_placemarks_on_map(this.placemarks);
                 //this.categories = this.get_categoryes_from_placemarks(this.placemarks);
                 //this.click_btn_ShowAllTags();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
@@ -372,7 +372,7 @@
                 this.init_regions();//высвечиваем регионы на карте
                 this.stateApp = 3;
             },
-            click_btn_show_result_for_regions: function(){
+            click_btn_show_result_for_regions: async function(){
                 let checked_regions = [];
                 let coords = [];
                 let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
@@ -388,7 +388,7 @@
                 this.ClearMap();
                 //высвечиваем метки
                 this.add_actions_info();
-                this.add_placemarks_on_map(this.placemarks);
+                await this.add_placemarks_on_map(this.placemarks);
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
                 this.categories = this.get_categoryes_from_placemarks(this.placemarks);
                 this.click_btn_ShowAllTags();
@@ -422,14 +422,11 @@
                         //регионов
                         const reg = p.properties.get('region');
                         console.log("+++"+reg)
-                        if(reg != 'Вологодская область'){
-                            return;
-                        }
                         if(this.filter_regions != null){
                             let reg_res = false;
-                            this.filter_regions.forEach(region => {
-                                if(region.check != false) reg_res = true;
-                            });
+                            for(let region of this.filter_regions){
+                                if(region.name == reg && region.check != false) reg_res = true;
+                            }
                             if(reg_res==false) return;
                         }
                         p.options.set('visible', true);
@@ -745,7 +742,7 @@
                 query.remove(inSide)//находим точки в не диапазона
                     .setOptions('visible', false)//и скрываем их
             },
-            Send_Polygon: function () {
+            Send_Polygon: async function () {
                 //ищем среди объектов полигон и отправляем его на сервер
                 let coordinates = this.lineStringGeometry.getCoordinates();
                 //!добавляем точку в конец, чтобы не делать преобразований с полигоном
@@ -761,7 +758,7 @@
                 this.ClearMap();
                 this.add_actions_info();
                 //как пришел ответ идет добавление меток на карту и информации о них
-                this.add_placemarks_on_map(this.placemarks);//добавили избыточное колличество точек на карту
+                await this.add_placemarks_on_map(this.placemarks);//добавили избыточное колличество точек на карту
                 // что бы не нарушить последовательность, тут вынесена строка *577*
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
                 this.categories = this.get_categoryes_from_placemarks(this.placemarks);
@@ -818,9 +815,9 @@
                 this.add_actions_info();
                // this.categories = this.getCategoties_from_server();
             },
-            add_actions_info: function(shares_data){
+            add_actions_info: async function(shares_data){
                 this.shares_d = this.getShares_from_server();
-                this.add_placemarks_on_map(this.shares_d);
+                await this.add_placemarks_on_map(this.shares_d);
             },
             //----------------РЕГИОНЫ------------------------------
             init_regions: function(){
