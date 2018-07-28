@@ -144,6 +144,7 @@
                 colors: ['blue', 'darkgreen', 'orange', 'red'],
                 rang_price: null,
                 //для фильтра регионов
+                noVisibleRegions: null,
                 regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
                 filter_regions: null,// [{name, link ,check},{}]
                 osmId: null,
@@ -409,8 +410,8 @@
                 //!!! добавить фильтр в заданной области
                 //!!! 1 выбор регионов возможно багует
                 //!!! регионы багуют
-                let categoties = this.cur_category;
-                let filter_regions = this.filter_regions;
+                //let categoties = this.cur_category;
+                //let filter_regions = this.filter_regions;
                 let collection = ymaps.geoQuery(this.mapInstanse.geoObjects)
                     .search('geometry.type = "Point"')
                     .search(`properties.price > 0`)//удаляем акции из выбрки
@@ -418,21 +419,25 @@
                     //фильтр цен
                     .search(`properties.price >= ${this.low_price}`)
                     .search(`properties.price <= ${this.high_price}`)
-                    .each(p => {
+                    .each((p => {
                         //фильтр категорий
-                        let cat = p.properties.get('category');
-                        if(categoties.indexOf(cat)==-1) return;
+                        const cat = p.properties.get('category');
+                        if(this.cur_category.indexOf(cat)==-1) return;
                         //регионов
-                        let reg = p.properties.get('region');
-                        if(filter_regions != null){
+                        const reg = p.properties.get('region');
+                        console.log("+++"+reg)
+                        if(reg != 'Вологодская область'){
+                            return;
+                        }
+                        if(this.filter_regions != null){
                             let reg_res = false;
-                            filter_regions.forEach(region => {
+                            this.filter_regions.forEach(region => {
                                 if(region.check != false) reg_res = true;
                             });
                             if(reg_res==false) return;
                         }
                         p.options.set('visible', true);
-                    })
+                    }).bind(this))
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
@@ -564,16 +569,22 @@
             //---------------- ОТРИСОВКА ОБЛАСТИ НА КАРТЕ---------
             getInfoRegionFromPoint: async function(p){
                 let mapInst = this.mapInstanse;
+                let nVizReg = this.noVisibleRegions;
                 // !!! оптимизировать загрузку полигонов
-                // !!! сделать ее при старте приложения, а не при каждой отрисовке точкиegion
+                //+ накинуть плюхи контекста
+                if(this.noVisibleRegions == null){
+                }
                 return new Promise((resolve, reject) => {
                     let regions = ymaps.geoQuery(ymaps.regions.load('RU'))
-                        .each(reg => {
-                            reg.geometry.setMap(mapInst);
-                            reg.geometry.options.setParent(mapInst.options);})
-                        .searchContaining(p);
+                    .each(reg => {
+                        reg.geometry.setMap(mapInst);
+                        reg.geometry.options.setParent(mapInst.options);
+                    }).
+                    searchContaining(p);
                     regions.then(e=>{
-                        resolve(regions.get(0).properties.get('name'))
+                        let res = regions.get(0).properties.get('name');
+                        console.log("res => "+res);
+                        resolve(res);
                     })
                 })
             },
@@ -583,7 +594,8 @@
                 let HintServ = this.make_shares_hint();
                 let myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
 
-                arr_placemarks.forEach(placemark => {
+                //arr_placemarks.forEach(async placemark => {
+                    for(let placemark of arr_placemarks){
                     let p = new ymaps.Placemark(placemark.coords, {}, {
                         hintLayout: (placemark.price == null || placemark.price == undefined) ? HintServ : HintShare
                     });
@@ -599,12 +611,18 @@
                         category: placemark.category,
                         region: ''
                     });
+                    /*
                     this.getInfoRegionFromPoint(p).then((res)=>{
                         p.properties.set('region',res);
-                    })
+                    })*/
+                    console.log('before');
+                    let res = await this.getInfoRegionFromPoint(p);
+                    p.properties.set('region',res);
+                    console.log('after push');
                     p.events.add('click', this.click_Placemark);
                     this.mapInstanse.geoObjects.add(p);
-                });
+                }//);
+                console.log('END')
                 return myCollection;
             },
             alg_simplifi_line(arr_in){
@@ -674,7 +692,7 @@
                 collection
                     .search("geometry.coordinates.0 = " + coord_0)
                     .search("geometry.coordinates.1 = " + coord_1)
-                    .setOptions('preset', 'islands#'+color+'Icon').each(()=>console.log(1));
+                    .setOptions('preset', 'islands#'+color+'Icon');
             },
             /*
             | функция повторяется в конце
