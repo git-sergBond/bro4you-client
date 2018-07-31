@@ -421,7 +421,6 @@
                         if(this.cur_category.indexOf(cat)==-1) return;
                         //регионов
                         const reg = p.properties.get('region');
-                        console.log("+++"+reg)
                         if(this.filter_regions != null){
                             let reg_res = false;
                             for(let region of this.filter_regions){
@@ -1075,34 +1074,27 @@
     }
     /*начало для кнопок для правоговерхнего угла*/
     .button-left, .button-left-f{
+        --height: 32px;
         --bcolor: white;
         --spadding: 1.2rem;
         /*padding-right: var(--spadding);*/
-        height: 100%;
+        height: var(--height);
         background-color: var(--bcolor);
-
         color: black;
         font-weight: bold;
         font-size: 1rem;
         display: flex;
         align-items: center;
-
-        /*box-shadow: 2px 1px 2px black;*/
-        /*box-shadow: 10px 1px 10px 1px black;*/
-
         box-shadow: 5px 1px 10px -2px black;
-
         box-shadow: 10px 1px 10px -2px black;
 
     }
     .button-left:before{
-        --proporions: 1.7rem;
+        --proporions: calc(var(--height) / 1.414);
         content: "";
         position: relative;
         top: 0px;
-
-        margin-left: 1px;
-        left: -14px;
+        left: calc(var(--proporions) / (-2) );
         width: var(--proporions);
         height: var(--proporions);
         background-color: var(--bcolor);
@@ -1110,11 +1102,11 @@
         box-shadow: -2px 2px 2px -3px black;
     }
     .button-left-f:before{
-        --proporions: 1.7rem;
+        --proporions: calc(var(--height) / 1.414);
         content: "";
         position: relative;
         top: 0px;
-        left: 10px;
+        left: calc(var(--proporions) / 2 );
         width: var(--proporions);
         height: var(--proporions);
         background-color: transparent;
