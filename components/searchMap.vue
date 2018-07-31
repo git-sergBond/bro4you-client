@@ -1,13 +1,16 @@
 <template>
     <div class="search">
-        <input type="text"
-               v-model="message">
+        <div class="txt-input">
+            <input type="text" v-model="message">
+        </div>
         <div class="button-right-f"
              @click="$emit('event_click_btn_search')">
             <img src="images/icons/search.png"/>
         </div>
         <div class="button-right"
-             @click="$emit('event_show_category_trig')"><span>&#9776;</span></div>
+             @click="$emit('event_show_category_trig')">
+             <img src="images/icons/categories80.png">
+        </div>
     </div>
 </template>
 
@@ -21,25 +24,27 @@
 <style  scoped>
     .button-right, .button-right-f{
         --bcolor: white;
-        --spadding: 1.2rem;
+        --spadding: 2px;
+        /*padding-right: var(--spadding);*/
+        height: var(--height);
+        background-color: var(--bcolor);
         padding-left: var(--spadding);
-        padding-right: var(--spadding);
-        height: 100%;
         background-color: var(--bcolor);
 
         color: black;
         font-weight: bold;
-        font-size: 1.5rem;
+        font-size: 1rem;
         display: flex;
         align-items: center;
-        box-shadow: 5px 1px 10px -2px black;
+        justify-content: center;
+        box-shadow: 8px 1px 10px -2px black;
     }
     .button-right:after{
-        --proporions: 1.2em;
+        --proporions: calc(var(--height) / 1.414);
         content: "";
-        position: absolute;
-        top: 5px;
-        margin-left: 26px;
+        position: relative;
+        top: 0px;
+        right: calc(var(--proporions) / (-2) );
         width: var(--proporions);
         height: var(--proporions);
         background-color: var(--bcolor);
@@ -47,11 +52,11 @@
         box-shadow: 5px -5px 5px -5px black;
     }
     .button-right-f:after{
-        --proporions: 1.2em;
+        --proporions: calc(var(--height) / 1.414);
         content: "";
-        position: absolute;
-        top: 5px;
-        margin-left: 20px;
+        position: relative;
+        top: 0px;
+        right: calc(var(--proporions) / 2 );
         width: var(--proporions);
         height: var(--proporions);
         background-color: transparent;
@@ -62,18 +67,22 @@
     }
     .search{
         display: flex;
+        align-items: flex-start;
+        --height: 32px;
+        box-shadow: 10px 1px 20px -2px black;
+    }
+    .txt-input{
+        height: var(--height);
+        display: flex;
         align-items: center;
+        justify-content: center;
+        background-color: white;
     }
     input[type="text"] {
-        font-size: 1.5em;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        width: 60%;
+
     }
     .search img{
-        display: flex;
-        justify-content: center; /*Центрирование по горизонтали*/
-        align-items: center;     /*Центрирование по вертикали */
-        width: 1.3em;
+        width: var(--height);
+        height: var(--height);
     }
 </style>
