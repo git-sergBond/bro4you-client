@@ -68,7 +68,7 @@
 
 <script>
     export default {
-        name: "authorization"
+        name: "authorization",
     }
 </script>
 

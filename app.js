@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import YmapPlugin from 'vue-yandex-maps';
+import Vuex from 'vuex';
 Vue.use(YmapPlugin);
 Vue.use(VueRouter);
+Vue.use(Vuex);
 //
 //
 import listPlaceMarks from './pages/listPlaceMarks.vue';

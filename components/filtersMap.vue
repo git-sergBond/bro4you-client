@@ -59,8 +59,8 @@
         </div>
         <div class="footer buttons-menu">
             <div class="button-skew">
-                <p @click="submit">Найти</p>
-                <p @click="clear">Очистить</p>
+                <p @click="submit">Применить</p>
+                <p @click="clear">Сбросить фильтр</p>
             </div>
         </div>
     </div>

@@ -81,6 +81,8 @@
         <div class="logo">
             <img src="images/rast.jpg"/>
         </div>
+
+        <form-autorize></form-autorize>
     </div>
 </template>
 
@@ -91,6 +93,7 @@
     import filtersMap from '../components/filtersMap.vue';
     import placeInfoMap from '../components/placeInfoMap.vue'
     import  authorization from '../components/authorization.vue';
+    import formAutorize from '../components/formAutorize.vue';
     export default {
         name: "mainPage",
         //el: '',
@@ -159,7 +162,8 @@
             searchMap,
             filtersMap,
             placeInfoMap,
-            authorization
+            authorization,
+            formAutorize
         },
         methods: {
             close_info_p: function(){
