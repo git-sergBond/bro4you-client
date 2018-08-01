@@ -1,9 +1,9 @@
 <template>
      <div>
-        <form class="login" @submit.prevent="login">
+        <form class="login" @submit.prevent="signin">
             <h1>Sign in</h1>
             <label>User name</label>
-            <input required v-model="username" type="text" placeholder="Snoopy"/>
+            <input required v-model="login" type="text" placeholder="Snoopy"/>
             <label>Password</label>
             <input required v-model="password" type="password" placeholder="Password"/>
         <hr/>
@@ -12,19 +12,27 @@
     </div>
 </template>
 <script>
+import axios from 'axios';//+
+import API from '../API'
 export default {
     data: function(){
         return {
-            username: '',
-            password: ''
+            login: 'vacya',
+            password: '12345'
         }
     },
     methods: {
-        login: function () {
-            const { username, password } = this
-            this.$store.dispatch(AUTH_REQUEST, { username, password })
+        signin: function () {
+            const { login, password } = this
+            this.$store.dispatch(API.AUTH_REQUEST, { login, password })
             .then(() => {
                 this.$router.push('/')
+            })
+        },
+        logout: function () {
+            this.$store.dispatch(AUTH_LOGOUT)
+            .then(() => {
+                this.$router.push('/login')
             })
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div class="app--categories">
+    <div v-if="!!show_child && !!show_parent" class="app--categories">
         <div class="app--categories--parent">
             <div v-if="show_parent.name != 'root'"
                     @click="on_click_parent_cat"
