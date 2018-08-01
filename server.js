@@ -13,13 +13,15 @@ let arr_users= [
     login: "vacya",
     password: "12345",
     email: "vacya@mail.ru",
-    phone: "89202205409"
+    phone: "89202205409",
+    acessToken: "dsdasdasasdasdsadasdasd3123525253423423423"
   },
   {
     login: "kurasava",
     password: "12345",
     email: "kurasava@mail.ru",
-    phone: "89802285410"
+    phone: "89802285410",
+    acessToken: "dDGSAHDHASDHHASDHdjfngdjdfs52525FDFSDFF23"
   }
 ]
 function sendJSON(data,response){
@@ -38,13 +40,14 @@ app.post("/sessionAPI",jsonParser, function(request, response){
       && request.body.password == user.password) {
       return sendJSON({
         status: 'OK',
-        errors: []
+        acessToken: user.acessToken,
+        errors: []//? зачем ошибки
       }, response);
     }
   }
   return sendJSON({
     status: 'WRONG_DATA',
-    errors: 'Неверные логин или пароль'
+    errors: 'Неверные логин или пароль'//? где список ошибок
   }, response);
 });
 app.post("/registerAPI",jsonParser, function(request, response){

@@ -30,9 +30,9 @@ export default {
             })
         },
         logout: function () {
-            this.$store.dispatch(AUTH_LOGOUT)
+            this.$store.dispatch(API.AUTH_LOGOUT)
             .then(() => {
-                this.$router.push('/login')
+                this.$router.push('/p2')
             })
         }
     }
