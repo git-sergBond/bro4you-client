@@ -13,7 +13,21 @@
 </template>
 <script>
 export default {
-    
+    data: function(){
+        return {
+            username: '',
+            password: ''
+        }
+    },
+    methods: {
+        login: function () {
+            const { username, password } = this
+            this.$store.dispatch(AUTH_REQUEST, { username, password })
+            .then(() => {
+                this.$router.push('/')
+            })
+        }
+    }
 }
 </script>
 <style lang="sass" scoped>

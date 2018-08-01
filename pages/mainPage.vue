@@ -87,6 +87,7 @@
 </template>
 
 <script>
+    var LOC_STORE = null;
     import shares from '../components/shares.vue';
     import category from '../components/category.vue';
     import searchMap from '../components/searchMap.vue';
@@ -325,7 +326,7 @@
                 //делаем похожую на начальную страницу
                 this.stateApp = 0;
                 this.cur_category = 'All';
-                this.filter();
+                //this.filter();
                 this.ClearMap();
                 this.polygonEdit = null;
                 this.mapInstanse.geoObjects.add(this.line);
@@ -449,8 +450,8 @@
                 //Очистить фильтр уточнения всех меток
                 this.cur_category = this.get_categoryes_from_placemarks(this.placemarks);
                 this.categories =  this.get_categoryes_from_placemarks(this.placemarks);
-                this.filter();
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
+                this.filter();
             },
             change_txt_priceFilter: function(e){
                 //Метод оставляет только те метки которые соответствуют услуге с заданной стоимостью
@@ -568,21 +569,36 @@
                 let nVizReg = this.noVisibleRegions;
                 // !!! оптимизировать загрузку полигонов
                 //+ накинуть плюхи контекста
-                if(this.noVisibleRegions == null){
+                //console.log(store.state.RUregions)
+                if(LOC_STORE== null){
+                    LOC_STORE = ymaps.geoQuery(ymaps.regions.load('RU'));
+                    LOC_STORE.then((resolve)=>{
+                        LOC_STORE.each(reg => {
+                        reg.geometry.setMap(mapInst);
+                        reg.geometry.options.setParent(mapInst.options);
+                        })
+                    })
                 }
+                let region = await LOC_STORE.searchContaining(p);
+                let res = await LOC_STORE.get(0).properties.get('name');
+                console.log("res => "+res);
+                return res;
+                return  0;
+                /*
                 return new Promise((resolve, reject) => {
-                    let regions = ymaps.geoQuery(ymaps.regions.load('RU'))
+                
+                    LOC_STORE = ymaps.geoQuery(ymaps.regions.load('RU'))
                     .each(reg => {
                         reg.geometry.setMap(mapInst);
                         reg.geometry.options.setParent(mapInst.options);
                     }).
                     searchContaining(p);
-                    regions.then(e=>{
+                    LOC_STORE.then(e=>{
                         let res = regions.get(0).properties.get('name');
                         console.log("res => "+res);
                         resolve(res);
                     })
-                })
+                })*/
             },
             add_placemarks_on_map: async function(arr_placemarks){
                 //добавление меток на карту и информации о них
@@ -609,7 +625,7 @@
                     
                     //сохраняем информацию для фильтра по регионам
                     let reg = await this.getInfoRegionFromPoint(p);
-                    p.properties.set('region',reg);
+                    p.properties.set('region','1');//reg);
                    
                     if(filter_regions.indexOf(reg)==-1){
                         filter_regions.push({
@@ -763,12 +779,12 @@
                 //как пришел ответ идет добавление меток на карту и информации о них
                 await this.add_placemarks_on_map(this.placemarks);//добавили избыточное колличество точек на карту
                 // что бы не нарушить последовательность, тут вынесена строка *577*
-                this.get_low_and_high_price_from_placemarks(this.placemarks);
-                this.categories = this.get_categoryes_from_placemarks(this.placemarks);
+                await this.get_low_and_high_price_from_placemarks(this.placemarks);
+                this.categories = await this.get_categoryes_from_placemarks(this.placemarks);
                 this.click_btn_ShowAllTags();
-                this.polygonEdit =  this.NewPolygon(simple_line);
+                this.polygonEdit = await this.NewPolygon(simple_line);
                 // *577* строка вынесена, тк принимает вторым аргументом полигон
-                this.filter_pm_by_polygon(this.polygonEdit);// убираем все точки не удовлетворяющие полигону
+                await this.filter_pm_by_polygon(this.polygonEdit);// убираем все точки не удовлетворяющие полигону
                 //возвращаем прежнее состояние приложения и активируем перетаскивание
                 this.stateApp = 0;
                 this.mapInstanse.behaviors.enable('drag');
