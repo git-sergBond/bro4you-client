@@ -572,33 +572,16 @@
                 //console.log(store.state.RUregions)
                 if(LOC_STORE== null){
                     LOC_STORE = ymaps.geoQuery(ymaps.regions.load('RU'));
-                    LOC_STORE.then((resolve)=>{
+                    await LOC_STORE.then((resolve)=>{
                         LOC_STORE.each(reg => {
                         reg.geometry.setMap(mapInst);
                         reg.geometry.options.setParent(mapInst.options);
                         })
                     })
                 }
-                let region = await LOC_STORE.searchContaining(p);
-                let res = await LOC_STORE.get(0).properties.get('name');
-                console.log("res => "+res);
-                return res;
-                return  0;
-                /*
-                return new Promise((resolve, reject) => {
-                
-                    LOC_STORE = ymaps.geoQuery(ymaps.regions.load('RU'))
-                    .each(reg => {
-                        reg.geometry.setMap(mapInst);
-                        reg.geometry.options.setParent(mapInst.options);
-                    }).
-                    searchContaining(p);
-                    LOC_STORE.then(e=>{
-                        let res = regions.get(0).properties.get('name');
-                        console.log("res => "+res);
-                        resolve(res);
-                    })
-                })*/
+                let name = await LOC_STORE.searchContaining(p).get(0).properties.get('name');
+                console.log("res => "+name);
+                return name;
             },
             add_placemarks_on_map: async function(arr_placemarks){
                 //добавление меток на карту и информации о них
@@ -622,10 +605,11 @@
                         category: placemark.category,
                         region: ''
                     });
-                    
+                    p.events.add('click', this.click_Placemark);
+                    this.mapInstanse.geoObjects.add(p);
                     //сохраняем информацию для фильтра по регионам
                     let reg = await this.getInfoRegionFromPoint(p);
-                    p.properties.set('region','1');//reg);
+                    p.properties.set('region',reg);
                    
                     if(filter_regions.indexOf(reg)==-1){
                         filter_regions.push({
@@ -633,9 +617,6 @@
                             check: true
                         }); 
                     }
-                    
-                    p.events.add('click', this.click_Placemark);
-                    this.mapInstanse.geoObjects.add(p);
                 }
                 return myCollection;
             },
