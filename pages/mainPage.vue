@@ -408,11 +408,8 @@
                 this.stateApp = 0;
             },
             filter: function(){
-                //!!! добавить фильтр в заданной области
-                //!!! 1 выбор регионов возможно багует
-                //!!! регионы багуют
-                //let categoties = this.cur_category;
-                //let filter_regions = this.filter_regions;
+                //Фильтры
+                let context = this;
                 let collection = ymaps.geoQuery(this.mapInstanse.geoObjects)
                     .search('geometry.type = "Point"')
                     .search(`properties.price > 0`)//удаляем акции из выбрки
@@ -420,21 +417,27 @@
                     //фильтр цен
                     .search(`properties.price >= ${this.low_price}`)
                     .search(`properties.price <= ${this.high_price}`)
-                    .each((p => {
+                    .each(p => {
                         //фильтр категорий
                         const cat = p.properties.get('category');
-                        if(this.cur_category.indexOf(cat)==-1) return;
+                        if(context.cur_category.indexOf(cat)==-1) return;
                         //регионов
                         const reg = p.properties.get('region');
-                        if(this.filter_regions != null){
+                        if(context.filter_regions != null){
                             let reg_res = false;
-                            for(let region of this.filter_regions){
+                            for(let region of context.filter_regions){
                                 if(region.name == reg && region.check != false) reg_res = true;
                             }
                             if(reg_res==false) return;
                         }
                         p.options.set('visible', true);
-                    }).bind(this))
+                    })//.setOptions('visible', false)//и скрываем их
+                    //фильтр в заданной области
+                    collection.then(()=>{
+                        let inSide = collection.searchInside(context.polygonEdit);//ищем точки в полигоне
+                        collection.remove(inSide)//находим точки в не диапазона
+                            .setOptions('visible', false)//и скрываем их  
+                    });
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
@@ -580,7 +583,6 @@
                     })
                 }
                 let name = await LOC_STORE.searchContaining(p).get(0).properties.get('name');
-                console.log("res => "+name);
                 return name;
             },
             add_placemarks_on_map: async function(arr_placemarks){
@@ -733,15 +735,6 @@
                 };
 
             },
-            filter_pm_by_polygon: function(polygon){
-                //удаляем все точки не соответствующие выделенному полигону
-                let query = ymaps.geoQuery(this.mapInstanse.geoObjects)
-                    .search('geometry.type = "Point"')//выбираем все точки на карте
-                    .search('properties.price != null');// не фильтруем акции
-                let inSide = query.searchInside(polygon);//ищем точки в полигоне
-                query.remove(inSide)//находим точки в не диапазона
-                    .setOptions('visible', false)//и скрываем их
-            },
             Send_Polygon: async function () {
                 //ищем среди объектов полигон и отправляем его на сервер
                 let coordinates = this.lineStringGeometry.getCoordinates();
@@ -765,7 +758,7 @@
                 this.click_btn_ShowAllTags();
                 this.polygonEdit = await this.NewPolygon(simple_line);
                 // *577* строка вынесена, тк принимает вторым аргументом полигон
-                await this.filter_pm_by_polygon(this.polygonEdit);// убираем все точки не удовлетворяющие полигону
+                await this.filter();// убираем все точки не удовлетворяющие полигону
                 //возвращаем прежнее состояние приложения и активируем перетаскивание
                 this.stateApp = 0;
                 this.mapInstanse.behaviors.enable('drag');
