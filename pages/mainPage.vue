@@ -414,6 +414,9 @@
                     .search('geometry.type = "Point"')
                     .search(`properties.price > 0`)//удаляем акции из выбрки
                     .setOptions('visible', false)//очищаем все на карте
+                    .setProperties('del', true)
+                    //фильтр в заданной области
+// !!!  .searchInside(this.polygonEdit)//ищем точки в полигоне
                     //фильтр цен
                     .search(`properties.price >= ${this.low_price}`)
                     .search(`properties.price <= ${this.high_price}`)
@@ -430,14 +433,16 @@
                             }
                             if(reg_res==false) return;
                         }
-                        p.options.set('visible', true);
-                    })//.setOptions('visible', false)//и скрываем их
+                        p.properties.set('del', false)
+                    })
                     //фильтр в заданной области
-                    collection.then(()=>{
-                        let inSide = collection.searchInside(context.polygonEdit);//ищем точки в полигоне
+                    .then(()=>{
+                        let inSide =
+                            collection.search(`properties.del = false`).searchInside(context.polygonEdit);//ищем точки в полигоне
                         collection.remove(inSide)//находим точки в не диапазона
-                            .setOptions('visible', false)//и скрываем их  
-                    });
+                            .setProperties('del', true);
+                        collection.search(`properties.del = false`).setOptions('visible', true)//очищаем все на карте
+                    })
             },
             click_btn_changeTag: function(tag){
                 //При уточнении категрии все прочие метки скрываются на карте
