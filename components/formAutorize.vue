@@ -8,7 +8,9 @@
             <input required v-model="password" type="password" placeholder="Password"/>
         <hr/>
             <button type="submit">Login</button>
+            
         </form>
+        <button @click.prevent="logout">Logout</button>
     </div>
 </template>
 <script>
@@ -25,15 +27,17 @@ export default {
         signin: function () {
             const { login, password } = this
             this.$store.dispatch(API.AUTH_REQUEST, { login, password })
+            /*
             .then(() => {
-                this.$router.push('/')
-            })
+                this.$router.push('/p2')
+            })*/
         },
         logout: function () {
             this.$store.dispatch(API.AUTH_LOGOUT)
+            /*
             .then(() => {
                 this.$router.push('/p2')
-            })
+            })*/
         }
     }
 }

@@ -12,6 +12,7 @@ import listPlaceMarks from './pages/listPlaceMarks.vue';
 import mainPage from './pages/mainPage.vue';
 import registrationPlaceMarks from './pages/registrationPlaceMarks.vue';
 import API from './API'
+import TOKENS from './TOKENS'
 // ROUTER
 const routes = [
     { path: '/p1', component: listPlaceMarks },
@@ -25,7 +26,7 @@ const router = new VueRouter({
 const store = new Vuex.Store({
     
     state: {
-        token: localStorage.getItem('user-token') || '',
+        token: localStorage.getItem(TOKENS.AUTHORIZE) || '',
         status: '',
     },
     getters: {
@@ -38,27 +39,30 @@ const store = new Vuex.Store({
             commit(API.AUTH_REQUEST)
             axios({url: 'sessionAPI', data: user, method: 'POST' })
               .then(resp => {
-                const token = resp.data.token
-                localStorage.setItem('user-token', token) // store the token in localstorage
-                commit(API.AUTH_SUCCESS, token)
+                const acessToken = resp.data.acessToken
+                console.log(acessToken)
+                localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
+                console.log(localStorage.getItem(TOKENS.AUTHORIZE))
+                commit(API.AUTH_SUCCESS, acessToken)
                 // you have your token, now log in your user :)
-                dispatch(API.USER_REQUEST)
+                //dispatch(API.USER_REQUEST)
                 resolve(resp)
               })
             .catch(err => {
               commit(API.AUTH_ERROR, err)
-              localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
+              localStorage.removeItem(TOKENS.AUTHORIZE) // if the request fails, remove any possible user token if possible
               reject(err)
             })
           })
-        },/*
-        [AUTH_LOGOUT]: ({commit, dispatch}) => {
+        },
+        [API.AUTH_LOGOUT]: ({commit, dispatch}) => {
             return new Promise((resolve, reject) => {
-              commit(AUTH_LOGOUT)
-              localStorage.removeItem('user-token') // clear your user's token from localstorage
+              commit(API.AUTH_LOGOUT)
+              localStorage.removeItem(TOKENS.AUTHORIZE) // clear your user's token from localstorage
+              console.log(localStorage.getItem(TOKENS.AUTHORIZE))
               resolve()
             })
-        }*/
+        }
       },
       mutations: {
         [API.AUTH_REQUEST]: (state) => {
