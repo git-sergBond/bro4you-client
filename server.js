@@ -24,8 +24,9 @@ let arr_users= [
     acessToken: "dDGSAHDHASDHHASDHdjfngdjdfs52525FDFSDFF23"
   }
 ]
-function sendJSON(data,response){
-  return response.send(JSON.stringify(data));
+//функция отправки данных на клиент
+function sendJSON(status, data ,response){
+  return response.status(status).send(JSON.stringify(data));
 }
 //Модуль Авторизации
 app.post("/sessionAPI",jsonParser, function(request, response){
@@ -40,15 +41,14 @@ app.post("/sessionAPI",jsonParser, function(request, response){
   for (user of arr_users) {
     if (request.body.login == user.login
       && request.body.password == user.password) {
-      return sendJSON({
+      return sendJSON(200,{
         status: 'OK',
         acessToken: user.acessToken,
         errors: []//? зачем ошибки
       }, response);
     }
   }
-  response.sendStatus(400);
-  return sendJSON({
+  return sendJSON(400,{
     status: 'WRONG_DATA',
     errors: 'Неверные логин или пароль'//? где список ошибок
   }, response);
@@ -74,25 +74,23 @@ return;
     return response
   } 
   if(request.body.phone.length != 11){
-    response.sendStatus(400);
-    sendJSON({
+    return sendJSON(400,{
       status : 'WRONG_DATA',
       errors : ['Неверный номер']
-    }, response);
+    },response);
   }
   for (user of arr_users) {
     if (request.body.login == user.login
       && request.body.password == user.password) {
-        response.sendStatus(400);
-        return sendJSON({
+        return sendJSON(400,{
           status: 'WRONG_DATA',
-          acessToken: user.acessToken,
           errors: ['Такой пользователь уже существует']
         }, response);
     }
   }
-  return sendJSON({
+  return sendJSON(200,{
     status: 'OK',//зачем? когда можно отдать 200 или 400 или еще ченить
+    acessToken: 'new user.acessToken',
     errors: []//? где список ошибок
   }, response);
 });
