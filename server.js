@@ -27,14 +27,16 @@ let arr_users= [
 function sendJSON(data,response){
   return response.send(JSON.stringify(data));
 }
-//Модуль Авторизации/Регистрации
+//Модуль Авторизации
 app.post("/sessionAPI",jsonParser, function(request, response){
+  console.log(new Date + " POST /sessionAPI");
   if (!request.body) return response.sendStatus(400);
-  console.log("/sessionAPI");
-  console.log("POST requset ::");
   console.log(request.body);
-  if (!request.body.login && !request.body.password)
-    return response.send("Неверный метод отправки запроса или не отправлен логин и пароль");
+  if (!request.body.login && !request.body.password) {
+    response.sendStatus(400);
+    response.send("Неверный метод отправки запроса или не отправлен логин и пароль");
+    return response;
+  }
   for (user of arr_users) {
     if (request.body.login == user.login
       && request.body.password == user.password) {
@@ -45,15 +47,53 @@ app.post("/sessionAPI",jsonParser, function(request, response){
       }, response);
     }
   }
+  response.sendStatus(400);
   return sendJSON({
     status: 'WRONG_DATA',
     errors: 'Неверные логин или пароль'//? где список ошибок
   }, response);
 });
+//Модуль Регистрации
 app.post("/registerAPI",jsonParser, function(request, response){
+  /*
+
+foreach($arr_exists_users as $user){
+    if($_POST['email'] == $user['email'] || $_POST['phone'] == $user['phone']) {
+        echo json_encode(['status' => 'WRONG_DATA', 'errors' => ['Такой пользователь уже существует']]);
+        return;
+    }
+}
+return;
+   */
+  console.log(new Date + " POST /registerAPI");
   if(!request.body) return response.sendStatus(400);
   console.log(request.body);
-
-  response.send("<h2>Регистрация!</h2>");
+  if (!request.body.email && !request.body.password && !request.body.phone){
+    response.sendStatus(400);
+    response.send("Неверный метод отправки запроса или не отправлены email, пароль и телефон");
+    return response
+  } 
+  if(request.body.phone.length != 11){
+    response.sendStatus(400);
+    sendJSON({
+      status : 'WRONG_DATA',
+      errors : ['Неверный номер']
+    }, response);
+  }
+  for (user of arr_users) {
+    if (request.body.login == user.login
+      && request.body.password == user.password) {
+        response.sendStatus(400);
+        return sendJSON({
+          status: 'WRONG_DATA',
+          acessToken: user.acessToken,
+          errors: ['Такой пользователь уже существует']
+        }, response);
+    }
+  }
+  return sendJSON({
+    status: 'OK',//зачем? когда можно отдать 200 или 400 или еще ченить
+    errors: []//? где список ошибок
+  }, response);
 });
 app.listen(3000);

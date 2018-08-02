@@ -62,6 +62,26 @@ const store = new Vuex.Store({
               console.log(localStorage.getItem(TOKENS.AUTHORIZE))
               resolve()
             })
+        },
+        [API.REGISTRATION_REQUEST]: ({commit, dispatch}, user) => {
+          return new Promise((resolve, reject) => {
+            axios({url: 'registerAPI', data: user, method: 'POST' })
+              .then(resp => {
+                const acessToken = resp.data.acessToken
+                console.log(acessToken)
+                localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
+                console.log(localStorage.getItem(TOKENS.AUTHORIZE))
+                commit(API.AUTH_SUCCESS, acessToken)
+                // you have your token, now log in your user :)
+                //dispatch(API.USER_REQUEST)
+                resolve(resp)
+              })
+            .catch(err => {
+              commit(API.AUTH_ERROR, err)
+              localStorage.removeItem(TOKENS.AUTHORIZE) // if the request fails, remove any possible user token if possible
+              reject(err)
+            })
+          });
         }
       },
       mutations: {
@@ -74,7 +94,7 @@ const store = new Vuex.Store({
         },
         [API.AUTH_ERROR]: (state) => {
           state.status = 'error'
-        },
+        }
       }
   })
 // MAIN
