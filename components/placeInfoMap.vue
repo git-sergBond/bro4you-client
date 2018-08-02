@@ -1,9 +1,7 @@
 <template>
     <div >
 
-        <div class="place-info"
-             v-for='item in P_placemarks'
-             v-show='F_is_equals_coords(item.coords)'>
+        <div class="place-info" v-for='item in P_placemarks' v-show='F_is_equals_coords(item.coords)'>
             <div class="button close"  @click="$emit('event_close_p')" >
                 <img  src="images/icons/close52.png">
             </div>

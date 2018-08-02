@@ -28,6 +28,14 @@ const store = new Vuex.Store({
     state: {
         token: localStorage.getItem(TOKENS.AUTHORIZE) || '',
         status: '',
+        /*
+        statusUI_Autorize: 0, 
+        
+            1 - не авторизован, вход в 2, 3
+            2 - открытый интерфейс регистрации, вход в 1, 4
+            3 - открытый интерфейс авторизации, вход в 1, 2 , 4
+            4 - авторизован, вход в 1
+        */
     },
     getters: {
         isAuthenticated: state => !!state.token,

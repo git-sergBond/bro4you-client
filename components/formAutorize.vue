@@ -16,7 +16,7 @@
             <label>First name</label>
             <input required v-model="firstname" type="text" placeholder="first name"/>
             <br><label>Last name</label>
-            <input required v-model="firstname" type="text" placeholder="last name"/>
+            <input required v-model="lastname" type="text" placeholder="last name"/>
             <br><label>Male</label>
             <input type="checkbox" v-model="male">
             <label> {{male ? "boy" : "girl"}}</label>

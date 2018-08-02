@@ -122,7 +122,7 @@
                 polygonEdit: null,//gполигон для редактирования
                 line: null,//линия для обвода мышкой
                 lineStringGeometry: null,//геометрия для линии обвода мышкой
-
+                positionsOnPoligon: [],//массив хранящий информацию о координатах, относительно левого верхнего угла в формате Декартовых координат
                 //-------------State and GUI-------
                 stateApp: 0, //состояние приложения
                 /*
@@ -304,11 +304,14 @@
                 this.mapInstanse.events.add("mousemove", this.mousemove_event_DrawPolygonByFinger);
             },
             mousedown_event_DrawPolygonByFinger(event){
+                this.positionsOnPoligon = [];//очищаем полигон в декартовой систме
                 if (this.stateApp === 1) this.stateApp = 2;
             },
             mousemove_event_DrawPolygonByFinger(event){
                 if (this.stateApp !== 2) return;
                 let point = event.get('coords');
+                let position = event.get('position');
+                this.positionsOnPoligon.push(position);//добавляем точки для нахождения первого пересечения
                 let length = this.lineStringGeometry.getLength();
                 this.lineStringGeometry.insert(length, point);
             },
@@ -628,12 +631,27 @@
                 return myCollection;
             },
             alg_simplifi_line(arr_in){
+                let lenSimplifi = 5;
+                //проверка на первое пересечение 
+                let {positionsOnPoligon} = this;
+                let line1 = {
+                    p1: positionsOnPoligon[0],
+                    p2: positionsOnPoligon[5]
+                } 
+                positionsOnPoligon
+                .filter((e, i, arr) => 
+                    i > lenSimplifi 
+                 && i % lenSimplifi <= 0 
+                 || i == arr.length-1)
+                .forEach((e, i, arr)=>{
+                    console.log(i + " - "+e)
+                })
                 //уменьшение колличества точек на линии
                 console.log(arr_in.length)
                 let simle_arr = [];
                 simle_arr.push(arr_in[0]);
                 for (let index = 0; index < arr_in.length; index++) {
-                    if(index % 5 <= 0) simle_arr.push(arr_in[index]);
+                    if(index % lenSimplifi <= 0) simle_arr.push(arr_in[index]);
                 }
                 simle_arr.push(arr_in[arr_in.length-1]);
                 console.log(simle_arr.length)
@@ -852,174 +870,6 @@
         }
     }
     var responce = [
-        {
-            coords: [57.05980129774418, 40.562484643066426],
-            name: 'Золотой слон - подставка',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 55',
-            countReviews: 0,
-            price: 7000,
-            stars: 2,
-            category: 'Форд',
-            url: '#1'
-        },
-        {
-            coords: [57.254808646433844, 39.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 10000,
-            stars: 5,
-            category: 'Приключения',
-            url: '#2'
-        },
-        {
-            coords: [55.254808646433844, 40.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 9000,
-            stars: 5,
-            category: 'Майки',
-            url: '#2'
-        },
-        {
-            coords: [55.254808646433844, 38.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 7500,
-            stars: 5,
-            category: 'Джинсы',
-            url: '#2'
-        },
-        {
-            coords: [60.254808646433844, 39.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 7000,
-            stars: 5,
-            category: 'Джинсы',
-            url: '#2'
-        },
-        {
-            coords: [55.98721616095246, 39.733016869628926],
-            name: 'Зоопарк',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 1000,
-            price: 6000,
-            stars: 3,
-            category: 'Майки',
-            url: '#3'
-        },
-        {
-            coords: [59.98721616095246, 39.733016869628926],
-            name: 'Зоопарк',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 1000,
-            price: 5000,
-            stars: 3,
-            category: 'Приключения',
-            url: '#3'
-        },
-        {
-            coords: [57.05980129774418, 40.562484643066426],
-            name: 'Золотой слон - подставка',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 55',
-            countReviews: 0,
-            price: 7000,
-            stars: 2,
-            category: 'Форд',
-            url: '#1'
-        },
-        {
-            coords: [57.254808646433844, 39.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 10000,
-            stars: 5,
-            category: 'Приключения',
-            url: '#2'
-        },
-        {
-            coords: [55.254808646433844, 40.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 9000,
-            stars: 5,
-            category: 'Майки',
-            url: '#2'
-        },
-        {
-            coords: [55.254808646433844, 38.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 7500,
-            stars: 5,
-            category: 'Джинсы',
-            url: '#2'
-        },
-        {
-            coords: [60.254808646433844, 39.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 7000,
-            stars: 5,
-            category: 'Джинсы',
-            url: '#2'
-        },
-        {
-            coords: [55.98721616095246, 39.733016869628926],
-            name: 'Зоопарк',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 1000,
-            price: 6000,
-            stars: 3,
-            category: 'Майки',
-            url: '#3'
-        },
-        {
-            coords: [59.98721616095246, 39.733016869628926],
-            name: 'Зоопарк',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 1000,
-            price: 5000,
-            stars: 3,
-            category: 'Приключения',
-            url: '#3'
-        },
         {
             coords: [57.05980129774418, 40.562484643066426],
             name: 'Золотой слон - подставка',
