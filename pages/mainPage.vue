@@ -630,27 +630,55 @@
                 }
                 return myCollection;
             },
+            replacePoint: function(p1, p2){
+                const X = 0;
+                //если нужно, то меняем точки местами по оси X
+                if (p1[X] < p2[X]) p1, p2 = p2, p1
+                const Y = 1;
+                //если нужно, то меняем точки местами по оси Y
+               // if (p1[Y] < p2[Y]) p1, p2 = p2, p1
+            },
+            intersectionX: function(l1, l2){
+                const X = 0;
+                if (l1.p2[X] <= l2.p1[X]) return false;
+                return true;
+            },
+            intersectionY: function(l1, l2){
+                const Y = 1;
+                if (!((Math.max(l1.p1[Y], l1.p2[Y]) < Math.min(l2.p1[Y], l2.p2[Y])) ||
+                (Math.min(l1.p1[Y], l1.p2[Y]) > Math.max(l2.p1[Y], l2.p2[Y])))) return true;
+                return false;
+            },
             alg_simplifi_line(arr_in){
                 let lenSimplifi = 5;
                 //проверка на первое пересечение 
-                let {positionsOnPoligon} = this;
-                let line1 = {
-                    p1: positionsOnPoligon[0],
-                    p2: positionsOnPoligon[5]
-                } 
+                let {positionsOnPoligon, replacePoint, intersectionX, intersectionY} = this;
+                let line1 = { p1: positionsOnPoligon[0], p2: positionsOnPoligon[lenSimplifi] }; 
+                replacePoint(line1.p1, line1.p2);
+                let line2 = { p1: null, p2: null};
+                let intersectionIndex = null;
                 positionsOnPoligon
                 .filter((e, i, arr) => 
-                    i > lenSimplifi 
+                    i > lenSimplifi * 2
                  && i % lenSimplifi <= 0 
-                 || i == arr.length-1)
+                 || i < arr.length)
                 .forEach((e, i, arr)=>{
-                    console.log(i + " - "+e)
+                    if(i >= arr.length-1) return;
+                    line2.p1 = e; line2.p2 = arr[i+1];
+                    replacePoint(line2.p1, line2.p2);
+                    if(intersectionX(line1, line2) 
+                    && intersectionY(line1, line2)
+                    && intersectionIndex == null){
+                        intersectionIndex = i * lenSimplifi;
+                    }
                 })
                 //уменьшение колличества точек на линии
+                console.log("inter "+intersectionIndex)
                 console.log(arr_in.length)
                 let simle_arr = [];
                 simle_arr.push(arr_in[0]);
                 for (let index = 0; index < arr_in.length; index++) {
+                    if(!!intersectionIndex && intersectionIndex >= index) break;
                     if(index % lenSimplifi <= 0) simle_arr.push(arr_in[index]);
                 }
                 simle_arr.push(arr_in[arr_in.length-1]);
