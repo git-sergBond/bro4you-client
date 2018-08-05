@@ -636,7 +636,7 @@
                 if (p1[X] < p2[X]) p1, p2 = p2, p1
                 const Y = 1;
                 //если нужно, то меняем точки местами по оси Y
-               // if (p1[Y] < p2[Y]) p1, p2 = p2, p1
+                //if (p1[Y] < p2[Y]) p1, p2 = p2, p1
             },
             intersectionX: function(l1, l2){
                 const X = 0;
@@ -649,40 +649,59 @@
                 (Math.min(l1.p1[Y], l1.p2[Y]) > Math.max(l2.p1[Y], l2.p2[Y])))) return true;
                 return false;
             },
+            intersectionEVCLID: function(x1, y1, x2, y2, x3, y3, x4, y4){
+                let z = (x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4);
+                if(z == 0) return false
+                let Px = ((x1*y2 - y1*x2)*(x3 - x4) - (x1-x2)*(x3*y4 - y3*x4))/z;
+                let Py = ((x1*y2 - y1*x2)*(y3 - y4) - (y1-y2)*(x3*y4 - y3*x4))/z;
+                return {Px, Py}
+            },
             alg_simplifi_line(arr_in){
                 let lenSimplifi = 5;
                 //проверка на первое пересечение 
-                let {positionsOnPoligon, replacePoint, intersectionX, intersectionY} = this;
-                let line1 = { p1: positionsOnPoligon[0], p2: positionsOnPoligon[lenSimplifi] }; 
-                replacePoint(line1.p1, line1.p2);
-                let line2 = { p1: null, p2: null};
+                let {positionsOnPoligon, replacePoint, intersectionX, intersectionY, intersectionEVCLID} = this;
                 let intersectionIndex = null;
-                positionsOnPoligon
-                .filter((e, i, arr) => 
-                    i > lenSimplifi * 2
-                 && i % lenSimplifi <= 0 
-                 || i < arr.length)
-                .forEach((e, i, arr)=>{
-                    if(i >= arr.length-1) return;
-                    line2.p1 = e; line2.p2 = arr[i+1];
-                    replacePoint(line2.p1, line2.p2);
-                    if(intersectionX(line1, line2) 
-                    && intersectionY(line1, line2)
-                    && intersectionIndex == null){
-                        intersectionIndex = i * lenSimplifi;
+                let listPoints = positionsOnPoligon//.filter((e, i, arr) => i % lenSimplifi == 0)
+                let listLines = []; 
+                listPoints.forEach((e, i, a) => {
+                    if((i+1) % 2 == 0){
+                        listLines.push({
+                            p1: e,
+                            p2: a[i-1]
+                        })
                     }
                 })
+                let listIntersPoints = []
+                for (let i = 0; i < listLines.length-1; i++) {
+                    const line1 = listLines[i];
+                    for (let j = 0; j < listLines.length; j++) {
+                        const line2 = listLines[j];
+                        if(intersectionX(line1,line2) && intersectionY(line1,line2)){
+                            listIntersPoints.push(Math.min(i, j));
+                            console.log("!")
+                        }
+                        //console.log('evc = '+intersectionEVCLID(line1.p1[0],line1.p1[1],line1.p2[0],line1.p2[1],line2.p1[0],line2.p1[1],line2.p2[0],line2.p2[1]).Px)
+                    }
+                }
+                console.log(listLines)
                 //уменьшение колличества точек на линии
-                console.log("inter "+intersectionIndex)
-                console.log(arr_in.length)
                 let simle_arr = [];
                 simle_arr.push(arr_in[0]);
                 for (let index = 0; index < arr_in.length; index++) {
-                    if(!!intersectionIndex && intersectionIndex >= index) break;
-                    if(index % lenSimplifi <= 0) simle_arr.push(arr_in[index]);
+                    const el = arr_in[index]
+                    /*
+                    let br = false
+                    listIntersPoints.forEach(p => {
+                        if(p[0] == el[0] || p[1] == el[1] || p[0] == el[1] || p[1] == el[0]) br = true;
+                    })
+                    if(br) break*/
+                    /*if(listIntersPoints.length > 0){
+                        if(listIntersPoints[0]*lenSimplifi <= index)
+                            break;
+                    }*/
+                    if(index % lenSimplifi <= 0) simle_arr.push(el);
                 }
                 simle_arr.push(arr_in[arr_in.length-1]);
-                console.log(simle_arr.length)
                 return simle_arr;
             },
             get_categoryes_from_placemarks(placemarks){

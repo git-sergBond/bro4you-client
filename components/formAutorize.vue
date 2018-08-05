@@ -2,33 +2,24 @@
      <div>
         <form class="signin" @submit.prevent="signin">
             <h1>Авторизация</h1>
-            <label>Login</label>
+            <label>Email или Телефон</label>
             <input required v-model="login" type="text" placeholder="Snoopy"/>
-            <br><label>Password</label>
+            <br><label>Пароль</label>
             <input required v-model="password" type="password" placeholder="Password"/>
-            <br><button type="submit">Login</button>
-            <br><button >forgot password</button>
-            <br><button >forgot login</button>
+            <br><button >Забыли пароль?</button><button >Или забыли логин?</button>
+            <br><button type="submit">Вход</button>
         </form>
-        <button @click.prevent="logout">Logout</button>
+        <button @click.prevent="logout">Выход</button>
         <form class="signup" @submit.prevent="signup">
             <h1>Регистрация</h1>
-            <label>First name</label>
-            <input required v-model="firstname" type="text" placeholder="first name"/>
-            <br><label>Last name</label>
-            <input required v-model="lastname" type="text" placeholder="last name"/>
-            <br><label>Male</label>
-            <input type="checkbox" v-model="male">
-            <label> {{male ? "boy" : "girl"}}</label>
-            <br><label>Login</label>
+            <br><label>Email или Телефон</label>
             <input required v-model="login" type="text" placeholder="Snoopy"/>
-            <br><label>Password</label>
+            <br><label>Придумайте пароль</label>
             <input required v-model="password" type="password" placeholder="Password"/>
-            <br><label>E-mail</label>
-            <input required v-model="email" type="text" placeholder="email@ru"/>
-            <br><label>Phone</label>
-            <input required v-model="phone" type="text" placeholder="+7 (___) ___ __ __"/>
-            <br><button type="submit">register my</button>
+            <br><label>Повторите пароль</label>
+            <input required v-model="passwordVerif" type="password" placeholder="Password"/>
+            <br><button>FaceBook</button><button>Vk</button><button>Ok</button><button>Google</button><button>Yandex</button>
+            <br><button type="submit">Зарегистрироваться</button>
         </form>
     </div>
 </template>
@@ -40,37 +31,55 @@ export default {
         return {
             login: 'vacya',
             password: '12345',
-            email: "weqweqwe@yandex.ru",
-            phone: "123",
-            firstname: "first",
-            lastname: "last",
-            male: true
+            passwordVerif: '',
         }
     },
     methods: {
         signin: function () {
-            const { login, password } = this
+            const { login, password} = this
             this.$store.dispatch(API.AUTH_REQUEST, { login, password })
-            /*
             .then(() => {
-                this.$router.push('/p2')
-            })*/
+                alert("Вы успешно авторизовались")
+            })
+            .catch(()=>{
+                 alert("ОШИБКА: Авторизация не пройдена")
+            })
         },
         logout: function () {
+            alert("Выход")
             this.$store.dispatch(API.AUTH_LOGOUT)
-            /*
             .then(() => {
-                this.$router.push('/p2')
-            })*/
+                alert("Вы вышли из системы")
+            })
         },
         signup: function() {
-            const { login, password,
+            const { login, password, passwordVerif ,
             email, phone, firstname,
             lastname, male} = this
-            this.$store.dispatch(API.REGISTRATION_REQUEST, 
-            { login, password, email, phone, firstname,lastname, male}).then(() => {
-                this.$router.push('/personalCabinet')
-            })
+            //проверка сходства паролей
+            let validPass = true
+            if(password.length == passwordVerif.length){
+                for (let i = 0; i < password.length; i++) {
+                    const a = password[i];
+                    const b = passwordVerif[i];
+                    if(a != b) {
+                        validPass = false;
+                        break;
+                    }
+                }
+            } else {
+                validPass = false;
+            }
+            if(validPass){
+                this.$store.dispatch(API.REGISTRATION_REQUEST, {login, password} /*{ login, password, email, phone, firstname,lastname, male}*/
+                ).then(() => {
+                    alert("Зайдите в свою почту для подтверждения")
+                }).catch(()=>{
+                    alert("ОШИБКА: Что-то пощло не так")
+                })
+            }else{
+                alert("ОШИБКА: Пароли не совпадают")
+            }
         }
     }
 }

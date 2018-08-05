@@ -2,44 +2,89 @@
     <div>
         <yandex-map class="ymap" zoom="8" :controls="['zoomControl']" :coords="coords" @map-was-initialized="initHandler"></yandex-map>
         <div class="info">
-            <p>{{send.info}}</p>
-            <h3>Регистрация</h3>
-            <p>имя</p>
-            <input type="text" v-model="send.name">
-            <p>ссылка на картинку</p>
-            <input type="text" v-model="send.imageUrl">
-            <p>адрес</p>
-            <input type="text" v-model="send.address">
-            <p>телефонный номер</p>
-            <input type="text" v-model="send.phoneNumber">
-            <p>Стоимость</p>
-            <input type="text" v-model="send.price">
-            <p>Ссылка на сайт компании</p>
-            <input type="text" v-model="send.url">
-            <br><br>
-            <button @click="sign_up_services">Зарегистрировать услугу</button>
+            <div v-if="!service">
+                <P>Подождите, идет загрузка ...</P>
+            </div>
+            <form v-if="!!service" @submit.prevent="addService">
+                <h3>Добавить услугу</h3>
+                <label>Наименование услуги</label><input type="text" ><br>
+                <label>Описание на картинку</label><br>
+                <label>Стоимость услуги</label><br>
+                    <label>от</label>
+                    <label>до</label>
+                <label>Фото</label><label>Видео</label><br>
+                <br><br>
+                <button type="submit">Опубликовать</button>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
+   
+    class Company{
+        constructor(id = null, name = null){
+            this.id = id;
+            this.name = name
+        }
+        getForUser(token){
+            if(!token) return -1;
+        }
+    }
+    class Service{
+        constructor(name="",description="",priceMin=0,priceMax=0,photos=[],video="",region=null,newPointsServices=[],existsPointsServices=[],company=null){
+            this.name = name//название услуги 
+            this.description = description//описание
+            this.priceMin = priceMin//минимальная цена
+            this.priceMax = priceMax// максимальная цена
+            this.photos= photos
+            this.video=video,//ссылка на видео из ютуба
+            this.region=region, //osmID - если пользователь не указал точки оказания услуг (новые или существующие), то запичывается регион
+            this.newPointsServices=newPointsServices//точки оказания услуг, которые нужно добавить в базу (подвязать к пользователю)
+            this.existsPointsServices=existsPointsServices // существуещих точек
+            this.company = company // ид комании, если его нет, то передается -1 (мне нужен запрос для получения списка компаний по токену)
+            //добавить тел, факс, почту, сайт, кома
+        }
+        sendDataOnServer(){
+
+        }
+    } /*
+    class PointService {
+        //класс характеризующий точку оказания услуги
+        constructor(latitude=null,longitude=null,adress=null,index_500000=null,region=null, id = null){
+            //данные принимаемые с сервера
+            this.latitude = latitude;//широта
+            this.longitude= longitude;//долгота
+            this.adress= adress;//адрес
+            this.index_500000= index_500000; // индекс квадранта в котором находится точка для масштаба 1 : 500 000
+            this.region= region;//osmID - ид регион в котором находится точка
+            this.id = id;//идентификатор точки на карте
+            //гуи
+            this.active = false; // индикатор показывающий, передавать точку на карту или нет 
+        }
+        DrawOnMap(mapIsnt){
+            
+        }
+        SetVisibleOnMap(vis,mapIsnt){
+
+        }
+        DeleteFromMap(mapIsnt){
+            
+        }
+        //Активный или нет? (формирует список того, что нужно передать на сервер)
+        get active(){
+            return this.active
+        }
+        set active(val){
+            this.SetVisibleOnMap(val);
+            this.active = val
+        }
+    }*/
     export default {
         name: "registrationPlaceMarks",
         data: function() { return {
-            //данные для отправки
-            send: {
-                latitude: 55,
-                longitude: 55,
-                name: '',
-                imageUrl: '',
-                address: '',
-                phoneNumber: '',
-                price: '',
-                url: '',
-                info: '',
-                index_500000: null
-            },
+            service: null,
             //гуишные ссылки
             coords: [55,55],
             placeMark: null//ссылка на метку на карте
@@ -48,6 +93,7 @@
             initHandler: function (myMap) {
                 //при инициализации библиотеки яндекс карт
                 //добавляем метку которой можно менять координаты щелчком на карте
+
                 this.placeMark = new ymaps.Placemark(this.coords, {}, {});
                 myMap.geoObjects.add(this.placeMark);
                 myMap.events.add('click', this.click_on_map);

@@ -2,8 +2,10 @@
     <div >
 
         <div class="place-info" v-for='item in P_placemarks' v-show='F_is_equals_coords(item.coords)'>
-            <div class="button close"  @click="$emit('event_close_p')" >
-                <img  src="images/icons/close52.png">
+            <p @click="$emit('event_close_p')">rrwer</p>
+            <div class="button" style="top: 30px" @click="closeInfo" >
+                <img src="images/icons/close52.png"  >
+                <!--p>X</p-->
             </div>
             <carousel Cwidth='300px' :images="item.imageUrl"></carousel>
             <p>
@@ -19,7 +21,7 @@
                     <span class="fa fa-star fa-lg" style="font: 24px/1 FontAwesome;">★</span>
                 </div>
             </div>
-            <div class="button revievs"  @click="$emit('event_close_p')" >
+            <div class="button revievs"  @click="closeInfo" >
                 <P>{{item.countReviews}}</P>
             </div>
             <div class="ender"></div>
@@ -29,7 +31,6 @@
                     <p >Подробнее</p>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -41,6 +42,12 @@
         props: ['P_placemarks','P_cur_point', 'F_is_equals_coords'],
         components: {
             carousel
+        },
+        methods: {
+            closeInfo: function(){
+               console.log(1234578765)
+               this.$emit('event_close_p');
+            }
         }
     }
 </script>

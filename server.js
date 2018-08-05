@@ -14,14 +14,14 @@ let arr_users= [
     password: "12345",
     email: "vacya@mail.ru",
     phone: "89202205409",
-    acessToken: "dsdasdasasdasdsadasdasd3123525253423423423"
+    token: "dsdasdasasdasdsadasdasd3123525253423423423"
   },
   {
     login: "kurasava",
     password: "12345",
     email: "kurasava@mail.ru",
     phone: "89802285410",
-    acessToken: "dDGSAHDHASDHHASDHdjfngdjdfs52525FDFSDFF23"
+    token: "dDGSAHDHASDHHASDHdjfngdjdfs52525FDFSDFF23"
   }
 ]
 //функция отправки данных на клиент
@@ -30,9 +30,9 @@ function sendJSON(status, data ,response){
 }
 //Модуль Авторизации
 app.post("/sessionAPI",jsonParser, function(request, response){
-  console.log(new Date + " POST /sessionAPI");
+  console.log("// "+new Date + " POST /sessionAPI");
   if (!request.body) return response.sendStatus(400);
-  console.log(request.body);
+  console.log("auth user -> "+request.body.login+" : "+request.body.password);
   if (!request.body.login && !request.body.password) {
     response.sendStatus(400);
     response.send("Неверный метод отправки запроса или не отправлен логин и пароль");
@@ -41,13 +41,15 @@ app.post("/sessionAPI",jsonParser, function(request, response){
   for (user of arr_users) {
     if (request.body.login == user.login
       && request.body.password == user.password) {
+        console.log("-failed-")
       return sendJSON(200,{
         status: 'OK',
-        acessToken: user.acessToken,
+        token: user.token,
         errors: []//? зачем ошибки
       }, response);
     }
   }
+  console.log("-success-")
   return sendJSON(400,{
     status: 'WRONG_DATA',
     errors: 'Неверные логин или пароль'//? где список ошибок
@@ -55,17 +57,7 @@ app.post("/sessionAPI",jsonParser, function(request, response){
 });
 //Модуль Регистрации
 app.post("/registerAPI",jsonParser, function(request, response){
-  /*
-
-foreach($arr_exists_users as $user){
-    if($_POST['email'] == $user['email'] || $_POST['phone'] == $user['phone']) {
-        echo json_encode(['status' => 'WRONG_DATA', 'errors' => ['Такой пользователь уже существует']]);
-        return;
-    }
-}
-return;
-   */
-  console.log(new Date + " POST /registerAPI");
+  console.log("// "+new Date + " POST /registerAPI");
   if(!request.body) return response.sendStatus(400);
   console.log(request.body);
   if (!request.body.email && !request.body.password && !request.body.phone){
@@ -90,8 +82,15 @@ return;
   }
   return sendJSON(200,{
     status: 'OK',//зачем? когда можно отдать 200 или 400 или еще ченить
-    acessToken: 'new user.acessToken',
+    token: 'new user.token',
     errors: []//? где список ошибок
   }, response);
 });
-app.listen(3000);
+//Разрыв сессии
+app.post("/sessionAPI/end",jsonParser, function(request, response){
+  console.log("// "+new Date + " POST /registerAPI");
+  console.log("disconect user ->" + request.headers.authorization)
+  return sendJSON(200,request.headers.authorization, response)
+});
+app.listen(8080);
+//app.listen(3000);
