@@ -25,11 +25,20 @@
    
     class Company{
         constructor(id = null, name = null){
-            this.id = id;
+            this.companyid = id;
             this.name = name
         }
-        getForUser(token){
-            if(!token) return -1;
+        queries = {
+            //запросы для данного объекта к базе
+            async getListPointsServicesFromUser(){
+                //получить список компаний, владельцем которых явзяеся пользователь
+                try{
+                    let listPointsServices = await axios({url: 'CompaniesAPI/getCompanies', method: 'GET' })
+                    cosnole.log(cosnolistPointsServices.data.token)
+                }catch{
+                    alert("Не удалось найти информацию о компаниях")
+                }
+            }
         }
     }
     class Service{
@@ -49,17 +58,18 @@
         sendDataOnServer(){
 
         }
-    } /*
+    } 
     class PointService {
         //класс характеризующий точку оказания услуги
-        constructor(latitude=null,longitude=null,adress=null,index_500000=null,region=null, id = null){
+    
+        constructor(latitude=null,longitude=null,address=null,index_500000=null,region=null, pointid = null){
             //данные принимаемые с сервера
             this.latitude = latitude;//широта
             this.longitude= longitude;//долгота
-            this.adress= adress;//адрес
+            this.address= address;//адрес
             this.index_500000= index_500000; // индекс квадранта в котором находится точка для масштаба 1 : 500 000
             this.region= region;//osmID - ид регион в котором находится точка
-            this.id = id;//идентификатор точки на карте
+            this.pointid = pointid;//идентификатор точки на карте
             //гуи
             this.active = false; // индикатор показывающий, передавать точку на карту или нет 
         }
@@ -80,7 +90,20 @@
             this.SetVisibleOnMap(val);
             this.active = val
         }
-    }*/
+        
+        queries = {
+            //запросы для данного объекта к базе
+            async getListPointsServicesFromUser(){
+                //получить все точки услуг пользователя
+                try{
+                    let listPointsServices = await axios({url: 'TradePointsAPI/getPointsForUserManager', method: 'GET' })
+                    cosnole.log(cosnolistPointsServices.data.token)
+                }catch{
+                    alert("Не удалось найти информацию о точках оказания услуг")
+                }
+            }
+        }
+    }
     export default {
         name: "registrationPlaceMarks",
         data: function() { return {
@@ -90,10 +113,10 @@
             placeMark: null//ссылка на метку на карте
         }},
         methods: {
-            initHandler: function (myMap) {
+            initHandler: async function (myMap) {
                 //при инициализации библиотеки яндекс карт
+                this.service = new Service();// создаем объект сервиса
                 //добавляем метку которой можно менять координаты щелчком на карте
-
                 this.placeMark = new ymaps.Placemark(this.coords, {}, {});
                 myMap.geoObjects.add(this.placeMark);
                 myMap.events.add('click', this.click_on_map);
