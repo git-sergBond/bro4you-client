@@ -15,6 +15,14 @@
                 <label>Фото</label>
                 <drag-image ></drag-image>
                 <label>Видео</label><input type="text" v-model="service.video" ><br>
+                <label>Выбрать существующий адрес</label>
+                <div v-for="point in service.existsPointsServices">
+                    <input type="checkbox" v-model="point.active">
+                    <label>существующий адрес</label>
+                </div>
+                
+                <hr>
+
                 <br><br>
                 <button type="submit">Опубликовать</button>
             </form>
@@ -33,7 +41,7 @@
         //запросы для данного объекта к базе
        async getListCompaniesFromUser(){
             //получить список компаний, владельцем которых явзяеся пользователь
-            const listCompanies = await axios({url: 'CompaniesAPI/getCompanies', method: 'GET' })
+            let listCompanies = await axios({url: 'CompaniesAPI/getCompanies', method: 'GET' })
             cosnole.log(cosnolistPointsServices.data.token)
             return listCompanies;
         }
@@ -102,11 +110,10 @@
             this.active = val
         }
         //запросы для данного объекта к базе
-        async getListPointsServicesFromUser(){
-            //получить все точки услуг пользователя
-            const listPointsServices = await axios({url: 'TradePointsAPI/getPointsForUserManager', method: 'GET' })
-            cosnole.log(listPointsServices.data.token)
-            return listPointsServices;
+       
+        async getListPointsServicesFromCompny(){
+            //получить все точки услуг компании
+            
         }
         //посчитали индекс квадранта для заданного масштабы
         calculate_index_for_square(coord, scale=500000){
@@ -134,7 +141,7 @@
             initHandler: async function (myMap) {
                 //при инициализации библиотеки яндекс карт
                 let companies = []//Company.queries.getListCompaniesFromUser
-                let existsPointsServices = []//PointService.queries.getListPointsServicesFromUser()
+                let existsPointsServices = await this.getListPointsServicesFromUser()
                 this.service = new Service(existsPointsServices=existsPointsServices, companies=companies);// создаем объект сервиса
                 
                 /*
@@ -151,6 +158,12 @@
             },*/
             publish: function () {
                 this.service.QaddService();
+            },
+            async getListPointsServicesFromUser(){
+                //получить все точки услуг пользователя
+                let listPointsServices = await axios({url: 'TradePointsAPI/getPointsForUserManager', method: 'GET' })
+                console.log(listPointsServices.data.points)
+                return listPointsServices.data.points;
             }
         }
     }
