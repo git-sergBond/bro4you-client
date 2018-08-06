@@ -1,6 +1,7 @@
 #!/usr/bin/env nodejs
 var express = require("express");
 var bodyParser = require("body-parser");
+var ServicesAPIController = require("./server/Controllers/ServicesAPIController.js");
 // 
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var jsonParser = bodyParser.json();
@@ -92,5 +93,9 @@ app.post("/sessionAPI/end",jsonParser, function(request, response){
   console.log("disconect user ->" + request.headers.authorization)
   return sendJSON(200,request.headers.authorization, response)
 });
+//ServicesAPI
+app.post("/ServicesAPI/addService",jsonParser, ServicesAPIController.addService);
+app.post("/ServicesAPI/addImageHandler",jsonParser, ServicesAPIController.addImageHandler);
+
 app.listen(8080);
 //app.listen(3000);
