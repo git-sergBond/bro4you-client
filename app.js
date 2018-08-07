@@ -83,6 +83,7 @@ const store = new Vuex.Store({
         },
         [API.REGISTRATION_REQUEST]: ({commit, dispatch}, user) => {
           return new Promise((resolve, reject) => {
+            console.log(user)
             axios({url: 'registerAPI', data: user, method: 'POST' })
               .then(resp => {
                 if(resp.data.status == "OK"){

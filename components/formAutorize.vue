@@ -62,9 +62,7 @@ export default {
             })
         },
         signup: function() {
-            const { login, password, passwordVerif ,
-            email, phone, firstname,
-            lastname, male} = this
+            const { login, password, passwordVerif} = this
             //проверка сходства паролей
             let validPass = true
             if(password.length == passwordVerif.length){
@@ -85,7 +83,7 @@ export default {
                     if(resp.data.status == "OK") 
                         alert("Зайдите в свою почту для подтверждения")
                     else 
-                        alert("ОШИБКА: Авторизация не пройдена")
+                        alert("ОШИБКА: Такой логин/пароль уже занят")
                 }).catch(()=>{
                     alert("ОШИБКА: Что-то пощло не так")
                 })

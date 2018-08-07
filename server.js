@@ -60,19 +60,20 @@ app.post("/sessionAPI",jsonParser, function(request, response){
 //Модуль Регистрации
 app.post("/registerAPI",jsonParser, function(request, response){
   console.log("// "+new Date + " POST /registerAPI");
-  if(!request.body) return response.sendStatus(400);
+  if(!request.body) return response.sendStatus(200);
   console.log(request.body);
-  if (!request.body.email && !request.body.password && !request.body.phone){
+  if (!request.body.login && !request.body.password){
     response.sendStatus(200);
     response.send("Неверный метод отправки запроса или не отправлены email, пароль и телефон");
     return response
   } 
-  if(request.body.phone.length != 11){
+  /*
+  if(request.body.login.length != 11){
     return sendJSON(200,{
       status : 'WRONG_DATA',
       errors : ['Неверный номер']
     },response);
-  }
+  }*/
   for (user of arr_users) {
     if (request.body.login == user.login
       && request.body.password == user.password) {
@@ -90,7 +91,7 @@ app.post("/registerAPI",jsonParser, function(request, response){
 });
 //Разрыв сессии
 app.post("/sessionAPI/end",jsonParser, function(request, response){
-  console.log("// "+new Date + " POST /registerAPI");
+  console.log("// "+new Date + " POST /sessionAPI/end");
   console.log("disconect user ->" + request.headers.authorization)
   return sendJSON(200,request.headers.authorization, response)
 });
