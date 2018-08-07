@@ -47,12 +47,15 @@ const store = new Vuex.Store({
             commit(API.AUTH_REQUEST)
             axios({url: 'sessionAPI', data: user, method: 'POST' })
               .then(resp => {
-                const acessToken = resp.data.token
-                localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
-                axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
-                commit(API.AUTH_SUCCESS, acessToken)
-                // you have your token, now log in your user :)
-                //dispatch(API.USER_REQUEST)
+                if(resp.data.status == "OK"){
+                   const acessToken = resp.data.token
+                  localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
+                  axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
+                  commit(API.AUTH_SUCCESS, acessToken)
+                  // you have your token, now log in your user :)
+                  //dispatch(API.USER_REQUEST)
+                }
+               
                 resolve(resp)
               })
             .catch(err => {
@@ -67,9 +70,13 @@ const store = new Vuex.Store({
               commit(API.AUTH_LOGOUT)
               axios({url: 'sessionAPI/end', method: 'POST' })
               .then(resp => {
-                commit(API.AUTH_ERROR, err)
-                localStorage.removeItem('user-token')
-                delete axios.defaults.headers.common['Authorization'];
+                if (resp.data.status == "OK") {
+                  commit(API.AUTH_ERROR, err)
+                  localStorage.removeItem('user-token')
+                  //!!!
+                  delete axios.defaults.headers.common['Authorization'];//!!!
+                  //!!!
+                }
                 resolve(resp)
               })
             })
@@ -78,12 +85,14 @@ const store = new Vuex.Store({
           return new Promise((resolve, reject) => {
             axios({url: 'registerAPI', data: user, method: 'POST' })
               .then(resp => {
-                const acessToken = resp.data.token
-                localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
-                axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
-                commit(API.AUTH_SUCCESS, acessToken)
-                // you have your token, now log in your user :)
-                //dispatch(API.USER_REQUEST)
+                if(resp.data.status == "OK"){
+                  const acessToken = resp.data.token
+                  localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
+                  axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
+                  commit(API.AUTH_SUCCESS, acessToken)
+                  // you have your token, now log in your user :)
+                  //dispatch(API.USER_REQUEST)
+                }
                 resolve(resp)
               })
             .catch(err => {

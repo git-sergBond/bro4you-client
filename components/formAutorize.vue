@@ -38,18 +38,27 @@ export default {
         signin: function () {
             const { login, password} = this
             this.$store.dispatch(API.AUTH_REQUEST, { login, password })
-            .then(() => {
-                alert("Вы успешно авторизовались")
+            .then((resp) => {
+                if(resp.data.status == "OK") 
+                    alert("Вы успешно авторизовались")
+                else 
+                    alert("ОШИБКА: Авторизация не пройдена")
             })
             .catch(()=>{
-                 alert("ОШИБКА: Авторизация не пройдена")
+                 alert("ОШИБКА: Проблема в соединении с сервером")
             })
         },
         logout: function () {
             alert("Выход")
             this.$store.dispatch(API.AUTH_LOGOUT)
-            .then(() => {
-                alert("Вы вышли из системы")
+            .then((resp) => {
+                if(resp.data.status == "OK") 
+                    alert("Вы вышли из системы")
+                else 
+                    alert("ОШИБКА: Авторизация не пройдена")
+            })
+            .catch(()=>{
+                 alert("ОШИБКА: Проблема в соединении с сервером")
             })
         },
         signup: function() {
@@ -72,8 +81,11 @@ export default {
             }
             if(validPass){
                 this.$store.dispatch(API.REGISTRATION_REQUEST, {login, password} /*{ login, password, email, phone, firstname,lastname, male}*/
-                ).then(() => {
-                    alert("Зайдите в свою почту для подтверждения")
+                ).then((resp) => {
+                    if(resp.data.status == "OK") 
+                        alert("Зайдите в свою почту для подтверждения")
+                    else 
+                        alert("ОШИБКА: Авторизация не пройдена")
                 }).catch(()=>{
                     alert("ОШИБКА: Что-то пощло не так")
                 })

@@ -36,7 +36,7 @@ app.post("/sessionAPI",jsonParser, function(request, response){
   if (!request.body) return response.sendStatus(400);
   console.log("auth user -> "+request.body.login+" : "+request.body.password);
   if (!request.body.login && !request.body.password) {
-    response.sendStatus(400);
+    response.sendStatus(200);
     response.send("Неверный метод отправки запроса или не отправлен логин и пароль");
     return response;
   }
@@ -52,7 +52,7 @@ app.post("/sessionAPI",jsonParser, function(request, response){
     }
   }
   console.log("-success-")
-  return sendJSON(400,{
+  return sendJSON(200,{
     status: 'WRONG_DATA',
     errors: 'Неверные логин или пароль'//? где список ошибок
   }, response);
@@ -63,12 +63,12 @@ app.post("/registerAPI",jsonParser, function(request, response){
   if(!request.body) return response.sendStatus(400);
   console.log(request.body);
   if (!request.body.email && !request.body.password && !request.body.phone){
-    response.sendStatus(400);
+    response.sendStatus(200);
     response.send("Неверный метод отправки запроса или не отправлены email, пароль и телефон");
     return response
   } 
   if(request.body.phone.length != 11){
-    return sendJSON(400,{
+    return sendJSON(200,{
       status : 'WRONG_DATA',
       errors : ['Неверный номер']
     },response);
@@ -76,7 +76,7 @@ app.post("/registerAPI",jsonParser, function(request, response){
   for (user of arr_users) {
     if (request.body.login == user.login
       && request.body.password == user.password) {
-        return sendJSON(400,{
+        return sendJSON(200,{
           status: 'WRONG_DATA',
           errors: ['Такой пользователь уже существует']
         }, response);

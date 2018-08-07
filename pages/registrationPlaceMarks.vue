@@ -8,21 +8,24 @@
             <form v-if="!!service" @submit.prevent="publish">
                 <h3>Добавить услугу</h3>
                 <label>Наименование услуги</label><input type="text" v-model="service.name" ><br>
+                <hr>
                 <label>Описание услуги</label><input type="text" v-model="service.description" ><br>
+                <hr>
                 <label>Стоимость услуги</label><br>
                     <label>от</label><input type="text" v-model="service.priceMin" >
                     <label>до</label><input type="text" v-model="service.priceMax" >
+                <hr>
                 <label>Фото</label>
                 <drag-image ></drag-image>
+                <hr>
                 <label>Видео</label><input type="text" v-model="service.video" ><br>
+                <hr>
                 <label>Выбрать существующий адрес</label>
                 <div v-for="point in service.existsPointsServices">
                     <input type="checkbox" v-model="point.active">
                     <label>существующий адрес</label>
                 </div>
-                
                 <hr>
-
                 <br><br>
                 <button type="submit">Опубликовать</button>
             </form>
@@ -56,6 +59,7 @@
             this.video=video,//ссылка на видео из ютуба
             this.region=region, //osmID - если пользователь не указал точки оказания услуг (новые или существующие), то запичывается регион
             this.newPointsServices=newPointsServices//точки оказания услуг, которые нужно добавить в базу (подвязать к пользователю)
+            // !!! БАГУЕТ, записывает в имя
             this.existsPointsServices=existsPointsServices // существуещих точек
             this.companies = companies // ид комании, если его нет, то передается -1 (мне нужен запрос для получения списка компаний по токену)
             //добавить тел, факс, почту, сайт, кома
@@ -140,10 +144,9 @@
         methods: {
             initHandler: async function (myMap) {
                 //при инициализации библиотеки яндекс карт
-                let companies = []//Company.queries.getListCompaniesFromUser
-                let existsPointsServices = await this.getListPointsServicesFromUser()
-                this.service = new Service(existsPointsServices=existsPointsServices, companies=companies);// создаем объект сервиса
-                
+                this.service = new Service();// создаем объект сервиса
+                this.service.existsPointsServices = await this.getListPointsServicesFromUser();
+                this.service.companies = []//Company.queries.getListCompaniesFromUser
                 /*
                 //добавляем метку которой можно менять координаты щелчком на карте
                 this.placeMark = new ymaps.Placemark(this.coords, {}, {});
@@ -164,7 +167,8 @@
                 let listPointsServices = await axios({url: 'TradePointsAPI/getPointsForUserManager', method: 'GET' })
                 console.log(listPointsServices.data.points)
                 return listPointsServices.data.points;
-            }
+            },
+            
         }
     }
 </script>
