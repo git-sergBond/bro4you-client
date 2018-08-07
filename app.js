@@ -68,33 +68,29 @@ const store = new Vuex.Store({
         [API.AUTH_LOGOUT]: ({commit, dispatch}) => {
             return new Promise((resolve, reject) => {
               commit(API.AUTH_LOGOUT)
+              localStorage.removeItem(TOKENS.AUTHORIZE)
               axios({url: 'sessionAPI/end', method: 'POST' })
-              .then(resp => {
-                if (resp.data.status == "OK") {
-                  commit(API.AUTH_ERROR, err)
-                  localStorage.removeItem('user-token')
-                  //!!!
-                  delete axios.defaults.headers.common['Authorization'];//!!!
-                  //!!!
-                }
-                resolve(resp)
-              })
+              commit(API.AUTH_ERROR, err)
+              //!!!
+              //delete axios.defaults.headers.common['Authorization'];//!!!
+              //!!!
+              resolve("ok");
             })
         },
         [API.REGISTRATION_REQUEST]: ({commit, dispatch}, user) => {
           return new Promise((resolve, reject) => {
-            console.log(user)
             axios({url: 'registerAPI', data: user, method: 'POST' })
               .then(resp => {
                 if(resp.data.status == "OK"){
                   const acessToken = resp.data.token
-                  localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
-                  axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
-                  commit(API.AUTH_SUCCESS, acessToken)
-                  // you have your token, now log in your user :)
-                  //dispatch(API.USER_REQUEST)
-                }
+                localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
+                axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
+                commit(API.AUTH_SUCCESS, acessToken)
+                // you have your token, now log in your user :)
+                //dispatch(API.USER_REQUEST)
                 resolve(resp)
+                }
+                
               })
             .catch(err => {
               commit(API.AUTH_ERROR, err)

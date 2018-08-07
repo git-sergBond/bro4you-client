@@ -12,18 +12,18 @@ app.use(express.static(__dirname));
 //тестовые данные пользователей
 let arr_users= [
   {
-    login: "vacya",
-    password: "12345",
+    login: "a",
+    password: "a",
     email: "vacya@mail.ru",
     phone: "89202205409",
-    token: "dsdasdasasdasdsadasdasd3123525253423423423"
+    token: "a"
   },
   {
-    login: "kurasava",
-    password: "12345",
+    login: "b",
+    password: "b",
     email: "kurasava@mail.ru",
     phone: "89802285410",
-    token: "dDGSAHDHASDHHASDHdjfngdjdfs52525FDFSDFF23"
+    token: "b"
   }
 ]
 //функция отправки данных на клиент

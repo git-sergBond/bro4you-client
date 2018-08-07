@@ -51,15 +51,6 @@ export default {
         logout: function () {
             alert("Выход")
             this.$store.dispatch(API.AUTH_LOGOUT)
-            .then((resp) => {
-                if(resp.data.status == "OK") 
-                    alert("Вы вышли из системы")
-                else 
-                    alert("ОШИБКА: Авторизация не пройдена")
-            })
-            .catch(()=>{
-                 alert("ОШИБКА: Проблема в соединении с сервером")
-            })
         },
         signup: function() {
             const { login, password, passwordVerif} = this

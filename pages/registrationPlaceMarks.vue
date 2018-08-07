@@ -72,10 +72,13 @@
             axios({url: '/ServicesAPI/addService', data: this, method: 'POST' })
             .then(resp => {
                 const status = resp.data.status
+                const serviceId = resp.data.serviceId
                 if(status == "OK"){
                     alert("Услуга добавлена")
                     //Отправляю запрос с добавлением картинок (если они есть)
-                    axios({url: '/ServicesAPI/addImageHandler', data: {}, method: 'POST' })
+                    axios({url: '/ServicesAPI/addImageHandler', data: {
+                        serviceId
+                    }, method: 'POST' })
                 }else{
                     alert("Ошибка при добавлении услуги")
                 }
@@ -168,7 +171,9 @@
                 console.log(listPointsServices.data.points)
                 return listPointsServices.data.points;
             },
-            
+            async TradePointsAPIgetPointsForUserManager(){
+                
+            }
         }
     }
 </script>
