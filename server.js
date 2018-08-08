@@ -101,7 +101,6 @@ app.post("/ServicesAPI/addService",jsonParser, ServicesAPIController.addService)
 app.post("/ServicesAPI/addImageHandler",jsonParser, ServicesAPIController.addImageHandler);
 //TradePointsAPI
 app.post("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoints);
-//app.get("/TradePointsAPI/getPointsForCompany",jsonParser, TradePointsAPIController.getPointsForCompany);
 //CompaniesAPI
 app.post("/CompaniesAPI/getCompanies",jsonParser,CompaniesAPIController.getCompanies);
 app.listen(8080);

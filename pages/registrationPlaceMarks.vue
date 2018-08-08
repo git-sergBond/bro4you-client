@@ -20,18 +20,28 @@
                 <hr>
                 <label>Видео</label><input type="text" v-model="service.video" ><br>
                 <hr>
-                <label>Выбрать существующий адрес</label>
+                <h3 v-show="!!service.existsPointsServices">Выбрать существующий адрес</h3>
                 <div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
-                    <label @click="curPoint = point" >{{ point.name }}</label>
+                    <label>{{ point.name }}</label>
                 </div>
+                <hr>
+                <h3>Добавить новые адреса</h3>
+                <div v-for="point in service.newPointsServices" :class="{ selected: point == curPoint}">
+                    <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
+                    <br>
+                    <label>Название</label><input type="text" v-model="point.name"><br>
+                    <label>Адрес</label><input type="text" v-model="point.address"><br>
+                    <button @click.prevent="startEditPoint(point)" >Изменить координаты</button><br>
+                    <button @click.prevent="curPoint = point">Показать контактную информацию о точке</button>
+                    <br>
+                    <br>
+                </div>
+                <hr>
+                <button @click.prevent="addNewPoint">Добавить точку оказания услу</button>
                 <hr>
                 <div v-if="!!curPoint" >
                     <p>{{ curPoint.name }}</p>
-                    <div v-for="phone in curPoint.phones">
-                        <input type="checkbox" v-model="phone.active">
-                        <span>{{ phone.phone }}</span>
-                    </div>
                     <div v-for="phone in curPoint.newPhones">
                         <input type="checkbox" v-model="phone.active">
                         <input type="text" v-model="phone.phone">
@@ -80,14 +90,11 @@
         //класс характеризующий точку оказания услуги
         constructor(point,mapIsnt){
             //данные принимаемые с сервера
-            this.latitude = point.tradePoint.latitude;//широта
-            this.longitude= point.tradePoint.longitude;//долгота
-            this.name = point.tradePoint.name // название точки оказания услуг
-            this.address= point.tradePoint.address;//адрес
-     // ***       //this.index_500000= point.tradePoint.index_500000; // индекс квадранта в котором находится точка для масштаба 1 : 500 000
-     // ***       //this.region= point.tradePoint.region;//osmID - ид регион в котором находится точка
-            this.pointid = point.tradePoint.pointid;//идентификатор точки на карте
-            this.phones = point.phones//массив телефонов
+            this.pointid = !!point.pointid ? point.pointid : null
+            this.latitude = point.latitude;//широта
+            this.longitude= point.longitude;//долгота
+            this.name = point.name // название точки оказания услуг
+            this.address= point.address;//адрес
             this.newPhones = [] //массив для новых номеров телефонов
             //гуи
             this.mapIsnt = mapIsnt;
@@ -100,6 +107,11 @@
                 "active": true,
                 "phone": "+7 --- --- -- --"
             })
+        }
+        setCoords(coords){
+            this.latitude = coords[0];//широта
+            this.longitude = coords[1];//долгота
+            this.pointInst.geometry.setCoordinates(this.coords);//меняем координаты метки
         }
         DrawOnMap(){
             let context = this
@@ -141,6 +153,9 @@
             //ссылки для структур
             curPoint: null,//по текущей точке показываются номера телефоно в  и теды
             //гуишные ссылки
+            statusEditPoint: false,//флаг, который меняется при редактровании точки
+            editPoint: null,//ссылка на точку которую нужно отредактирвать
+
             mapIsnt: null,
             coords: [55,55],
             placeMark: null//ссылка на метку на карте
@@ -158,19 +173,29 @@
                 this.service = new Service();// создаем объект сервиса
                 this.service.existsPointsServices = await this.getListTradePointFromUser();
                 this.service.companies = await this.getListCompaniesFromUser();
-                /*
-                //добавляем метку которой можно менять координаты щелчком на карте
-                this.placeMark = new ymaps.Placemark(this.coords, {}, {});
-                myMap.geoObjects.add(this.placeMark);
-                myMap.events.add('click', this.click_on_map);*/
+                //добавляем событие спомощью которого можно менять координаты щелчком на карте
+                myMap.events.add('click', this.click_on_map);
             },
-            
-            /*
+            startEditPoint(point){
+                this.editPoint = point;
+                this.statusEditPoint = true;
+            },
             click_on_map: function(event){
                 //при клике на карте
-                this.coords = event.get('coords');//запоминаем координаты
-                this.placeMark.geometry.setCoordinates(this.coords);//меняем координаты метки
-            },*/
+                if(!!this.editPoint && this.statusEditPoint){
+                    const coords = event.get('coords');//запоминаем координаты
+                    this.editPoint.setCoords(coords);
+                }
+            },
+            addNewPoint(){
+                this.service.newPointsServices.push(new TradePoint({
+                    latitude: 0,
+                    longitude: 0,
+                    name: "назовите метку",
+                    address: "уточните адресс",
+                    newPhones: [],
+                },this.mapIsnt))
+            },
             publish: function () {
                 this.QaddService(this.service);
             },
@@ -185,7 +210,7 @@
                 let res = [];
                 //упаковка данных в экземпляры классов
                 for(let point of listTradePoint.data.points){
-                    let p = new TradePoint(point, this.mapIsnt)
+                    let p = new TradePoint(point.tradePoint, this.mapIsnt)
                     p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
                     res.push(p);
                 }
@@ -208,30 +233,27 @@
             let oldPoints = []
             for(let point of ser.existsPointsServices){
                 let {pointid} = point;
-                let exPhones = [];
-                for(let phone of point.phones){
-                    if(!!phone.active) exPhones.push(phone.phoneId);
-                }
-                oldPoints.push({pointid,exPhones})
+                if(!!point.active) oldPoints.push(pointid)
             }
             let newPoints = []
             for(let point of ser.newPointsServices){
-                let {latitude,longitude,name ,address, pointid} = point;
-                oldPoints.push({latitude,longitude,name ,address,pointid})
+                let {latitude,longitude,name ,address} = point;
+                let newPhones = [];
+                for(let phone of point.newPhones){
+                    if(!!phone.active) newPhones.push(phone.phone);
+                }
+                oldPoints.push({latitude,longitude,name ,address})
             }
+            //отправка
             axios({url: '/ServicesAPI/addService', 
             data: {
                 "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
-                    name,
-                    description,
-                    priceMin,
-                    priceMax ,
-                    photos,
-                    video,
+                    name,photos,
+                    description,video,
+                    priceMin, priceMax,
                     region, 
                     //
-                    oldPoints,
-                    newPoints
+                    oldPoints,newPoints
                 }, method: 'POST' })
             .then(resp => {
                 const status = resp.data.status
