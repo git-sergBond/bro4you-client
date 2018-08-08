@@ -36,7 +36,7 @@
                         <input type="checkbox" v-model="phone.active">
                         <input type="text" v-model="phone.phone">
                     </div>
-                    <button @click="curPoint.addNewPhone()">Добавить номер телефона</button>
+                    <button @click.prevent="curPoint.addNewPhone()">Добавить номер телефона</button>
                 </div>
                 <br><br>
                 <button type="submit">Опубликовать</button>
@@ -56,41 +56,25 @@
         }
     }
     class Service{
-        constructor(name="",description="",priceMin=0,priceMax=0,photos=[],video="",region=null,newPointsServices=[],existsPointsServices=[],companies=null){
-            this.name = name//название услуги 
-            this.description = description//описание
-            this.priceMin = priceMin//минимальная цена
-            this.priceMax = priceMax// максимальная цена
-            this.photos= photos
-            this.video=video,//ссылка на видео из ютуба
-            this.region=region, //osmID - если пользователь не указал точки оказания услуг (новые или существующие), то запичывается регион
-            this.newPointsServices=newPointsServices//точки оказания услуг, которые нужно добавить в базу (подвязать к пользователю)
+        constructor(){
+            this.name = ""//название услуги 
+            this.description = ""//описание
+            this.priceMin = 0//минимальная цена
+            this.priceMax = 0// максимальная цена
+            this.photos= []
+            this.video="",//ссылка на видео из ютуба
+            this.region=null, //osmID - если пользователь не указал точки оказания услуг (новые или существующие), то запичывается регион
+            this.newPointsServices=[]//точки оказания услуг, которые нужно добавить в базу (подвязать к пользователю)
             // !!! БАГУЕТ, записывает в имя
-            this.existsPointsServices=existsPointsServices // существуещих точек
-            this.companies = companies // ид комании, если его нет, то передается -1 (мне нужен запрос для получения списка компаний по токену)
+            this.existsPointsServices=[] // существуещих точек
+            this.companies = null // ид комании, если его нет, то передается -1 (мне нужен запрос для получения списка компаний по токену)
             //добавить тел, факс, почту, сайт, кома
         }
         /*
          * Запросы
          */
         //отправляю запрос на добавление услуги в БД
-        QaddService(){
-            axios({url: '/ServicesAPI/addService', data: {"authorization":localStorage.getItem(TOKENS.AUTHORIZE),...this}, method: 'POST' })
-            .then(resp => {
-                const status = resp.data.status
-                const serviceId = resp.data.serviceId
-                if(status == "OK"){
-                    alert("Услуга добавлена")
-                    //Отправляю запрос с добавлением картинок (если они есть)
-                    axios({url: '/ServicesAPI/addImageHandler', data: {
-                        "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
-                        serviceId
-                    }, method: 'POST' })
-                }else{
-                    alert("Ошибка при добавлении услуги")
-                }
-            })
-        }
+        
     } 
     class TradePoint {
         //класс характеризующий точку оказания услуги
@@ -168,7 +152,6 @@
             initHandler: async function (myMap) {
                 //
                 axios.defaults.headers.common['Authorization'] = localStorage.getItem(TOKENS.AUTHORIZE)
-
                 //
                 this.mapIsnt = myMap;
                 //при инициализации библиотеки яндекс карт
@@ -189,7 +172,7 @@
                 this.placeMark.geometry.setCoordinates(this.coords);//меняем координаты метки
             },*/
             publish: function () {
-                this.service.QaddService();
+                this.QaddService(this.service);
             },
             async getListTradePointFromUser(){
                 //получить все точки услуг пользователя
@@ -218,7 +201,53 @@
                 let list = await axios({url: 'CompaniesAPI/getCompanies',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
                 console.log(list.data.companies)
                 return list.data.companies
+            },
+            QaddService(ser){
+                //КОСТЫЛЬ - РАЗРЫВ РЕКУРСИИ
+            let {name,description,priceMin,priceMax ,photos,video,region} = ser;
+            let oldPoints = []
+            for(let point of ser.existsPointsServices){
+                let {pointid} = point;
+                let exPhones = [];
+                for(let phone of point.phones){
+                    if(!!phone.active) exPhones.push(phone.phoneId);
+                }
+                oldPoints.push({pointid,exPhones})
             }
+            let newPoints = []
+            for(let point of ser.newPointsServices){
+                let {latitude,longitude,name ,address, pointid} = point;
+                oldPoints.push({latitude,longitude,name ,address,pointid})
+            }
+            axios({url: '/ServicesAPI/addService', 
+            data: {
+                "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
+                    name,
+                    description,
+                    priceMin,
+                    priceMax ,
+                    photos,
+                    video,
+                    region, 
+                    //
+                    oldPoints,
+                    newPoints
+                }, method: 'POST' })
+            .then(resp => {
+                const status = resp.data.status
+                const serviceId = resp.data.serviceId
+                if(status == "OK"){
+                    alert("Услуга добавлена")
+                    //Отправляю запрос с добавлением картинок (если они есть)
+                    axios({url: '/ServicesAPI/addImageHandler', data: {
+                        "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
+                        serviceId
+                    }, method: 'POST' })
+                }else{
+                    alert("Ошибка при добавлении услуги")
+                }
+            })
+        }
         }
     }
 </script>
