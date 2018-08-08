@@ -82,6 +82,7 @@
          */
         //отправляю запрос на добавление услуги в БД
         QaddService(){
+            console.log(this)
             axios({url: '/ServicesAPI/addService', data: {"authorization":localStorage.getItem(TOKENS.AUTHORIZE),...this}, method: 'POST' })
             .then(resp => {
                 const status = resp.data.status
@@ -119,16 +120,13 @@
             this.selected = false //нужен для показа номеров и прочей херни по точке
         }
         addNewPhone(){
-            this.newPhones.push(
-                {
+            this.newPhones.push({
                 "active": true,
                 "phone": "+7 --- --- -- --"
             })
         }
         DrawOnMap(){
-            console.log (2)
             let context = this
-            console.log(3)
             let p = new ymaps.Placemark([this.latitude,this.longitude], {}, {})
             p.properties.set({
                 linkOnStruct: context,//сылка на структуру, для обратной связи
@@ -137,11 +135,7 @@
             return p;
         }
         SetVisibleOnMap(vis){
-            console.log(this.pointInst)
             this.pointInst.options.set({ "visible": vis});
-        }
-        DeleteFromMap(){
-            
         }
         //Активный или нет? (формирует список того, что нужно передать на сервер)
         setActive(val){
@@ -206,7 +200,12 @@
             },
             async getListTradePointFromUser(){
                 //получить все точки услуг пользователя
-                let listTradePoint = await axios({url: 'TradePointsAPI/getPoints',data:{authorization:localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
+                let listTradePoint = await axios({url: 'TradePointsAPI/getPoints',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
+                //подготовка, для реактивной формы
+                /*
+                for(let phone of listTradePoint.data.points.phones){
+                    phone.active = true;
+                }*/
                 let res = [];
                 //упаковка данных в экземпляры классов
                 for(let point of listTradePoint.data.points){
@@ -216,11 +215,9 @@
                 }
                 //масштабирование карты 
                 this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
-                console.log(res)
                 return res;
             },
             HendlerClickOnPointFromMap: function(event){
-                console.log(event.get('target').geometry.getCoordinates())
                 this.curPoint = event.get('target').properties.get("linkOnStruct")
             },
             async TradePointsAPIgetPointsForUserManager(){
