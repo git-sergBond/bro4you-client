@@ -111,7 +111,7 @@
         setCoords(coords){
             this.latitude = coords[0];//широта
             this.longitude = coords[1];//долгота
-            this.pointInst.geometry.setCoordinates(this.coords);//меняем координаты метки
+            this.pointInst.geometry.setCoordinates(coords);//меняем координаты метки
         }
         DrawOnMap(){
             let context = this
@@ -185,6 +185,7 @@
                 if(!!this.editPoint && this.statusEditPoint){
                     const coords = event.get('coords');//запоминаем координаты
                     this.editPoint.setCoords(coords);
+                    this.statusEditPoint = false;
                 }
             },
             addNewPoint(){
@@ -242,7 +243,7 @@
                 for(let phone of point.newPhones){
                     if(!!phone.active) newPhones.push(phone.phone);
                 }
-                oldPoints.push({latitude,longitude,name ,address})
+                newPoints.push({latitude,longitude,name ,address})
             }
             //отправка
             axios({url: '/ServicesAPI/addService', 

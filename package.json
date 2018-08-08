@@ -29,7 +29,8 @@
     "vue-style-loader": "^1.0.0",
     "vue-template-compiler": "^2.5.16",
     "vuex": "^3.0.1",
-    "webpack-cli": "^3.0.3"
+    "webpack-cli": "^3.0.3",
+    "webpack-notifier": "^1.6.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

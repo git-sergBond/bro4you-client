@@ -1,5 +1,6 @@
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+var WebpackNotifierPlugin = require('webpack-notifier');
 module.exports = {
   entry: './app.js',
   output: {
@@ -38,6 +39,7 @@ module.exports = {
   },
   plugins: [
     // убедитесь что подключили плагин!
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new WebpackNotifierPlugin(),
   ]
 }
