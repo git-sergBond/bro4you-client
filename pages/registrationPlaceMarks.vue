@@ -54,13 +54,6 @@
             this.companyid = id;
             this.name = name
         }
-        //запросы для данного объекта к базе
-       async getListCompaniesFromUser(){
-            //получить список компаний, владельцем которых явзяеся пользователь
-            let listCompanies = await axios({url: 'CompaniesAPI/getCompanies',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
-            cosnole.log(cosnolistPointsServices.data.token)
-            return listCompanies;
-        }
     }
     class Service{
         constructor(name="",description="",priceMin=0,priceMax=0,photos=[],video="",region=null,newPointsServices=[],existsPointsServices=[],companies=null){
@@ -82,7 +75,6 @@
          */
         //отправляю запрос на добавление услуги в БД
         QaddService(){
-            console.log(this)
             axios({url: '/ServicesAPI/addService', data: {"authorization":localStorage.getItem(TOKENS.AUTHORIZE),...this}, method: 'POST' })
             .then(resp => {
                 const status = resp.data.status
@@ -182,13 +174,14 @@
                 //при инициализации библиотеки яндекс карт
                 this.service = new Service();// создаем объект сервиса
                 this.service.existsPointsServices = await this.getListTradePointFromUser();
-                this.service.companies = []//Company.queries.getListCompaniesFromUser
+                this.service.companies = await this.getListCompaniesFromUser();
                 /*
                 //добавляем метку которой можно менять координаты щелчком на карте
                 this.placeMark = new ymaps.Placemark(this.coords, {}, {});
                 myMap.geoObjects.add(this.placeMark);
                 myMap.events.add('click', this.click_on_map);*/
             },
+            
             /*
             click_on_map: function(event){
                 //при клике на карте
@@ -217,11 +210,14 @@
                 this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
                 return res;
             },
+            //запросы для данного объекта к базе
             HendlerClickOnPointFromMap: function(event){
                 this.curPoint = event.get('target').properties.get("linkOnStruct")
-            },
-            async TradePointsAPIgetPointsForUserManager(){
-                
+            },//получить список компаний, владельцем которых явзяеся пользователь
+            async getListCompaniesFromUser(){
+                let list = await axios({url: 'CompaniesAPI/getCompanies',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
+                console.log(list.data.companies)
+                return list.data.companies
             }
         }
     }

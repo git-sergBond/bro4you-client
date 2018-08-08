@@ -89,7 +89,7 @@ module.exports =  {
         console.log(request.body)
         return sendJSON(200, {
             status: "OK",
-            points: [],
+            points: tradePoints,
         }, response)
     }
 }

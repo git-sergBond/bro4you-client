@@ -132,7 +132,7 @@ module.exports =  {
         console.log(companies)
         return sendJSON(200, {
             status: "OK",
-            points: companies
+            companies: companies
         }, response)
     },
 }
