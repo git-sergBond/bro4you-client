@@ -32,6 +32,7 @@
                     <br>
                     <label>Название</label><input type="text" v-model="point.name"><br>
                     <label>Адрес</label><input type="text" v-model="point.address"><br>
+                    <button @click.prevent="point.setCoordsForAdress()">Найти по адресу</button>
                     <button @click.prevent="startEditPoint(point)" >Изменить координаты</button><br>
                     <button @click.prevent="curPoint = point">Показать контактную информацию о точке</button>
                     <br>
@@ -109,9 +110,21 @@
             })
         }
         setCoords(coords){
+            
             this.latitude = coords[0];//широта
             this.longitude = coords[1];//долгота
             this.pointInst.geometry.setCoordinates(coords);//меняем координаты метки
+        }
+        setCoordsForAdress(){
+            let context = this
+            let res = ymaps.geocode(this.address);
+            console.log(this.address)
+            res.then(res=>{
+                let coord = res.geoObjects.get(0).geometry.getCoordinates()
+                console.log(coord)
+                context.setCoords(coord)
+            })
+            
         }
         DrawOnMap(){
             let context = this
