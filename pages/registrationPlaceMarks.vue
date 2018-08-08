@@ -22,7 +22,7 @@
                 <hr>
                 <label>Выбрать существующий адрес</label>
                 <div v-for="point in service.existsPointsServices">
-                    <input type="checkbox" v-model="point.active">
+                    <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                     <label>{{ point.name }}</label>
                 </div>
                 <hr>
@@ -36,6 +36,7 @@
 <script>
     import axios from 'axios';
     import DragImage from '../components/DragImage.vue';
+    import TOKENS from '../TOKENS'
     class Company{
         constructor(id = null, name = null){
             this.companyid = id;
@@ -98,17 +99,20 @@
             this.pointid = point.tradePoint.pointid;//идентификатор точки на карте
             this.phones = point.phones//массив телефонов
             //гуи
+            
             this.mapIsnt = mapIsnt;
+            this.pointInst = this.DrawOnMap();
             this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
-            this.DrawOnMap();
             this.selected = false //нужен для показа номеров и прочей херни по точке
         }
         DrawOnMap(){
             let p = new ymaps.Placemark([this.latitude,this.longitude], {}, {})
             this.mapIsnt.geoObjects.add(p);
+            return p;
         }
         SetVisibleOnMap(vis){
-
+            console.log(this.pointInst)
+            this.pointInst.options.set({ "visible": vis});
         }
         DeleteFromMap(){
             
@@ -148,6 +152,10 @@
         },
         methods: {
             initHandler: async function (myMap) {
+                //
+                axios.defaults.headers.common['Authorization'] = localStorage.getItem(TOKENS.AUTHORIZE)
+
+                //
                 this.mapIsnt = myMap;
                 //при инициализации библиотеки яндекс карт
                 this.service = new Service();// создаем объект сервиса
