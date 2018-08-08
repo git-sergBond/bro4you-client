@@ -100,8 +100,8 @@ app.post("/sessionAPI/end",jsonParser, function(request, response){
 app.post("/ServicesAPI/addService",jsonParser, ServicesAPIController.addService);
 app.post("/ServicesAPI/addImageHandler",jsonParser, ServicesAPIController.addImageHandler);
 //TradePointsAPI
-app.get("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoints);
-app.get("/TradePointsAPI/getPointsForCompany",jsonParser, TradePointsAPIController.getPointsForCompany);
+app.post("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoints);
+//app.get("/TradePointsAPI/getPointsForCompany",jsonParser, TradePointsAPIController.getPointsForCompany);
 //CompaniesAPI
 app.get("/CompaniesAPI/getCompanies",jsonParser,CompaniesAPIController.getCompanies);
 app.listen(8080);

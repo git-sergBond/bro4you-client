@@ -21,13 +21,22 @@
                 <label>Видео</label><input type="text" v-model="service.video" ><br>
                 <hr>
                 <label>Выбрать существующий адрес</label>
-                <div v-for="point in service.existsPointsServices">
+                <div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                     <label @click="curPoint = point" >{{ point.name }}</label>
                 </div>
                 <hr>
                 <div v-if="!!curPoint" >
                     <p>{{ curPoint.name }}</p>
+                    <div v-for="phone in curPoint.phones">
+                        <input type="checkbox" v-model="phone.active">
+                        <span>{{ phone.phone }}</span>
+                    </div>
+                    <div v-for="phone in curPoint.newPhones">
+                        <input type="checkbox" v-model="phone.active">
+                        <input type="text" v-model="phone.phone">
+                    </div>
+                    <button @click="curPoint.addNewPhone()">Добавить номер телефона</button>
                 </div>
                 <br><br>
                 <button type="submit">Опубликовать</button>
@@ -48,7 +57,7 @@
         //запросы для данного объекта к базе
        async getListCompaniesFromUser(){
             //получить список компаний, владельцем которых явзяеся пользователь
-            let listCompanies = await axios({url: 'CompaniesAPI/getCompanies', method: 'GET' })
+            let listCompanies = await axios({url: 'CompaniesAPI/getCompanies',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
             cosnole.log(cosnolistPointsServices.data.token)
             return listCompanies;
         }
@@ -73,7 +82,7 @@
          */
         //отправляю запрос на добавление услуги в БД
         QaddService(){
-            axios({url: '/ServicesAPI/addService', data: this, method: 'POST' })
+            axios({url: '/ServicesAPI/addService', data: {"authorization":localStorage.getItem(TOKENS.AUTHORIZE),...this}, method: 'POST' })
             .then(resp => {
                 const status = resp.data.status
                 const serviceId = resp.data.serviceId
@@ -81,6 +90,7 @@
                     alert("Услуга добавлена")
                     //Отправляю запрос с добавлением картинок (если они есть)
                     axios({url: '/ServicesAPI/addImageHandler', data: {
+                        "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
                         serviceId
                     }, method: 'POST' })
                 }else{
@@ -101,12 +111,19 @@
      // ***       //this.region= point.tradePoint.region;//osmID - ид регион в котором находится точка
             this.pointid = point.tradePoint.pointid;//идентификатор точки на карте
             this.phones = point.phones//массив телефонов
-            
+            this.newPhones = [] //массив для новых номеров телефонов
             //гуи
             this.mapIsnt = mapIsnt;
             this.pointInst = this.DrawOnMap();
             this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
             this.selected = false //нужен для показа номеров и прочей херни по точке
+        }
+        addNewPhone(){
+            this.newPhones.push(
+                {
+                "active": true,
+                "phone": "+7 --- --- -- --"
+            })
         }
         DrawOnMap(){
             console.log (2)
@@ -189,7 +206,7 @@
             },
             async getListTradePointFromUser(){
                 //получить все точки услуг пользователя
-                let listTradePoint = await axios({url: 'TradePointsAPI/getPoints', method: 'GET' })
+                let listTradePoint = await axios({url: 'TradePointsAPI/getPoints',data:{authorization:localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
                 let res = [];
                 //упаковка данных в экземпляры классов
                 for(let point of listTradePoint.data.points){
@@ -221,5 +238,8 @@
     }
     .info {
         display: inline-block;
+    }
+    .selected {
+        color: green;
     }
 </style>
