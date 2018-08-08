@@ -3,6 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var ServicesAPIController = require("./server/Controllers/ServicesAPIController.js");
 var TradePointsAPIController = require("./server/Controllers/TradePointsAPIController.js");
+var CompaniesAPIController = require("./server/Controllers/CompaniesAPIController.js");
 // 
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var jsonParser = bodyParser.json();
@@ -99,9 +100,9 @@ app.post("/sessionAPI/end",jsonParser, function(request, response){
 app.post("/ServicesAPI/addService",jsonParser, ServicesAPIController.addService);
 app.post("/ServicesAPI/addImageHandler",jsonParser, ServicesAPIController.addImageHandler);
 //TradePointsAPI
-app.get("/TradePointsAPI/getPointsForUserManager",jsonParser, TradePointsAPIController.getPointsForUserManager);
+app.get("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoints);
 app.get("/TradePointsAPI/getPointsForCompany",jsonParser, TradePointsAPIController.getPointsForCompany);
 //CompaniesAPI
-
+app.get("/CompaniesAPI/getCompanies",jsonParser,CompaniesAPIController.getCompanies);
 app.listen(8080);
 //app.listen(3000);

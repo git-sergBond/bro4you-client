@@ -2,31 +2,78 @@
 function sendJSON(status, data ,response){
     return response.status(status).send(JSON.stringify(data));
 }
-let tradePoints = [
-        {
-            pointid: 0,//идентификатор точки на карте
-            latitude: 50,//широта
-            longitude: 50,//долгота
-            address: "улица 1, дом 1",//адрес
+let tradePoints = 
+[
+    {
+        "tradePoint": {
+            "pointid": 1,//идентификатор точки на карте
+            "name": "Главная точка",
+            "longitude": "36.595487310396",//долгота
+            "latitude": "50.581499805984",//широта
+            "fax": null,
+            "subjectid": 54,
+            "time": null,
+            "email": "qwe@d.ds",
+            "usermanager": null,
+            "website": "http://cvetochek.com",
+            "address": null,
+            "deleted": false,
+            "deletedcascade": null,
+            "subjecttype": 1
         },
-        {
-            pointid: 1,//идентификатор точки на карте
-            latitude: 55,//широта
-            longitude: 50,//долгота
-            address: "улица 2, дом 2",//адрес
+        "phones": [
+            {
+                "phoneId": 4,
+                "phone": "+79606210806"
+            },
+            {
+                "phoneId": 5,
+                "phone": "+79087801276"
+            },
+            {
+                "phoneId": 6,
+                "phone": "+74722293538"
+            },
+            {
+                "phoneId": 7,
+                "phone": "+7 943 567-89-01"
+            },
+            {
+                "phoneId": 24,
+                "phone": "+7 986 574-32-88"
+            }
+        ]
+    },
+    {
+        "tradePoint": {
+            "pointid": 2,
+            "name": "Гильдия Белошвеек",
+            "longitude": "37",
+            "latitude": "50.568459640885",
+            "fax": null,
+            "subjectid": 54,
+            "time": null,
+            "email": "beloshi@mail.ru",
+            "usermanager": 9,
+            "website": "http://beloshi",
+            "address": null,
+            "deleted": false,
+            "deletedcascade": null,
+            "subjecttype": 1
         },
-        {
-            pointid: 2,//идентификатор точки на карте
-            latitude: 55,//широта
-            longitude: 55,//долгота
-            address: "улица 3, дом 3",//адрес
-        }
-    ]
+        "phones": [
+            {
+                "phoneId": 8,
+                "phone": "+7 960 621-08-06"
+            }
+        ]
+    }
+]
 //Контроллер для точек оказания услуг
 module.exports =  {
     //Возвращает точки предоставления услуг назначенные текущему пользователю
-    getPointsForUserManager(request, response){
-        console.log("// "+new Date + " GET /TradePointsAPI/getPointsForUserManager");
+    getPoints(request, response){
+        console.log("// "+new Date + " GET /TradePointsAPI/getPoints");
         console.log("data: ")
         console.log(request.body)
         console.log(tradePoints)
@@ -42,7 +89,7 @@ module.exports =  {
         console.log(request.body)
         return sendJSON(200, {
             status: "OK",
-            points: tradePoints,
+            points: [],
         }, response)
     }
 }

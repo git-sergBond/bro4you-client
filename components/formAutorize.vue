@@ -29,8 +29,8 @@ import API from '../API'
 export default {
     data: function(){
         return {
-            login: 'vacya',
-            password: '12345',
+            login: 'agggr@mail.ru',
+            password: '1234',
             passwordVerif: '',
         }
     },

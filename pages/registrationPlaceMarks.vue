@@ -23,7 +23,7 @@
                 <label>Выбрать существующий адрес</label>
                 <div v-for="point in service.existsPointsServices">
                     <input type="checkbox" v-model="point.active">
-                    <label>существующий адрес</label>
+                    <label>{{ point.name }}</label>
                 </div>
                 <hr>
                 <br><br>
@@ -85,40 +85,41 @@
             })
         }
     } 
-    class PointService {
+    class TradePoint {
         //класс характеризующий точку оказания услуги
-    
-        constructor(latitude=null,longitude=null,address=null,index_500000=null,region=null, pointid = null){
+        constructor(point,mapIsnt){
             //данные принимаемые с сервера
-            this.latitude = latitude;//широта
-            this.longitude= longitude;//долгота
-            this.address= address;//адрес
-            this.index_500000= index_500000; // индекс квадранта в котором находится точка для масштаба 1 : 500 000
-            this.region= region;//osmID - ид регион в котором находится точка
-            this.pointid = pointid;//идентификатор точки на карте
+            this.latitude = point.tradePoint.latitude;//широта
+            this.longitude= point.tradePoint.longitude;//долгота
+            this.name = point.tradePoint.name // название точки оказания услуг
+            this.address= point.tradePoint.address;//адрес
+     // ***       //this.index_500000= point.tradePoint.index_500000; // индекс квадранта в котором находится точка для масштаба 1 : 500 000
+     // ***       //this.region= point.tradePoint.region;//osmID - ид регион в котором находится точка
+            this.pointid = point.tradePoint.pointid;//идентификатор точки на карте
+            this.phones = point.phones//массив телефонов
             //гуи
-            this.active = false; // индикатор показывающий, передавать точку на карту или нет 
+            this.mapIsnt = mapIsnt;
+            this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
+            this.DrawOnMap();
+            this.selected = false //нужен для показа номеров и прочей херни по точке
         }
-        DrawOnMap(mapIsnt){
-            
+        DrawOnMap(){
+            let p = new ymaps.Placemark([this.latitude,this.longitude], {}, {})
+            this.mapIsnt.geoObjects.add(p);
         }
-        SetVisibleOnMap(vis,mapIsnt){
+        SetVisibleOnMap(vis){
 
         }
-        DeleteFromMap(mapIsnt){
+        DeleteFromMap(){
             
         }
         //Активный или нет? (формирует список того, что нужно передать на сервер)
-        get active(){
-            return this.active
-        }
-        set active(val){
+        setActive(val){
             this.SetVisibleOnMap(val);
             this.active = val
         }
         //запросы для данного объекта к базе
-       
-        async getListPointsServicesFromCompny(){
+        async getListTradePointFromCompny(){
             //получить все точки услуг компании
             
         }
@@ -138,6 +139,7 @@
         data: function() { return {
             service: null,
             //гуишные ссылки
+            mapIsnt: null,
             coords: [55,55],
             placeMark: null//ссылка на метку на карте
         }},
@@ -146,9 +148,10 @@
         },
         methods: {
             initHandler: async function (myMap) {
+                this.mapIsnt = myMap;
                 //при инициализации библиотеки яндекс карт
                 this.service = new Service();// создаем объект сервиса
-                this.service.existsPointsServices = await this.getListPointsServicesFromUser();
+                this.service.existsPointsServices = await this.getListTradePointFromUser();
                 this.service.companies = []//Company.queries.getListCompaniesFromUser
                 /*
                 //добавляем метку которой можно менять координаты щелчком на карте
@@ -165,11 +168,18 @@
             publish: function () {
                 this.service.QaddService();
             },
-            async getListPointsServicesFromUser(){
+            async getListTradePointFromUser(){
                 //получить все точки услуг пользователя
-                let listPointsServices = await axios({url: 'TradePointsAPI/getPointsForUserManager', method: 'GET' })
-                console.log(listPointsServices.data.points)
-                return listPointsServices.data.points;
+                let listTradePoint = await axios({url: 'TradePointsAPI/getPoints', method: 'GET' })
+                let res = [];
+                //упаковка данных в экземпляры классов
+                for(let point of listTradePoint.data.points){
+                    res.push(new TradePoint(point, this.mapIsnt));
+                }
+                //масштабирование карты 
+                this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
+                console.log(res)
+                return res;
             },
             async TradePointsAPIgetPointsForUserManager(){
                 
