@@ -23,9 +23,12 @@
                 <label>Выбрать существующий адрес</label>
                 <div v-for="point in service.existsPointsServices">
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
-                    <label>{{ point.name }}</label>
+                    <label @click="curPoint = point" >{{ point.name }}</label>
                 </div>
                 <hr>
+                <div v-if="!!curPoint" >
+                    <p>{{ curPoint.name }}</p>
+                </div>
                 <br><br>
                 <button type="submit">Опубликовать</button>
             </form>
@@ -98,15 +101,21 @@
      // ***       //this.region= point.tradePoint.region;//osmID - ид регион в котором находится точка
             this.pointid = point.tradePoint.pointid;//идентификатор точки на карте
             this.phones = point.phones//массив телефонов
-            //гуи
             
+            //гуи
             this.mapIsnt = mapIsnt;
             this.pointInst = this.DrawOnMap();
             this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
             this.selected = false //нужен для показа номеров и прочей херни по точке
         }
         DrawOnMap(){
+            console.log (2)
+            let context = this
+            console.log(3)
             let p = new ymaps.Placemark([this.latitude,this.longitude], {}, {})
+            p.properties.set({
+                linkOnStruct: context,//сылка на структуру, для обратной связи
+            });
             this.mapIsnt.geoObjects.add(p);
             return p;
         }
@@ -142,6 +151,8 @@
         name: "registrationPlaceMarks",
         data: function() { return {
             service: null,
+            //ссылки для структур
+            curPoint: null,//по текущей точке показываются номера телефоно в  и теды
             //гуишные ссылки
             mapIsnt: null,
             coords: [55,55],
@@ -182,12 +193,18 @@
                 let res = [];
                 //упаковка данных в экземпляры классов
                 for(let point of listTradePoint.data.points){
-                    res.push(new TradePoint(point, this.mapIsnt));
+                    let p = new TradePoint(point, this.mapIsnt)
+                    p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
+                    res.push(p);
                 }
                 //масштабирование карты 
                 this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
                 console.log(res)
                 return res;
+            },
+            HendlerClickOnPointFromMap: function(event){
+                console.log(event.get('target').geometry.getCoordinates())
+                this.curPoint = event.get('target').properties.get("linkOnStruct")
             },
             async TradePointsAPIgetPointsForUserManager(){
                 
