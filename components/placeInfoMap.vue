@@ -10,7 +10,9 @@
             <p>
                 <b>{{item.name}}</b>
                 <br>{{item.address}}
-                <br>{{item.phoneNumber}}
+                <ul v-show="item.phoneNumber.length > 0">
+                    <li v-for="p in item.phoneNumber">{{p}}  </li>
+                </ul>
                 <br>{{item.price}} (Руб.)
                 <br>
             </p>

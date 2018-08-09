@@ -211,12 +211,14 @@
                     //console.log(result.data.services)
                     for(let { points , service, categories} of result.data.services){
                         for( let { latitude , longitude, phones } of points){
+                            console.log('phones')
+                            console.log(phones)
                            modifiResponse.push({
                                 coords: [latitude,longitude],
                                 name: service.name,
                                 imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
                                 address: service.address,
-                                phoneNumber:  "8 951 1231 123",//phones[0],
+                                phoneNumber:  phones,
                                 countReviews: 0,
                                 price: service.pricemax,
                                 stars: 5,
@@ -579,7 +581,7 @@
                     "<img src = '{{ properties.imageUrl[0] }}'>"+
                     "<p><b>{{ properties.name }}</b>" +
                     "<br/>{{ properties.address }}" +
-                    "<br/>{{ properties.phoneNumber }}" +
+                    "<br/>{{ properties.phoneNumber[0] }}" +
                     "<br/><b>{{ properties.price }} Руб.</b>" +
                     "</p></div>", {
                         // Определяем метод getShape, который
