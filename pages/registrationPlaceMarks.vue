@@ -99,9 +99,9 @@
             this.address= point.address;//адрес
             this.newPhones = [] //массив для новых номеров телефонов
             //гуи
-            this.Vcon = Vcon;
-            this.mapIsnt = mapIsnt;
-            this.pointInst = this.DrawOnMap();
+            this.Vcon = Vcon;//контекст экземпляра Vue
+            this.mapIsnt = mapIsnt;//контекст яндекс карты
+            this.pointInst = this.DrawOnMap();//контекст точки на яндекс карте
             this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
             this.selected = false //нужен для показа номеров и прочей херни по точке
             
@@ -153,6 +153,7 @@
                 linkOnStruct: context,//сылка на структуру, для обратной связи
             });
             p.events.add('click', this.Vcon.HendlerClickOnPointFromMap);
+            p.events.add('dragend', this.Vcon.HendlerDragend);
             this.mapIsnt.geoObjects.add(p);
             return p;
         }
@@ -256,6 +257,15 @@
             },
             HendlerClickOnPointFromMap: function(event){
                 this.curPoint = event.get('target').properties.get("linkOnStruct")
+                //подсветка
+                this.clearColorPoints();
+                event.get('target').options.set('preset', 'islands#darkgreenDotIconWithCaption');
+            },
+            HendlerDragend:  function(event){
+                this.curPoint = event.get('target').properties.get("linkOnStruct")
+                const coords = this.curPoint.pointInst.geometry.getCoordinates();
+                this.curPoint.setCoords(coords);
+                //подсветка
                 this.clearColorPoints();
                 event.get('target').options.set('preset', 'islands#darkgreenDotIconWithCaption');
             },
