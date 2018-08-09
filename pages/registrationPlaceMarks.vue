@@ -30,7 +30,7 @@
                 <div v-for="point in service.newPointsServices" :class="{ selected: point == curPoint}">
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                     <br>
-                    <label>Название</label><input type="text" v-model="point.name"><br>
+                    <label>Название</label><input type="text" v-model="point.name" @change="point.changeCaption()"><br>
                     <label>Адрес</label><input type="text" v-model="point.address"><br>
                     <button @click.prevent="point.setCoordsForAdress()">Найти по адресу</button>
                     <button @click.prevent="startEditPoint(point)" >Изменить координаты</button><br>
@@ -110,6 +110,11 @@
                 "phone": "+7 --- --- -- --"
             })
         }
+        changeCaption(){
+            this.pointInst.properties.set({
+                iconCaption: this.name
+            });
+        }
         setCoords(coords){
             let context = this;
             this.latitude = coords[0];//широта
@@ -136,7 +141,12 @@
         }
         DrawOnMap(){
             let context = this
-            let p = new ymaps.Placemark([this.latitude,this.longitude], {}, {})
+            let p = new ymaps.Placemark([this.latitude,this.longitude], {
+                iconCaption: this.name
+            }, {
+                 preset: 'islands#violetDotIconWithCaption',
+                 draggable: true
+            })
             p.properties.set({
                 linkOnStruct: context,//сылка на структуру, для обратной связи
             });
