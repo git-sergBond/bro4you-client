@@ -41,6 +41,7 @@
                 <hr>
                 <button @click.prevent="addNewPoint">Добавить точку оказания услу</button>
                 <hr>
+                <h3>Подробная контактная</h3>
                 <div v-if="!!curPoint" >
                     <p>{{ curPoint.name }}</p>
                     <div v-for="phone in curPoint.newPhones">
@@ -110,10 +111,17 @@
             })
         }
         setCoords(coords){
-            
+            let context = this;
             this.latitude = coords[0];//широта
             this.longitude = coords[1];//долгота
             this.pointInst.geometry.setCoordinates(coords);//меняем координаты метки
+            let res = ymaps.geocode([this.latitude,this.longitude]);
+            res.then(res=>{
+                let firstGeoObject = res.geoObjects.get(0);
+                let address = firstGeoObject.getAddressLine();
+                console.log(address);
+                context.address = address;
+            });
         }
         setCoordsForAdress(){
             let context = this
