@@ -20,7 +20,7 @@
                 <hr>
                 <label>Видео</label><input type="text" v-model="service.video" ><br>
                 <hr>
-                <h3 v-show="!!service.existsPointsServices">Выбрать существующий адрес</h3>
+                <h4 v-show="!!service.existsPointsServices">Выбрать существующий адрес</h4>
                 <div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                     <label>{{ point.name }}</label>
@@ -41,9 +41,8 @@
                 <hr>
                 <button @click.prevent="addNewPoint">Добавить точку оказания услу</button>
                 <hr>
-                <h3>Подробная контактная</h3>
                 <div v-if="!!curPoint" >
-                    <p>{{ curPoint.name }}</p>
+                    <h4>Телефоны привязанные к точке - {{ curPoint.name }}</h4>
                     <div v-for="phone in curPoint.newPhones">
                         <input type="checkbox" v-model="phone.active">
                         <input type="text" v-model="phone.phone">
@@ -51,6 +50,12 @@
                     <button @click.prevent="curPoint.addNewPhone()">Добавить номер телефона</button>
                 </div>
                 <br><br>
+                <input type="checkbox" v-model="checkCompany"><label>Привязать услугу к компании?</label>
+                <select v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" v-model="company">
+                    <option v-for="comp in service.companies" v-bind:value="comp.companyid">
+                        {{ comp.fullname }}
+                    </option>
+                </select>
                 <button type="submit">Опубликовать</button>
             </form>
         </div>
@@ -80,6 +85,7 @@
             // !!! БАГУЕТ, записывает в имя
             this.existsPointsServices=[] // существуещих точек
             this.companies = null // ид комании, если его нет, то передается -1 (мне нужен запрос для получения списка компаний по токену)
+            this.company = null //ид компании которую выбрали
             //добавить тел, факс, почту, сайт, кома
         }
         /*
@@ -188,7 +194,12 @@
             service: null,
             //ссылки для структур
             curPoint: null,//по текущей точке показываются номера телефоно в  и теды
+
+            //для выбора того, что нужно скинуть
+            checkCompany: false,
+
             //гуишные ссылки
+        
             statusEditPoint: false,//флаг, который меняется при редактровании точки
             editPoint: null,//ссылка на точку которую нужно отредактирвать
 
@@ -300,6 +311,7 @@
                 }
                 newPoints.push({latitude,longitude,name ,address, newPhones})
             }
+            if(!this.checkCompany) this.company = null;
             //отправка
             axios({url: '/ServicesAPI/addService', 
             data: {
@@ -308,6 +320,7 @@
                     description,video,
                     priceMin, priceMax,
                     region, 
+                    companyId: this.company,
                     //
                     oldPoints,newPoints
                 }, method: 'POST' })
