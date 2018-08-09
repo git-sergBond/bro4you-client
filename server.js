@@ -98,6 +98,7 @@ app.post("/sessionAPI/end",jsonParser, function(request, response){
 });
 //ServicesAPI
 app.post("/ServicesAPI/addService",jsonParser, ServicesAPIController.addService);
+app.post("/ServicesAPI/getServices",jsonParser, ServicesAPIController.getServices);
 app.post("/ServicesAPI/addImageHandler",jsonParser, ServicesAPIController.addImageHandler);
 //TradePointsAPI
 app.post("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoints);

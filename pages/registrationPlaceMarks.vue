@@ -15,8 +15,9 @@
                     <label>от</label><input type="text" v-model="service.priceMin" >
                     <label>до</label><input type="text" v-model="service.priceMax" >
                 <hr>
-                <label>Фото</label>
-                <drag-image ></drag-image>
+                <label>Фото: </label>
+                <!--drag-image ></drag-image-->
+                <input type="file" @change="HendlerFiles">
                 <hr>
                 <label>Видео</label><input type="text" v-model="service.video" ><br>
                 <hr>
@@ -279,6 +280,15 @@
                 //подсветка
                 this.clearColorPoints();
                 event.get('target').options.set('preset', 'islands#darkgreenDotIconWithCaption');
+            },
+            HendlerFiles: function(event){
+                if (!!window.FileReader) {
+                    console.log("file reader false")
+                }
+               if (!!window.FormData) {
+    console.log("FormData false")
+}
+                
             },
             //Подсветка
             clearColorPoints(){
