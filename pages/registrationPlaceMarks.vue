@@ -298,7 +298,7 @@
                 for(let phone of point.newPhones){
                     if(!!phone.active) newPhones.push(phone.phone);
                 }
-                newPoints.push({latitude,longitude,name ,address})
+                newPoints.push({latitude,longitude,name ,address, newPhones})
             }
             //отправка
             axios({url: '/ServicesAPI/addService', 
