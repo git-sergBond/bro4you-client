@@ -221,7 +221,7 @@
                                 price: service.pricemax,
                                 stars: 5,
 // !!! СДЕЛАТЬ, чтобы можно было юзать несколько категорий
-                                category: "123", // categories[0].categoryname,
+                                category: "категория 1", // categories[0].categoryname,
 // !!! !!! !!! !!! !!! !!!
                                 url: '#1'
                             });

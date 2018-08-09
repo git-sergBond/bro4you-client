@@ -321,9 +321,14 @@
                 }
                 newPoints.push({latitude,longitude,name ,address, newPhones})
             }
-            console.log(ser.companies)
-            console.log(ser.companies.length)
-            if(!this.checkCompany || !ser.companies || ser.companies.length == 0) this.company = null;
+            
+            if(!this.checkCompany || !ser.companies){
+                 this.company = null;
+            } 
+            if(!!ser.companies){
+                if(ser.companies.length == 0)
+                this.company = null;
+            }
             //отправка
             axios({url: '/ServicesAPI/addService', 
             data: {
