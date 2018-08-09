@@ -90,7 +90,7 @@
     } 
     class TradePoint {
         //класс характеризующий точку оказания услуги
-        constructor(point,mapIsnt){
+        constructor(point,mapIsnt,Vcon){
             //данные принимаемые с сервера
             this.pointid = !!point.pointid ? point.pointid : null
             this.latitude = point.latitude;//широта
@@ -99,10 +99,12 @@
             this.address= point.address;//адрес
             this.newPhones = [] //массив для новых номеров телефонов
             //гуи
+            this.Vcon = Vcon;
             this.mapIsnt = mapIsnt;
             this.pointInst = this.DrawOnMap();
             this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
             this.selected = false //нужен для показа номеров и прочей херни по точке
+            
         }
         addNewPhone(){
             this.newPhones.push({
@@ -144,12 +146,13 @@
             let p = new ymaps.Placemark([this.latitude,this.longitude], {
                 iconCaption: this.name
             }, {
-                 preset: 'islands#violetDotIconWithCaption',
+                 preset: 'islands#darkblueDotIconWithCaption',
                  draggable: true
             })
             p.properties.set({
                 linkOnStruct: context,//сылка на структуру, для обратной связи
             });
+            p.events.add('click', this.Vcon.HendlerClickOnPointFromMap);
             this.mapIsnt.geoObjects.add(p);
             return p;
         }
@@ -177,7 +180,8 @@
             return index;
         }
     }
-    export default {
+    
+    let v = {
         name: "registrationPlaceMarks",
         data: function() { return {
             service: null,
@@ -226,7 +230,7 @@
                     name: "назовите метку",
                     address: "уточните адресс",
                     newPhones: [],
-                },this.mapIsnt))
+                },this.mapIsnt,this))
             },
             publish: function () {
                 this.QaddService(this.service);
@@ -242,18 +246,28 @@
                 let res = [];
                 //упаковка данных в экземпляры классов
                 for(let point of listTradePoint.data.points){
-                    let p = new TradePoint(point.tradePoint, this.mapIsnt)
-                    p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
+                    let p = new TradePoint(point.tradePoint, this.mapIsnt, this)
+                    //p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
                     res.push(p);
                 }
                 //масштабирование карты 
                 this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
                 return res;
             },
-            //запросы для данного объекта к базе
             HendlerClickOnPointFromMap: function(event){
                 this.curPoint = event.get('target').properties.get("linkOnStruct")
-            },//получить список компаний, владельцем которых явзяеся пользователь
+                this.clearColorPoints();
+                event.get('target').options.set('preset', 'islands#darkgreenDotIconWithCaption');
+            },
+            //Подсветка
+            clearColorPoints(){
+            // Цвет всех меток очищается
+                ymaps.geoQuery(this.mapIsnt.geoObjects)
+                .search('geometry.type = "Point"')
+                .setOptions('preset', 'islands#darkblueDotIconWithCaption');
+            },
+            //запросы для данного объекта к базе
+            //получить список компаний, владельцем которых явзяеся пользователь
             async getListCompaniesFromUser(){
                 let list = await axios({url: 'CompaniesAPI/getCompanies',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
                 console.log(list.data.companies)
@@ -304,6 +318,7 @@
         }
         }
     }
+    export default v
 </script>
 
 <style scoped>
