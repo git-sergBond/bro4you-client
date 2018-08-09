@@ -88,6 +88,8 @@
 
 <script>
     var LOC_STORE = null;
+    import axios from 'axios';
+    import TOKENS from '../TOKENS'
     import shares from '../components/shares.vue';
     import category from '../components/category.vue';
     import searchMap from '../components/searchMap.vue';
@@ -202,39 +204,68 @@
                 this.intit_events_DrawPolygonByFinger();
             },
             //----------------ЗАПРОСЫ----------------------------
-            getInfoForPoligon_from_server: function (search, coordinates) {
+            async totalQusery(){
+                let modifiResponse = [];
+                axios.defaults.headers.common['Authorization'] = localStorage.getItem(TOKENS.AUTHORIZE);
+                let result = await axios({url: 'ServicesAPI/getServices',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'GET' })
+                    //console.log(result.data.services)
+                    for(let { points , service, categories} of result.data.services){
+                        for( let { latitude , longitude, phones } of points){
+                           modifiResponse.push({
+                                coords: [latitude,longitude],
+                                name: service.name,
+                                imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
+                                address: service.address,
+                                phoneNumber:  "8 951 1231 123",//phones[0],
+                                countReviews: 0,
+                                price: service.pricemax,
+                                stars: 5,
+// !!! СДЕЛАТЬ, чтобы можно было юзать несколько категорий
+                                category: "123", // categories[0].categoryname,
+// !!! !!! !!! !!! !!! !!!
+                                url: '#1'
+                            });
+                        }
+                    }
+                console.log('totalQusery')
+                console.log(modifiResponse[0])
+                console.log(modifiResponse)
+                return modifiResponse;
+            },
+            getInfoForPoligon_from_server: async function (search, coordinates) {
                 //асинхронный запрос серверу
                 //серверу запрос поиска + передается массив точек (вершин полигона)
                 //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
                 console.log('requset to server (search msg + json array coordinates)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
                 //console.log(coordinates)
                 console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
-                return responce;
+                
+                return await this.totalQusery();
             },
-            getInfoForPoligons_from_server: function (search, coordinates) {
+            getInfoForPoligons_from_server: async function (search, coordinates) {
                 //асинхронный запрос серверу
                 //серверу запрос поиска + массив полигонов
                 //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
                 console.log('requset to server (search msg + json array polygons)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
                 //console.log(coordinates)
                 console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
-                return responce;
+                return await this.totalQusery();
             },
-            getInfoForBounds_from_server: function(search, bounds){
+            getInfoForBounds_from_server: async function(search, bounds){
                 //асинхронный запрос серверу
                 //серверу строка запроса пользователя + координаты квадрата Л-В и П-Н
                 //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
                 console.log('requset to server (string search msg + bounds rect)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
                 console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
-                return responce;
+                return await this.totalQusery();
             },
-            get_Categories_and_polygon_from_server: function(category, polygon){
+            get_Categories_and_polygon_from_server: async function(category, polygon){
 // NOP
-                return responce;
+                return await this.totalQusery();
             },
-            get_Categories_and_bounds_from_server: function(category, bounds){
+            get_Categories_and_bounds_from_server: async function(category, bounds){
 // NOP
-                return responce;
+                return await this.totalQusery();
             },
             /*
             getCategoties_from_server: function(){
@@ -350,9 +381,9 @@
                 this.add_actions_info();
                 let bounds = this.mapInstanse.getBounds();//2 координаты
                 if(this.polygonEdit == null){
-                    this.placemarks = this.getInfoForBounds_from_server(this.message, bounds);
+                    this.placemarks = await this.getInfoForBounds_from_server(this.message, bounds);
                 }else{
-                    this.placemarks = this.getInfoForPoligon_from_server(this.message, this.poly_line);
+                    this.placemarks = await this.getInfoForPoligon_from_server(this.message, this.poly_line);
                 }
                 await this.add_placemarks_on_map(this.placemarks);
                 this.categories = this.get_categoryes_from_placemarks(this.placemarks);
@@ -365,9 +396,9 @@
                 this.add_actions_info();
                 let bounds = this.mapInstanse.getBounds();//2 координаты
                 if(this.polygonEdit == null){
-                    this.placemarks = this.get_Categories_and_bounds_from_server(this.cur_category, bounds);
+                    this.placemarks = await this.get_Categories_and_bounds_from_server(this.cur_category, bounds);
                 }else{
-                    this.placemarks = this.get_Categories_and_polygon_from_server(this.cur_category, this.poly_line);
+                    this.placemarks = await this.get_Categories_and_polygon_from_server(this.cur_category, this.poly_line);
                 }
                 await this.add_placemarks_on_map(this.placemarks);
                 //this.categories = this.get_categoryes_from_placemarks(this.placemarks);
@@ -391,7 +422,7 @@
                         coords.push(region.geometry.getCoordinates()[0]);//сохраняем каждый полигон
                     });
                 //передаем координаты полигонов
-                this.placemarks = this.getInfoForPoligons_from_server(coords);
+                this.placemarks = await this.getInfoForPoligons_from_server(coords);
                 //убираем все регионы
                 this.ClearMap();
                 //высвечиваем метки
@@ -454,7 +485,6 @@
                     this.cur_category.push(tag);//+ запомнили фильтр тего
                 else
                     this.cur_category.splice(i,1);//далили
-                console.log(this.cur_category)
                 this.filter();
             },
             click_btn_ShowAllTags: function(){
@@ -678,12 +708,10 @@
                         const line2 = listLines[j];
                         if(intersectionX(line1,line2) && intersectionY(line1,line2)){
                             listIntersPoints.push(Math.min(i, j));
-                            console.log("!")
                         }
                         //console.log('evc = '+intersectionEVCLID(line1.p1[0],line1.p1[1],line1.p2[0],line1.p2[1],line2.p1[0],line2.p1[1],line2.p2[0],line2.p2[1]).Px)
                     }
                 }
-                console.log(listLines)
                 //уменьшение колличества точек на линии
                 let simle_arr = [];
                 simle_arr.push(arr_in[0]);
@@ -715,6 +743,11 @@
                 return tags;
             },
             get_low_and_high_price_from_placemarks: function (placemarks) {
+                console.log("Price")
+                
+                for(let p of placemarks){
+                    console.log(p)
+                }
                 //Находим максимально и минимальное  значение для цен
                 //+ ранжирование цен посредствам цвета метки (1)
                 let low_price = Number(placemarks[0].price);
@@ -724,6 +757,7 @@
                     if (el > high_price) high_price = el;
                     if (el < low_price) low_price = el;
                 }
+                console.log("Price1")
                 this.low_price = low_price;
                 this.high_price = high_price;
                 /*  (1) во время прохода выставляем цвета для ранжирования меток по цене
@@ -768,7 +802,6 @@
             */
             getExtrimePoints: function(arr_coord){
                 //определение максимально даленных точек в массиве точек по ширине и высоте
-                console.log(arr_coord);
                 let myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
                 for (var i = 0; i<arr_coord.length; i++) {//добавляем каждую точку в коллекцию
                     myCollection.add(new ymaps.Placemark(arr_coord[i]));
@@ -815,9 +848,8 @@
                 this.poly_line = simple_line;
                 //определение крайних (максимальных точек)
                 this.ExtremePoins = this.getExtrimePoints(simple_line);
-                console.log(this.ExtremePoins);
                 // передача информауии на сервер
-                this.placemarks = this.getInfoForPoligon_from_server(simple_line);
+                this.placemarks = await this.getInfoForPoligon_from_server(simple_line);
                 this.ClearMap();
                 this.add_actions_info();
                 //как пришел ответ идет добавление меток на карту и информации о них
@@ -864,7 +896,6 @@
 
                 this.categories = categories.map(e => e.name);
                 this.show_category_trig = !this.show_category_trig;
-                console.log(categories);
             },
             click_btn_changeRegion: function(P_filter_regions){
                 this.filter_regions = P_filter_regions;
@@ -916,94 +947,7 @@
             }
         }
     }
-    var responce = [
-        {
-            coords: [57.05980129774418, 40.562484643066426],
-            name: 'Золотой слон - подставка',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 55',
-            countReviews: 0,
-            price: 7000,
-            stars: 2,
-            category: 'Форд',
-            url: '#1'
-        },
-        {
-            coords: [57.254808646433844, 39.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 10000,
-            stars: 5,
-            category: 'Приключения',
-            url: '#2'
-        },
-        {
-            coords: [55.254808646433844, 40.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 9000,
-            stars: 5,
-            category: 'Майки',
-            url: '#2'
-        },
-        {
-            coords: [55.254808646433844, 38.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 7500,
-            stars: 5,
-            category: 'Джинсы',
-            url: '#2'
-        },
-        {
-            coords: [60.254808646433844, 39.13975515087893],
-            name: 'Игрушечные слоны',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 43,
-            price: 7000,
-            stars: 5,
-            category: 'Джинсы',
-            url: '#2'
-        },
-        {
-            coords: [55.98721616095246, 39.733016869628926],
-            name: 'Зоопарк',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 1000,
-            price: 6000,
-            stars: 3,
-            category: 'Майки',
-            url: '#3'
-        },
-        {
-            coords: [59.98721616095246, 39.733016869628926],
-            name: 'Зоопарк',
-            imageUrl: ['images/car3.jpg', 'images/car1.jpg', 'images/car2.jpeg'],
-            address: 'Белгород, улица Щорса, 123Б',
-            phoneNumber: '+ 7 (XXX) XX - 22',
-            countReviews: 1000,
-            price: 5000,
-            stars: 3,
-            category: 'Приключения',
-            url: '#3'
-        }
-    ];
-
-
+        
 </script>
 <style>
     .my-hint {

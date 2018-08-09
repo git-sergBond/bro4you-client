@@ -2,7 +2,6 @@
     <div >
 
         <div class="place-info" v-for='item in P_placemarks' v-show='F_is_equals_coords(item.coords)'>
-            <p @click="$emit('event_close_p')">rrwer</p>
             <div class="button" style="top: 30px" @click="closeInfo" >
                 <img src="images/icons/close52.png"  >
                 <!--p>X</p-->
