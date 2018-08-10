@@ -438,8 +438,6 @@
                     const addObj = { name: nameRegCurPoint, check: true };
                     if (this.filter_regions.indexOf(addObj) == -1) this.filter_regions.push(addObj);
                 });
-                console.log("filter REG")
-                console.log(this.filter_regions)
                 this.filter();
                 this.stateApp = 0;
             },
@@ -501,7 +499,7 @@
             click_btn_ShowAllTags: function(){
                 //Очистить фильтр уточнения всех меток
                 this.cur_category = this.get_categoryes_from_placemarks(this.placemarks);
-                this.categories = [...this.cur_category];//this.get_categoryes_from_placemarks(this.placemarks);
+                this.categories = [...this.cur_category];//
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
                 this.filter();
             },
