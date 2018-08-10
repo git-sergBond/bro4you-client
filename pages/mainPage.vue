@@ -412,8 +412,8 @@
             click_btn_show_result_for_regions: async function(){
                 let checked_regions = [];
                 let coords = [];
-                let collection = ymaps.geoQuery(this.mapInstanse.geoObjects);
-                collection //проходимсся по коллекции
+                //проходимсся по коллекции
+                let collection = await ymaps.geoQuery(this.mapInstanse.geoObjects)
                     .search("properties.user_check = true")//если пользователь выбрал регион
                     .each((region)=>{
                         checked_regions.push(region);//добавляем ссылку на регион во временный массив
@@ -501,7 +501,7 @@
             click_btn_ShowAllTags: function(){
                 //Очистить фильтр уточнения всех меток
                 this.cur_category = this.get_categoryes_from_placemarks(this.placemarks);
-                this.categories =  this.get_categoryes_from_placemarks(this.placemarks);
+                this.categories = [...this.cur_category];//this.get_categoryes_from_placemarks(this.placemarks);
                 this.get_low_and_high_price_from_placemarks(this.placemarks);
                 this.filter();
             },
