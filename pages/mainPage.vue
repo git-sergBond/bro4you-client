@@ -455,7 +455,16 @@
                     .each(p => {
                         //фильтр категорий
                         const cat = p.properties.get('category');
-                        if(context.cur_category.indexOf(cat)==-1) return;
+                        console.log('filter')
+                        let fCat = true
+                        if(cat.length == 0){
+                            if(context.cur_category.indexOf("Категория не указана")==-1) fCat=false;
+                        } else {
+                            for(let {categoryname} of cat){
+                                if(context.cur_category.indexOf(categoryname)==-1) fCat=false;
+                            }
+                        }
+                        if(!fCat) return;
                         //регионов
                         const reg = p.properties.get('region');
                         if(context.filter_regions != null){
