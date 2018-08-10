@@ -99,7 +99,15 @@ let services =
             "address": "улица Волоколамская и еще некоторые",
             "pathtophoto": "/public/img/6960437f.jpg"
         },
-        "categories": [],
+        "categories": [
+            {
+                "categoryid": 18,
+                "categoryname": "Организация мероприятий",
+                "parentid": 15,
+                "description": "Удивительно, но \"ехха\" эта крайне неблагодарная отрасль связана с развлечениями.",
+                "img": null
+            }
+        ],
         "points": [
             {
                 "pointid": 16,

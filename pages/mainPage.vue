@@ -211,8 +211,6 @@
                     //console.log(result.data.services)
                     for(let { points , service, categories} of result.data.services){
                         for( let { latitude , longitude, phones } of points){
-                            console.log('phones')
-                            console.log(phones)
                            modifiResponse.push({
                                 coords: [latitude,longitude],
                                 name: service.name,
@@ -223,15 +221,13 @@
                                 price: service.pricemax,
                                 stars: 5,
 // !!! СДЕЛАТЬ, чтобы можно было юзать несколько категорий
-                                category: "категория 1", // categories[0].categoryname,
+                                category: categories,
 // !!! !!! !!! !!! !!! !!!
                                 url: '#1'
                             });
+                            console.log(categories)
                         }
                     }
-                console.log('totalQusery')
-                console.log(modifiResponse[0])
-                console.log(modifiResponse)
                 return modifiResponse;
             },
             getInfoForPoligon_from_server: async function (search, coordinates) {
@@ -739,8 +735,15 @@
                 //что бы уточнить
                 let tags = [];
                 for (let i = 0; i < placemarks.length; i++) {
-                    let tag = placemarks[i].category;
-                    if(tags.indexOf(tag) === -1) tags.push(tag);
+                    console.log(placemarks[i].category)
+                    if(placemarks[i].category.length == 0){
+                        const catUndif = "Категория не указана";
+                        if(tags.indexOf(catUndif) === -1) tags.push(catUndif);
+                    } else {
+                        for(let {categoryname} of placemarks[i].category){
+                            if(tags.indexOf(categoryname) === -1) tags.push(categoryname);
+                        }
+                    }
                 }
                 return tags;
             },
