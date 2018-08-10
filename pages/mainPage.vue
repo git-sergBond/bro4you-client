@@ -434,8 +434,12 @@
                 checked_regions.forEach(region => {
                     this.mapInstanse.geoObjects.add(region);
                     //сохраняем информацию для фильтра по регионам
-                    this.filter_regions.push({ name: region.properties.get('name'), check: true });
+                    const nameRegCurPoint = region.properties.get('name');
+                    const addObj = { name: nameRegCurPoint, check: true };
+                    if (this.filter_regions.indexOf(addObj) == -1) this.filter_regions.push(addObj);
                 });
+                console.log("filter REG")
+                console.log(this.filter_regions)
                 this.filter();
                 this.stateApp = 0;
             },
@@ -655,10 +659,19 @@
                     p.events.add('click', this.click_Placemark);
                     this.mapInstanse.geoObjects.add(p);
                     //сохраняем информацию для фильтра по регионам
-                    let reg = await this.getInfoRegionFromPoint(p);
+                    const reg = await this.getInfoRegionFromPoint(p);
                     p.properties.set('region',reg);
-                   
-                    if(filter_regions.indexOf(reg)==-1){
+                        //поиск совпадений
+                    let indReg = true;
+                    for (const {name} of filter_regions){
+                        //console.log(name + "///" + reg)
+                        if (name == reg) {
+                            indReg = false;
+                            break;
+                        }
+                    }
+                        //добавление региона если нет совпадений
+                    if(indReg){
                         filter_regions.push({
                             name: reg,
                             check: true
@@ -878,14 +891,6 @@
                 //возвращаем прежнее состояние приложения и активируем перетаскивание
                 this.stateApp = 0;
                 this.mapInstanse.behaviors.enable('drag');
-                //DEBUG
-                /*
-                let p1 = new ymaps.Placemark(this.ExtremePoins.pd1,{},{});
-                this.mapInstanse.geoObjects.add(p1);
-                let p2 = new ymaps.Placemark(this.ExtremePoins.pd2,{},{});
-                this.mapInstanse.geoObjects.add(p2);
-                let c = new ymaps.Placemark(this.ExtremePoins.center,{},{});
-                this.mapInstanse.geoObjects.add(c);*/
             },
             //----------------ФИЛЬТРЫ------------------------------
             is_equals_coords: function(coords){
