@@ -50,7 +50,15 @@
                     </div>
                     <button @click.prevent="curPoint.addNewPhone()">Добавить номер телефона</button>
                 </div>
-                <br><br>
+                <hr>
+                <div>
+                    <h4>Выберите категорию услуг</h4>
+                    <p>
+
+                        {{ categoriesForSite }}
+                    </p>
+                </div>
+                <hr>
                 <input type="checkbox" v-model="checkCompany"><label>Привязать услугу к компании?</label>
                 <select v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" v-model="company">
                     <option v-for="comp in service.companies" v-bind:value="comp.companyid">
@@ -105,6 +113,7 @@
             this.name = point.name // название точки оказания услуг
             this.address= point.address;//адрес
             this.newPhones = [] //массив для новых номеров телефонов
+            this.categories = [] //массив категорий, к которым нужно привязать услугу
             //гуи
             this.Vcon = Vcon;//контекст экземпляра Vue
             this.mapIsnt = mapIsnt;//контекст яндекс карты
@@ -179,7 +188,7 @@
         }
         //посчитали индекс квадранта для заданного масштабы
         calculate_index_for_square(coord, scale=500000){
-            let tableScale = [];
+            let tableScale = [];[]
             // таблица масштабов
             // [масштаб] = [размер широты, оазмер долготы]
             tableScale[500000] = [2, 3];
@@ -193,6 +202,10 @@
         name: "registrationPlaceMarks",
         data: function() { return {
             service: null,
+            //Меняющиеся данные 
+            categoriesForSite: [],//CategoriesAPI/getCategoriesForSite
+
+
             //ссылки для структур
             curPoint: null,//по текущей точке показываются номера телефоно в  и теды
 
@@ -221,6 +234,7 @@
                 this.service = new Service();// создаем объект сервиса
                 this.service.existsPointsServices = await this.getListTradePointFromUser();
                 this.service.companies = await this.getListCompaniesFromUser();
+                this.categoriesForSite = await this.getCategoriesForSite();
                 //добавляем событие спомощью которого можно менять координаты щелчком на карте
                 myMap.events.add('click', this.click_on_map);
             },
@@ -266,6 +280,10 @@
                 //масштабирование карты 
                 this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
                 return res;
+            },
+            async getCategoriesForSite(){
+                let categories = await axios({url: 'CategoriesAPI/getCategoriesForSite',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'GET' })
+                return categories.data.categories;
             },
             HendlerClickOnPointFromMap: function(event){
                 this.curPoint = event.get('target').properties.get("linkOnStruct")
