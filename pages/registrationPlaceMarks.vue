@@ -51,19 +51,22 @@
                     <button @click.prevent="curPoint.addNewPhone()">Добавить номер телефона</button>
                 </div>
                 <hr>
-                <div>
+                <div v-show="!checkCompany">
                     <h4>Выберите категорию услуг</h4>
                     <ul>
                         <tree-item v-if="!!categoriesForSite" :model="categoriesForSite" @reqursiCheck="reqursiCheck"> </tree-item>
                     </ul>
                 </div>
                 <hr>
-                <input type="checkbox" v-model="checkCompany"><label>Привязать услугу к компании?</label>
+           
+                    <input type="checkbox" v-model="checkCompany"><label>Привязать услугу к компании?</label>
                 <select v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" v-model="company">
                     <option v-for="comp in service.companies" v-bind:value="comp.companyid">
                         {{ comp.fullname }}
                     </option>
                 </select>
+         
+                
                 <button type="submit">Опубликовать</button>
             </form>
         </div>
@@ -357,7 +360,9 @@
                 }
                 newPoints.push({latitude,longitude,name ,address, newPhones})
             }
-            
+            /*
+            checkCompany
+             */
             if(!this.checkCompany || !ser.companies){
                  this.company = null;
             } 
@@ -365,6 +370,7 @@
                 if(ser.companies.length == 0)
                 this.company = null;
             }
+            //if(!this.company)
             //отправка
             axios({url: '/ServicesAPI/addService', 
             data: {
@@ -373,7 +379,8 @@
                     description,video,
                     priceMin, priceMax,
                     region, 
-                    companyId: this.company,
+                    companyId: this.checkCompany ?  this.company : null,
+                    categories: !this.checkCompany ?  this.sekectedCategories : null,
                     //
                     oldPoints,newPoints
                 }, method: 'POST' })
