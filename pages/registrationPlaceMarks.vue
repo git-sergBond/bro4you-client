@@ -19,7 +19,7 @@
                 <!--drag-image ></drag-image-->
                 <input type="file" @change="HendlerFiles">
                 <hr>
-                <label>Видео</label><input type="text" v-model="service.video" ><br>
+                <!--label>Видео</label><input type="text" v-model="service.video" ><br-->
                 <hr>
                 <h4 v-show="!!service.existsPointsServices">Выбрать существующий адрес</h4>
                 <div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
@@ -54,7 +54,7 @@
                 <div >
                     <label>Выберите категорию услуг, или привяжите услугу к компании</label>
                     <input type="checkbox" v-model="checkCompany">
-                    <label>{{ checkCompany ?  "да" : "нет"}}</label>
+                    <label>({{ checkCompany ?  "да" : "нет"}})</label>
                     <br>
                     <select v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" v-model="company">
                         <option v-for="comp in service.companies" v-bind:value="comp.companyid">
@@ -376,7 +376,7 @@
             data: {
                 "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
                     name,photos,
-                    description,video,
+                    description,//video,
                     priceMin, priceMax,
                     region, 
                     companyId: this.checkCompany ?  this.company : null,
