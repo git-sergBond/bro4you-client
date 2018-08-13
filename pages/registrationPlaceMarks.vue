@@ -204,7 +204,7 @@
             service: null,
             //Меняющиеся данные 
             categoriesForSite: null,//CategoriesAPI/getCategoriesForSite
-
+            sekectedCategories: [],//категории которые выбраны
 
             //ссылки для структур
             curPoint: null,//по текущей точке показываются номера телефоно в  и теды
@@ -240,7 +240,17 @@
                 myMap.events.add('click', this.click_on_map);
             },
             reqursiCheck(model){
-              console.log(model)  
+                let { sekectedCategories } = this
+                const index = sekectedCategories.indexOf(model.id);
+                if(!model.check){
+                    if(index == -1){
+                        sekectedCategories.push(model.id)
+                    }
+                } else {
+                    if(index != -1){
+                        sekectedCategories.splice(index,1)
+                    }
+                }
             },
             startEditPoint(point){
                 this.editPoint = point;
@@ -289,7 +299,8 @@
                 let categories = await axios({url: 'CategoriesAPI/getCategoriesForSite',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'GET' })
                 return {
                     name:"Категории", 
-                    child: categories.data.categories
+                    child: categories.data.categories,
+                    root: true
                 }
             },
             HendlerClickOnPointFromMap: function(event){

@@ -1,5 +1,5 @@
 <template>
-    <li>{{ model.name }}<input type="checkbox" v-if="model.child.length == 0" v-model="model.check" @click="reqursiCheck">
+    <li>{{ model.name }}<input type="checkbox" v-if="model.child.length == 0" v-model="model.check" @click="reqursiCheck(model)">
         <ul>
             <tree-item v-for="model in model.child" :model="model" @reqursiCheck="reqursiCheck"></tree-item>
         </ul>
@@ -13,8 +13,8 @@ export default {
         model: Object
     },
     methods: {
-        reqursiCheck(){
-            this.$emit('reqursiCheck',this.model)
+        reqursiCheck(model){
+            this.$emit('reqursiCheck',model)
         }
     }
 }
