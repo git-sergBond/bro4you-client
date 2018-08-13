@@ -52,11 +52,14 @@
                 </div>
                 <hr>
                 <div>
-                    <h4>Выберите категорию услуг</h4>
                     <p>
-
                         {{ categoriesForSite }}
                     </p>
+                    
+                    <h4>Выберите категорию услуг</h4>
+                    <ul>
+                        <tree-item v-if="!!categoriesForSite" :model="categoriesForSite"> </tree-item>
+                    </ul>
                 </div>
                 <hr>
                 <input type="checkbox" v-model="checkCompany"><label>Привязать услугу к компании?</label>
@@ -74,6 +77,7 @@
 <script>
     import axios from 'axios';
     import DragImage from '../components/DragImage.vue';
+    import treeItem from '../components/treeItem.vue';
     import TOKENS from '../TOKENS'
     class Company{
         constructor(id = null, name = null){
@@ -203,7 +207,7 @@
         data: function() { return {
             service: null,
             //Меняющиеся данные 
-            categoriesForSite: [],//CategoriesAPI/getCategoriesForSite
+            categoriesForSite: null,//CategoriesAPI/getCategoriesForSite
 
 
             //ссылки для структур
@@ -222,7 +226,8 @@
             placeMark: null//ссылка на метку на карте
         }},
         components: {
-            DragImage
+            DragImage,
+            treeItem
         },
         methods: {
             initHandler: async function (myMap) {
@@ -283,7 +288,10 @@
             },
             async getCategoriesForSite(){
                 let categories = await axios({url: 'CategoriesAPI/getCategoriesForSite',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'GET' })
-                return categories.data.categories;
+                return {
+                    name:"Категории", 
+                    child: categories.data.categories
+                }
             },
             HendlerClickOnPointFromMap: function(event){
                 this.curPoint = event.get('target').properties.get("linkOnStruct")
@@ -303,9 +311,9 @@
                 if (!!window.FileReader) {
                     console.log("file reader false")
                 }
-               if (!!window.FormData) {
-    console.log("FormData false")
-}
+                if (!!window.FormData) {
+                   console.log("FormData false")
+                }
                 
             },
             //Подсветка
