@@ -52,13 +52,9 @@
                 </div>
                 <hr>
                 <div>
-                    <p>
-                        {{ categoriesForSite }}
-                    </p>
-                    
                     <h4>Выберите категорию услуг</h4>
                     <ul>
-                        <tree-item v-if="!!categoriesForSite" :model="categoriesForSite"> </tree-item>
+                        <tree-item v-if="!!categoriesForSite" :model="categoriesForSite" @reqursiCheck="reqursiCheck"> </tree-item>
                     </ul>
                 </div>
                 <hr>
@@ -242,6 +238,9 @@
                 this.categoriesForSite = await this.getCategoriesForSite();
                 //добавляем событие спомощью которого можно менять координаты щелчком на карте
                 myMap.events.add('click', this.click_on_map);
+            },
+            reqursiCheck(model){
+              console.log(model)  
             },
             startEditPoint(point){
                 this.editPoint = point;
