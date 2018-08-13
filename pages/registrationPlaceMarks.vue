@@ -51,21 +51,21 @@
                     <button @click.prevent="curPoint.addNewPhone()">Добавить номер телефона</button>
                 </div>
                 <hr>
-                <div v-show="!checkCompany">
-                    <h4>Выберите категорию услуг</h4>
-                    <ul>
+                <div >
+                    <label>Выберите категорию услуг, или привяжите услугу к компании</label>
+                    <input type="checkbox" v-model="checkCompany">
+                    <label>{{ checkCompany ?  "да" : "нет"}}</label>
+                    <br>
+                    <select v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" v-model="company">
+                        <option v-for="comp in service.companies" v-bind:value="comp.companyid">
+                            {{ comp.fullname }}
+                        </option>
+                    </select>
+                    <ul v-show="!checkCompany">
                         <tree-item v-if="!!categoriesForSite" :model="categoriesForSite" @reqursiCheck="reqursiCheck"> </tree-item>
                     </ul>
                 </div>
                 <hr>
-           
-                    <input type="checkbox" v-model="checkCompany"><label>Привязать услугу к компании?</label>
-                <select v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" v-model="company">
-                    <option v-for="comp in service.companies" v-bind:value="comp.companyid">
-                        {{ comp.fullname }}
-                    </option>
-                </select>
-         
                 
                 <button type="submit">Опубликовать</button>
             </form>
