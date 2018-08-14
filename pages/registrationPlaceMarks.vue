@@ -254,11 +254,10 @@
                 this.service = new Service();// создаем объект сервиса
                 this.service.existsPointsServices = await this.getListTradePointFromUser();
                 this.service.companies = await this.getListCompaniesFromUser();
-/*
+
                 if(this.service.companies.length > 0){
-                    console.log(this.service.companies[0].companyid)
-                    this.service.company = this.service.companies[0]
-                }*/
+                    this.company = this.service.companies[0].companyid
+                }
                 this.categoriesForSite = await this.getCategoriesForSite(); 
                 //добавляем событие спомощью которого можно менять координаты щелчком на карте
                 myMap.events.add('click', this.click_on_map);
@@ -407,11 +406,10 @@
                 if(Number(priceMin) > Number(priceMax)) throw new Error("введите корректно границы цен от и до")
                 //Проверка на пустые поля
                 for(let el of zeroСheck){
-                    //if(!!el){проверка строк, если они пустые то кидать исключение
-                        if(el.length == 0){
-                            throw new Error("Заполните пустые поля")
-                        }
-                    //}
+                        //проверка строк, если они пустые то кидать исключение
+                    if(el.length == 0){
+                        throw new Error("Заполните пустые поля")
+                    }
                 }
                 //
                 //отправка
