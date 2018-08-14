@@ -7,9 +7,9 @@
             </div>
             <form v-if="!!service" @submit.prevent="publish">
                 <h3>Добавить услугу</h3>
-                <label>Наименование услуги</label><input type="text" v-model="service.name" ><br>
+                <label>Наименование услуги</label><input type="text" v-model="service.name" placeholder="Введите наименование услуги"><br>
                 <hr>
-                <label>Описание услуги</label><input type="text" v-model="service.description" ><br>
+                <label>Описание услуги</label><input type="text" v-model="service.description" placeholder="Введите описание услуги"><br>
                 <hr>
                 <label>Стоимость услуги</label><br>
                     <label>от</label><input type="text" v-model="service.priceMin" >
@@ -31,8 +31,8 @@
                 <div v-for="point in service.newPointsServices" :class="{ selected: point == curPoint}">
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                     <br>
-                    <label>Название</label><input type="text" v-model="point.name" @change="point.changeCaption()"><br>
-                    <label>Адрес</label><input type="text" v-model="point.address"><br>
+                    <label>Название</label><input type="text" v-model="point.name" @change="point.changeCaption()" placeholder="Введите название метки"><br>
+                    <label>Адрес</label><input type="text" v-model="point.address" placeholder="Введите адрес"><br>
                     <button @click.prevent="point.setCoordsForAdress()">Найти по адресу</button>
                     <button @click.prevent="startEditPoint(point)" >Изменить координаты</button><br>
                     <button @click.prevent="curPoint = point">Показать контактную информацию о точке</button>
@@ -46,7 +46,7 @@
                     <h4>Телефоны привязанные к точке - {{ curPoint.name }}</h4>
                     <div v-for="phone in curPoint.newPhones">
                         <input type="checkbox" v-model="phone.active">
-                        <input type="text" v-model="phone.phone">
+                        <input type="text" v-model="phone.phone" placeholder="+7 --- --- -- --">
                     </div>
                     <button @click.prevent="curPoint.addNewPhone()">Добавить номер телефона</button>
                 </div>
@@ -128,7 +128,7 @@
         addNewPhone(){
             this.newPhones.push({
                 "active": true,
-                "phone": "+7 --- --- -- --"
+                "phone": ""
             })
         }
         changeCaption(){
@@ -285,8 +285,8 @@
                 this.service.newPointsServices.push(new TradePoint({
                     latitude: 0,
                     longitude: 0,
-                    name: "назовите метку",
-                    address: "уточните адресс",
+                    name: "",
+                    address: "",
                     newPhones: [],
                 },this.mapIsnt,this))
             },
