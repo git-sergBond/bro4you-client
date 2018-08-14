@@ -12,8 +12,8 @@
                 <label>Описание услуги</label><input type="text" v-model="service.description" ><br>
                 <hr>
                 <label>Стоимость услуги</label><br>
-                    <label>от</label><input type="text" v-model="service.priceMin" >
-                    <label>до</label><input type="text" v-model="service.priceMax" >
+                    <label>от</label><input type="number" v-model="service.priceMin" >
+                    <label>до</label><input type="number" v-model="service.priceMax" >
                 <hr>
                 <label>Фото: </label>
                 <!--drag-image ></drag-image-->
@@ -200,7 +200,9 @@
             return index;
         }
     }
-    
+    function isInteger(num) {
+        return (num ^ 0) === num;
+    }
     let v = {
         name: "registrationPlaceMarks",
         data: function() { return {
@@ -370,11 +372,17 @@
                 if(ser.companies.length == 0)
                 this.company = null;
             }
-            //if(!this.company)
-            //отправка
-            axios({url: '/ServicesAPI/addService', 
-            data: {
-                "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
+            try{
+                // Проверка денежных полей
+                if(priceMin<0) throw new Error("не должно быть отрицательных чисел")
+                if(priceMax<0) throw new Error("не должно быть отрицательных чисел")
+                if(!isInteger(priceMin)) throw new Error("не должно быть дробных")
+                if(!isInteger(priceMax)) throw new Error("не должно быть дробных")
+                //
+                //отправка
+                axios({url: '/ServicesAPI/addService', 
+                data: {
+                    "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
                     name,photos,
                     description,//video,
                     priceMin, priceMax,
@@ -384,20 +392,26 @@
                     //
                     oldPoints,newPoints
                 }, method: 'POST' })
-            .then(resp => {
-                const status = resp.data.status
-                const serviceId = resp.data.serviceId
-                if(status == "OK"){
-                    alert("Услуга добавлена")
-                    //Отправляю запрос с добавлением картинок (если они есть)
-                    axios({url: '/ServicesAPI/addImageHandler', data: {
-                        "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
-                        serviceId
-                    }, method: 'POST' })
-                }else{
-                    alert("Ошибка при добавлении услуги")
-                }
-            })
+                .then(resp => {
+                    const status = resp.data.status
+                    const serviceId = resp.data.serviceId
+                    if(status == "OK"){
+                        alert("Услуга добавлена")
+                        //Отправляю запрос с добавлением картинок (если они есть)
+                        axios({
+                            url: '/ServicesAPI/addImageHandler', data: {
+                            "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
+                            serviceId
+                        }, method: 'POST' })
+                    }else{
+                        alert("Запрс пришел, но произошла ошибка при добавлении услуги")
+                    }
+                })
+            }catch(e){
+                alert(e.message)// + ":" + e.name + "\n" + e.stack);
+            }
+            
+            
         }
         }
     }
