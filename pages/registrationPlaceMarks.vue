@@ -12,8 +12,8 @@
                 <label>Описание услуги</label><input type="text" v-model="service.description" ><br>
                 <hr>
                 <label>Стоимость услуги</label><br>
-                    <label>от</label><input type="number" v-model="service.priceMin" >
-                    <label>до</label><input type="number" v-model="service.priceMax" >
+                    <label>от</label><input type="text" v-model="service.priceMin" >
+                    <label>до</label><input type="text" v-model="service.priceMax" >
                 <hr>
                 <label>Фото: </label>
                 <!--drag-image ></drag-image-->
@@ -201,7 +201,19 @@
         }
     }
     function isInteger(num) {
-        return (num ^ 0) === num;
+        let res = true;
+        let str = String(num);
+        console.log(str)
+        for (let i = 0; i < str.length; i++) {
+            const element = str[i];
+            console.log(element)
+             if(element == ',' || element == '.') {
+                res = false;
+                break;
+            }
+        }
+        console.log(res)
+        return res;
     }
     let v = {
         name: "registrationPlaceMarks",
@@ -374,10 +386,11 @@
             }
             try{
                 // Проверка денежных полей
-                if(priceMin<0) throw new Error("не должно быть отрицательных чисел")
-                if(priceMax<0) throw new Error("не должно быть отрицательных чисел")
+                if(Number(priceMin)<0) throw new Error("не должно быть отрицательных чисел")
+                if(Number(priceMax)<0) throw new Error("не должно быть отрицательных чисел")
                 if(!isInteger(priceMin)) throw new Error("не должно быть дробных")
                 if(!isInteger(priceMax)) throw new Error("не должно быть дробных")
+                if(Number(priceMin) > Number(priceMax)) throw new Error("введите корректно границы цен от и до")
                 //
                 //отправка
                 axios({url: '/ServicesAPI/addService', 
