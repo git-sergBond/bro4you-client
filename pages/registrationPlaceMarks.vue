@@ -39,7 +39,6 @@
                     <br>
                     <br>
                 </div>
-                <hr>
                 <button @click.prevent="addNewPoint">Добавить точку оказания услу</button>
                 <hr>
                 <div v-if="!!curPoint" >
@@ -56,8 +55,11 @@
                     <input type="checkbox" v-model="checkCompany">
                     <label>({{ checkCompany ?  "да" : "нет"}})</label>
                     <br>
-                    <select v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" v-model="company">
-                        <option v-for="comp in service.companies" v-bind:value="comp.companyid">
+                    <select v-if="!!service.companies" 
+                            v-show="service.companies.length > 0 && checkCompany" 
+                            v-model="company">
+                        <option v-for="(comp, index) in service.companies" 
+                                v-bind:value="comp.companyid" >
                             {{ comp.fullname }}
                         </option>
                     </select>
@@ -191,7 +193,7 @@
         }
         //посчитали индекс квадранта для заданного масштабы
         calculate_index_for_square(coord, scale=500000){
-            let tableScale = [];[]
+            let tableScale = [];
             // таблица масштабов
             // [масштаб] = [размер широты, оазмер долготы]
             tableScale[500000] = [2, 3];
@@ -252,7 +254,12 @@
                 this.service = new Service();// создаем объект сервиса
                 this.service.existsPointsServices = await this.getListTradePointFromUser();
                 this.service.companies = await this.getListCompaniesFromUser();
-                this.categoriesForSite = await this.getCategoriesForSite();
+/*
+                if(this.service.companies.length > 0){
+                    console.log(this.service.companies[0].companyid)
+                    this.service.company = this.service.companies[0]
+                }*/
+                this.categoriesForSite = await this.getCategoriesForSite(); 
                 //добавляем событие спомощью которого можно менять координаты щелчком на карте
                 myMap.events.add('click', this.click_on_map);
             },
@@ -354,12 +361,12 @@
             //получить список компаний, владельцем которых явзяеся пользователь
             async getListCompaniesFromUser(){
                 let list = await axios({url: 'CompaniesAPI/getCompanies',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
-                console.log(list.data.companies)
-                return list.data.companies
+                return list.data.companies;
             },
             QaddService(ser){
                 //КОСТЫЛЬ - РАЗРЫВ РЕКУРСИИ
             let {name,description,priceMin,priceMax ,photos,video,region} = ser;
+            let zeroСheck = [name,description]//массив для проверки на пустые поля
             let oldPoints = []
             for(let point of ser.existsPointsServices){
                 let {pointid} = point;
@@ -367,12 +374,19 @@
             }
             let newPoints = []
             for(let point of ser.newPointsServices){
-                let {latitude,longitude,name ,address} = point;
-                let newPhones = [];
-                for(let phone of point.newPhones){
-                    if(!!phone.active) newPhones.push(phone.phone);
+                if(!!point.active) {
+                    let {latitude,longitude,name ,address} = point;
+                    zeroСheck.push(name)
+                    zeroСheck.push(address)
+                    let newPhones = [];
+                    for(let phone of point.newPhones){
+                        if(!!phone.active) {
+                            zeroСheck.push(phone.phone)
+                            newPhones.push(phone.phone)
+                        }
+                    }
+                    newPoints.push({latitude,longitude,name ,address, newPhones})
                 }
-                newPoints.push({latitude,longitude,name ,address, newPhones})
             }
             /*
             checkCompany
@@ -391,6 +405,14 @@
                 if(!isInteger(priceMin)) throw new Error("не должно быть дробных")
                 if(!isInteger(priceMax)) throw new Error("не должно быть дробных")
                 if(Number(priceMin) > Number(priceMax)) throw new Error("введите корректно границы цен от и до")
+                //Проверка на пустые поля
+                for(let el of zeroСheck){
+                    //if(!!el){проверка строк, если они пустые то кидать исключение
+                        if(el.length == 0){
+                            throw new Error("Заполните пустые поля")
+                        }
+                    //}
+                }
                 //
                 //отправка
                 axios({url: '/ServicesAPI/addService', 
