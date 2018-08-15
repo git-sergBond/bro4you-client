@@ -25,10 +25,12 @@
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                     <label>{{ point.name }}</label>
                 </div>
-                <!--div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
-                    <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
-                    <label>{{ point.name }}</label>
-                </div-->
+                <div v-if="!!curCompany">
+                    <div v-for="point in curCompany.points" :class="{ selected: point == curPoint}">
+                        <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
+                        <label>{{ point.name }}</label>
+                    </div>
+                </div>
                 <br>
                 <button @click.prevent="addNewPoint">Добавить новую ТОУ</button>
                 <div v-for="point in service.newPointsServices" :class="{ selected: point == curPoint}">
@@ -56,14 +58,19 @@
                     <input type="checkbox" v-model="checkCompany">
                     <label>({{ checkCompany ?  "Да. При выборе компании, применятся ТОУ существующие у компании, а не у пользователя" : "нет"}})</label>
                     <br>
-                    <select v-if="!!service.companies" 
+                    <!--select v-if="!!service.companies" 
                             v-show="service.companies.length > 0 && checkCompany" 
                             v-model="company">
                         <option v-for="(comp, index) in service.companies" 
                                 v-bind:value="comp.companyid" >
                             {{ comp.fullname }}
                         </option>
-                    </select>
+                    </select-->
+                     <div v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" > 
+                        <div v-for="(comp, index) in service.companies" @click="curCompany = comp">
+                            {{ comp.fullname }} - {{comp.companyid}}
+                        </div>
+                    </div>
                     <ul v-show="!checkCompany">
                         <tree-item v-if="!!categoriesForSite" :model="categoriesForSite" @reqursiCheck="reqursiCheck"> </tree-item>
                     </ul>
@@ -220,7 +227,7 @@
             //Меняющиеся данные 
             categoriesForSite: null,//CategoriesAPI/getCategoriesForSite
             sekectedCategories: [],//категории которые выбраны
-
+            curCompany: null,
             //ссылки для структур
             curPoint: null,//по текущей точке показываются номера телефоно в  и теды
 
@@ -377,7 +384,12 @@
                 try{
                     let list = await axios({url: 'CompaniesAPI/getCompanies?withPoints=true', method: 'GET' })
                     for(let {company, points} of list.data.companies){
-                        company.points = points
+                        company.points = [];
+                        for(let point of points){
+                            let p = new TradePoint(point, this.mapIsnt, this)
+                            //p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
+                            company.points.push(p);
+                        }
                         companies.push(company)
                     }
                 }catch(e){
