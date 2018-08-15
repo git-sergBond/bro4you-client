@@ -265,7 +265,7 @@
                     this.service.companies = await this.getListCompaniesFromUser();
                     if(!!this.service.companies){
                         if(this.service.companies.length > 0){
-                            this.company = this.service.companies[0].companyid
+                            this.curCompany = this.service.companies[0]
                         }
                     }
                     this.categoriesForSite = await this.getCategoriesForSite(); 
