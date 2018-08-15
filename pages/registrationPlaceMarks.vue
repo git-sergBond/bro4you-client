@@ -7,9 +7,14 @@
             </div>
             <form v-if="!!service" @submit.prevent="publish">
                 <h3>Добавить услугу</h3>
-                <label>Наименование услуги</label><input type="text" v-model="service.name" placeholder="Введите наименование услуги"><br>
-                <hr>
-                <label>Описание услуги</label><input type="text" v-model="service.description" placeholder="Введите описание услуги"><br>
+                <label>Наименование услуги </label><input type="text" v-model="service.name" placeholder="Введите наименование услуги"><br>
+                <label>Будут ли оказываться выездные услуги?</label><input type="checkbox" v-model="exitServices"><br>
+                <div v-show="exitServices">
+                    <label>Регион </label>
+                    <input type="text" placeholder="(для выездных)" v-model="region">
+                    <button @click.prevent="showExitServiceRegion">Показать на карте</button>
+                </div>
+                <textarea v-model="service.description" placeholder="Опишите услугу"></textarea><br>
                 <hr>
                 <label>Стоимость услуги</label><br>
                     <label>от</label><input type="text" v-model="service.priceMin" >
@@ -25,6 +30,7 @@
                     <div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
                         <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                         <label>{{ point.name }}</label>
+                        <br>
                     </div>
                 </div>
                 <div v-if="!!curCompany && checkCompany">
@@ -46,7 +52,7 @@
                     <button @click.prevent="startEditPoint(point)" >Изменить координаты</button>
                 </div>
                 
-                <div v-if="!!curPoint && !checkCompany" >
+                <div v-if="!!curPoint &&  !curPoint.belongsCompany" >
                     <hr>
                     <h4>Телефоны привязанные к точке - {{ curPoint.name }}</h4>
                     <div v-for="phone in curPoint.newPhones">
@@ -233,14 +239,17 @@
             categoriesForSite: null,//CategoriesAPI/getCategoriesForSite
             sekectedCategories: [],//категории которые выбраны
             curCompany: null,
+
             //ссылки для структур
             curPoint: null,//по текущей точке показываются номера телефоно в  и теды
 
             //для выбора того, что нужно скинуть
             checkCompany: false,
 
+            exitServices: false, region: "",//регион, если выбраны выездные услуги
+
             //гуишные ссылки
-        
+
             statusEditPoint: false,//флаг, который меняется при редактровании точки
             editPoint: null,//ссылка на точку которую нужно отредактирвать
 
@@ -314,6 +323,22 @@
             publish: function () {
                 this.QaddService(this.service);
             },
+            showExitServiceRegion() {
+                //показать регионы 
+                let {region, exitServices} = this;
+                try{
+                    if(!region || region.length == 0) throw new Error("Напишите регион в текстовом поле") 
+                    if(!exitServices)  throw new Error("Не выбрали галочку выбора выездных услуг") 
+                    let coords = null
+                    let res = ymaps.geocode(this.address);
+                    res.then(res=>{
+                        coords = res.geoObjects.get(0).geometry.getCoordinates()
+                    })
+                    console.log(coords)
+                }catch(e){
+                    alert(e.message)
+                }
+            },
             async getListTradePointFromUser(){
                 //получить все точки услуг пользователя
                 let res = [];
@@ -331,10 +356,11 @@
                    // if(listTradePoint.data.points > 0){
                         for(let point of listTradePoint.data.points){
                             let p = new TradePoint(point.tradePoint, this.mapIsnt, this)
+                            p.exist = true;
                             //p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
                             res.push(p);
                         }
-                 //   }
+                 //   } 
                     
                     //масштабирование карты 
                     this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
@@ -392,6 +418,7 @@
                         company.points = [];
                         for(let point of points){
                             let p = new TradePoint(point, this.mapIsnt, this)
+                            p.exist = true;
                             //p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
                             company.points.push(p);
                         }
