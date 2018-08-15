@@ -73,7 +73,7 @@
                         <div v-for="(comp, index) in service.companies" 
                                 :class="{ selected: comp == curCompany}"
                                 @click="curCompany = comp" >
-                            {{ comp.fullname }} - id {{comp.companyid}}
+                            {{ comp.fullname }}
                         </div>
                     </div>
                     <ul v-show="!checkCompany">
@@ -407,9 +407,16 @@
             let {name,description,priceMin,priceMax ,photos,video,region} = ser;
             let zeroСheck = [name,description]//массив для проверки на пустые поля
             let oldPoints = []
-            for(let point of ser.existsPointsServices){
-                let {pointid} = point;
-                if(!!point.active) oldPoints.push(pointid)
+            if(this.checkCompany){
+                for(let point of this.curCompany.points){
+                    let {pointid} = point;
+                    if(!!point.active) oldPoints.push(pointid)
+                }
+            }else{
+                for(let point of ser.existsPointsServices){
+                    let {pointid} = point;
+                    if(!!point.active) oldPoints.push(pointid)
+                }
             }
             let newPoints = []
             for(let point of ser.newPointsServices){
@@ -427,17 +434,6 @@
                     newPoints.push({latitude,longitude,name ,address, newPhones})
                 }
             }
-            /*
-            checkCompany
-             */
-            /*
-            if(!this.checkCompany || !ser.companies){
-                this.company = null;
-            } 
-            if(!!ser.companies){
-                if(ser.companies.length == 0)
-                this.company = null;
-            }*/
             try{
                 // Проверка денежных полей
                 if(Number(priceMin)<0) throw new Error("не должно быть отрицательных чисел")
@@ -461,7 +457,7 @@
                     description,//video,
                     priceMin, priceMax,
                     region, 
-                    companyId: this.checkCompany ?  this.company : null,
+                    companyId: this.checkCompany ?  this.curCompany.companyid : null,
                     categories: !this.checkCompany ?  this.sekectedCategories : null,
                     //
                     oldPoints,newPoints
