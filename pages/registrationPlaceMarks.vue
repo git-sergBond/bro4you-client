@@ -20,28 +20,29 @@
                 <input type="file" @change="HendlerFiles">
                 <hr>
                 <!--label>Видео</label><input type="text" v-model="service.video" ><br-->
-                <hr>
-                <h4 v-show="!!service.existsPointsServices">Выбрать существующий адрес</h4>
+                <h4 v-show="!!service.existsPointsServices">Выбрать из существуещих ТОУ </h4>
                 <div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                     <label>{{ point.name }}</label>
                 </div>
-                <hr>
-                <h3>Добавить новые адреса</h3>
-                <div v-for="point in service.newPointsServices" :class="{ selected: point == curPoint}">
+                <!--div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
                     <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
+                    <label>{{ point.name }}</label>
+                </div-->
+                <br>
+                <button @click.prevent="addNewPoint">Добавить новую ТОУ</button>
+                <div v-for="point in service.newPointsServices" :class="{ selected: point == curPoint}">
                     <br>
-                    <label>Название</label><input type="text" v-model="point.name" @change="point.changeCaption()" placeholder="Введите название метки"><br>
-                    <label>Адрес</label><input type="text" v-model="point.address" placeholder="Введите адрес"><br>
-                    <button @click.prevent="point.setCoordsForAdress()">Найти по адресу</button>
-                    <button @click.prevent="startEditPoint(point)" >Изменить координаты</button><br>
-                    <button @click.prevent="curPoint = point">Показать контактную информацию о точке</button>
-                    <br>
-                    <br>
+                    <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
+                    <label>Название</label><input type="text" v-model="point.name" @change="point.changeCaption()" placeholder="Введите название метки">
+                    <button @click.prevent="curPoint = point">Редактирвоать телефоны</button><br>
+                    <label>Адрес</label><input type="text" v-model="point.address" placeholder="Введите адрес">
+                    <button @click.prevent="point.setCoordsForAdress()">Найти по адресу</button><br>
+                    <button @click.prevent="startEditPoint(point)" >Изменить координаты</button>
                 </div>
-                <button @click.prevent="addNewPoint">Добавить точку оказания услу</button>
-                <hr>
+                
                 <div v-if="!!curPoint" >
+                    <hr>
                     <h4>Телефоны привязанные к точке - {{ curPoint.name }}</h4>
                     <div v-for="phone in curPoint.newPhones">
                         <input type="checkbox" v-model="phone.active">
@@ -53,7 +54,7 @@
                 <div >
                     <label>Выберите категорию услуг, или привяжите услугу к компании</label>
                     <input type="checkbox" v-model="checkCompany">
-                    <label>({{ checkCompany ?  "да" : "нет"}})</label>
+                    <label>({{ checkCompany ?  "Да. При выборе компании, применятся ТОУ существующие у компании, а не у пользователя" : "нет"}})</label>
                     <br>
                     <select v-if="!!service.companies" 
                             v-show="service.companies.length > 0 && checkCompany" 
@@ -186,11 +187,6 @@
             this.SetVisibleOnMap(val);
             this.active = val
         }
-        //запросы для данного объекта к базе
-        async getListTradePointFromCompny(){
-            //получить все точки услуг компании
-            
-        }
         //посчитали индекс квадранта для заданного масштабы
         calculate_index_for_square(coord, scale=500000){
             let tableScale = [];
@@ -252,13 +248,20 @@
                 this.mapIsnt = myMap;
                 //при инициализации библиотеки яндекс карт
                 this.service = new Service();// создаем объект сервиса
-                this.service.existsPointsServices = await this.getListTradePointFromUser();
-                this.service.companies = await this.getListCompaniesFromUser();
-
-                if(this.service.companies.length > 0){
-                    this.company = this.service.companies[0].companyid
+                try{
+                    this.service.existsPointsServices = await this.getListTradePointFromUser();
+                    this.service.companies = await this.getListCompaniesFromUser();
+                    if(!!this.service.companies){
+                        if(this.service.companies.length > 0){
+                            this.company = this.service.companies[0].companyid
+                        }
+                    }
+                    this.categoriesForSite = await this.getCategoriesForSite(); 
+                }catch(e){
+                    console.log(e.name)
+                    console.log(e.message)
                 }
-                this.categoriesForSite = await this.getCategoriesForSite(); 
+                
                 //добавляем событие спомощью которого можно менять координаты щелчком на карте
                 myMap.events.add('click', this.click_on_map);
             },
@@ -301,21 +304,32 @@
             },
             async getListTradePointFromUser(){
                 //получить все точки услуг пользователя
-                let listTradePoint = await axios({url: 'TradePointsAPI/getPoints',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
-                //подготовка, для реактивной формы
-                /*
-                for(let phone of listTradePoint.data.points.phones){
-                    phone.active = true;
-                }*/
                 let res = [];
+                try {
+                    let listTradePoint = await axios({url: 'TradePointsAPI/getPoints',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
+                //подготовка, для реактивной формы
+                    /*
+                    for(let phone of listTradePoint.data.points.phones){
+                    phone.active = true;
+                     }*/
+                
                 //упаковка данных в экземпляры классов
-                for(let point of listTradePoint.data.points){
-                    let p = new TradePoint(point.tradePoint, this.mapIsnt, this)
-                    //p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
-                    res.push(p);
+                    console.log('listTradePoint')
+                    console.log('listTradePoint.data.points')
+                   // if(listTradePoint.data.points > 0){
+                        for(let point of listTradePoint.data.points){
+                            let p = new TradePoint(point.tradePoint, this.mapIsnt, this)
+                            //p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
+                            res.push(p);
+                        }
+                 //   }
+                    
+                    //масштабирование карты 
+                    this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
+                    
+                }catch(e){
+                    console.log(e.message)
                 }
-                //масштабирование карты 
-                this.mapIsnt.setBounds(this.mapIsnt.geoObjects.getBounds())
                 return res;
             },
             async getCategoriesForSite(){
@@ -357,10 +371,19 @@
                 .setOptions('preset', 'islands#darkblueDotIconWithCaption');
             },
             //запросы для данного объекта к базе
-            //получить список компаний, владельцем которых явзяеся пользователь
+            //получить список компаний + точек оказания услуг компании, владельцем которых явзяеся пользователь
             async getListCompaniesFromUser(){
-                let list = await axios({url: 'CompaniesAPI/getCompanies',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
-                return list.data.companies;
+                let companies = []
+                try{
+                    let list = await axios({url: 'CompaniesAPI/getCompanies?withPoints=true', method: 'GET' })
+                    for(let {company, points} of list.data.companies){
+                        company.points = points
+                        companies.push(company)
+                    }
+                }catch(e){
+                    console.log(e.name+" : "+e.message)
+                }
+                return companies;
             },
             QaddService(ser){
                 //КОСТЫЛЬ - РАЗРЫВ РЕКУРСИИ
@@ -390,13 +413,14 @@
             /*
             checkCompany
              */
+            /*
             if(!this.checkCompany || !ser.companies){
-                 this.company = null;
+                this.company = null;
             } 
             if(!!ser.companies){
                 if(ser.companies.length == 0)
                 this.company = null;
-            }
+            }*/
             try{
                 // Проверка денежных полей
                 if(Number(priceMin)<0) throw new Error("не должно быть отрицательных чисел")

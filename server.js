@@ -104,7 +104,7 @@ app.post("/ServicesAPI/addImageHandler",jsonParser, ServicesAPIController.addIma
 //TradePointsAPI
 app.post("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoints);
 //CompaniesAPI
-app.post("/CompaniesAPI/getCompanies",jsonParser,CompaniesAPIController.getCompanies);
+app.get("/CompaniesAPI/getCompanies",jsonParser,CompaniesAPIController.getCompanies);
 //CategoriesAPI
 app.get("/CategoriesAPI/getCategoriesForSite",jsonParser,CategoriesAPI.getCategoriesForSite);
 app.listen(8080);
