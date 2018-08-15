@@ -20,12 +20,15 @@
                 <input type="file" @change="HendlerFiles">
                 <hr>
                 <!--label>Видео</label><input type="text" v-model="service.video" ><br-->
-                <h4 v-show="!!service.existsPointsServices">Выбрать из существуещих ТОУ </h4>
-                <div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
-                    <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
-                    <label>{{ point.name }}</label>
+                <div v-if="!!service.existsPointsServices && !checkCompany">
+                    <h4 v-show="service.existsPointsServices.length>0">Выбрать из существуещих ТОУ пользователя</h4>
+                    <div v-for="point in service.existsPointsServices" :class="{ selected: point == curPoint}">
+                        <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
+                        <label>{{ point.name }}</label>
+                    </div>
                 </div>
-                <div v-if="!!curCompany">
+                <div v-if="!!curCompany && checkCompany">
+                    <h4 v-show="curCompany.points.length>0">Выбрать из ТОУ компании: "{{curCompany.name}}"</h4>
                     <div v-for="point in curCompany.points" :class="{ selected: point == curPoint}">
                         <input type="checkbox" v-model="point.active" @change="point.SetVisibleOnMap(point.active)">
                         <label>{{ point.name }}</label>
@@ -43,7 +46,7 @@
                     <button @click.prevent="startEditPoint(point)" >Изменить координаты</button>
                 </div>
                 
-                <div v-if="!!curPoint" >
+                <div v-if="!!curPoint && !checkCompany" >
                     <hr>
                     <h4>Телефоны привязанные к точке - {{ curPoint.name }}</h4>
                     <div v-for="phone in curPoint.newPhones">
@@ -67,8 +70,10 @@
                         </option>
                     </select-->
                      <div v-if="!!service.companies" v-show="service.companies.length > 0 && checkCompany" > 
-                        <div v-for="(comp, index) in service.companies" @click="curCompany = comp">
-                            {{ comp.fullname }} - {{comp.companyid}}
+                        <div v-for="(comp, index) in service.companies" 
+                                :class="{ selected: comp == curCompany}"
+                                @click="curCompany = comp" >
+                            {{ comp.fullname }} - id {{comp.companyid}}
                         </div>
                     </div>
                     <ul v-show="!checkCompany">
