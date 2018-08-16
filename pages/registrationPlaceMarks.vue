@@ -351,7 +351,7 @@
                 }
                 return companies;
             },
-            QaddService(ser){
+            async QaddService(ser){
                 //КОСТЫЛЬ - РАЗРЫВ РЕКУРСИИ
             let {name,description,priceMin,priceMax ,photos,video} = ser;
             let {osmIdRegion,exitServices} = this
@@ -372,6 +372,8 @@
             for(let point of ser.newPointsServices){
                 if(!!point.active) {
                     let {latitude,longitude,name ,address} = point;
+                    let reg = await Regions.getInfoRegionFromPoint(point.pointInst,this.mapIsnt)
+                    let regionId = reg.osmId//сохраняем ид
                     zeroСheck.push(name)
                     zeroСheck.push(address)
                     let newPhones = [];
@@ -381,7 +383,7 @@
                             newPhones.push(phone.phone)
                         }
                     }
-                    newPoints.push({latitude,longitude,name ,address, newPhones})
+                    newPoints.push({latitude,longitude,name ,address, newPhones, regionId})
                 }
             }
             try{
@@ -401,9 +403,10 @@
                 if(!exitServices && newPoints.length == 0) {
                     throw new Error("Добавьте точки, или укажите регион выездной услуги")
                 }
+                /*
                 if(osmIdRegion == null && exitServices){
                      throw new Error("Добавьте точки, или укажите регион выездной услуги")
-                }
+                }*/
                 //
                 //отправка
                 axios({url: '/ServicesAPI/addService', 
