@@ -22,7 +22,21 @@
                 <hr>
                 <label>Фото: </label>
                 <!--drag-image ></drag-image-->
-                <input type="file" @change="HendlerFiles">
+                <!--input type="file" @change="HendlerFiles"-->
+                <picture-input
+                    ref="pictureInput"
+                    @change="onChanged"
+                    @remove="onRemoved"
+                    :width="500"
+                    :removable="true"
+                    removeButtonClass="ui red button"
+                    :height="500"
+                    accept="image/jpeg, image/png, image/gif"
+                    buttonClass="ui button primary"
+                    :customStrings="{
+                    upload: '<h1>Upload it!</h1>',
+                    drag: 'Drag and drop your image here'}">
+                </picture-input>
                 <hr>
                 <!--label>Видео</label><input type="text" v-model="service.video" ><br-->
                 <div v-if="!!service.existsPointsServices && !checkCompany">
@@ -96,6 +110,7 @@
 
 <script>
     import axios from 'axios';
+    import PictureInput from 'vue-picture-input'
     import DragImage from '../components/DragImage.vue';
     import treeItem from '../components/treeItem.vue';
     import TOKENS from '../TOKENS';
@@ -169,7 +184,8 @@
         }},
         components: {
             DragImage,
-            treeItem
+            treeItem,
+            PictureInput
         },
         methods: {
             initHandler: async function (myMap) {
@@ -316,6 +332,7 @@
                 this.clearColorPoints();
                 event.get('target').options.set('preset', 'islands#darkgreenDotIconWithCaption');
             },
+            /*
             HendlerFiles: function(event){
                 if (!!window.FileReader) {
                     console.log("file reader false")
@@ -324,7 +341,7 @@
                    console.log("FormData false")
                 }
                 
-            },
+            },*/
             //Подсветка
             clearColorPoints(){
             // Цвет всех меток очищается

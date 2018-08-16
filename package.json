@@ -26,6 +26,7 @@
     "json-loader": "^0.5.7",
     "vue-html-loader": "^1.2.3",
     "vue-loader": "^15.2.4",
+    "vue-picture-input": "^2.1.6",
     "vue-style-loader": "^1.0.0",
     "vue-template-compiler": "^2.5.16",
     "vuex": "^3.0.1",
