@@ -158,6 +158,9 @@
         name: "registrationPlaceMarks",
         data: function() { return {
             service: null,
+
+            image: '',//картинка
+
             //Меняющиеся данные 
             categoriesForSite: null,//CategoriesAPI/getCategoriesForSite
             sekectedCategories: [],//категории которые выбраны
@@ -349,6 +352,18 @@
                 .search('geometry.type = "Point"')
                 .setOptions('preset', 'islands#darkblueDotIconWithCaption');
             },
+            //для картинки
+            onChanged() {
+                console.log("New picture loaded");
+                if (this.$refs.pictureInput.file) {
+                    this.image = this.$refs.pictureInput.file;
+                } else {
+                    console.log("Old browser. No support for Filereader API");
+                }
+            },
+            onRemoved() {
+                this.image = '';
+            },
             //запросы для данного объекта к базе
             //получить список компаний + точек оказания услуг компании, владельцем которых явзяеся пользователь
             async getListCompaniesFromUser(){
@@ -452,11 +467,20 @@
                     if(status == "OK"){
                         alert("Услуга добавлена")
                         //Отправляю запрос с добавлением картинок (если они есть)
-                        axios({
-                            url: '/ServicesAPI/addImageHandler', data: {
-                            "authorization":localStorage.getItem(TOKENS.AUTHORIZE),
-                            serviceId
-                        }, method: 'POST' })
+                        if(this.image){
+                            const formData = new FormData();
+                            formData.append("picture1", this.image);
+                            const config = {
+                                headers: {
+                                    "authorization": localStorage.getItem(TOKENS.AUTHORIZE),
+                                    "serviceId": serviceId,
+                                    'content-type': 'multipart/form-data'
+                                }
+                            };
+                            axios.post('/ServicesAPI/addImageHandler', formData, config).then(resp=>{
+                                alert("картинка добавлена")
+                            })
+                        }
                     }else{
                         alert("Запрс пришел, но произошла ошибка при добавлении услуги")
                     }
