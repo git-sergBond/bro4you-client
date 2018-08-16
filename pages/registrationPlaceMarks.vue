@@ -239,26 +239,28 @@
             },
             async showExitServiceRegion() {
                 //показать регион
-                let {region, exitServices, mapInst, osmIdRegion} = this;
+                let {exitServices, mapInst} = this;
                 try{
-                    if(!region || region.length == 0) throw new Error("Напишите регион в текстовом поле") 
+                    if(!this.region || this.region.length == 0) throw new Error("Напишите регион в текстовом поле") 
                     if(!exitServices)  throw new Error("Не выбрали галочку выбора выездных услуг") 
                     let coords = null;
                     //узнаем координаты указанного адреса, и уточняем адрес
-                    let coordsAwait = await ymaps.geocode(region);
+                    let coordsAwait = await ymaps.geocode(this.region);
                     coords = coordsAwait.geoObjects.get(0).geometry.getCoordinates()
                         //перезаписываем в строку региона уточненный адрес по координатам
                     let addressAwait = await ymaps.geocode(coords);
                     let firstGeoObject = addressAwait.geoObjects.get(0);
-                    region = firstGeoObject.getAddressLine();//уточняем адресс
+                    this.region = firstGeoObject.getAddressLine();//уточняем адресс
+                    
                     //создаем (невидимую) точку
                     this.pointForGetRegion.pointInst.geometry.setCoordinates(coords);//меняем координаты метки
                     let reg = await Regions.getInfoRegionFromPoint(this.pointForGetRegion.pointInst,this.mapIsnt)
-                    osmIdRegion = reg.osmId//сохраняем ид
-                
+                    this.osmIdRegion = reg.osmId//сохраняем ид
+                    console.log(this.osmIdRegion)
                     
                 }catch(e){
-                    alert(e.message)
+                    alert("такого адреса не найдено")
+                    //alert(e.message)
                 }
             },
             async getListTradePointFromUser(){
@@ -354,7 +356,7 @@
             async QaddService(ser){
                 //КОСТЫЛЬ - РАЗРЫВ РЕКУРСИИ
             let {name,description,priceMin,priceMax ,photos,video} = ser;
-            let {osmIdRegion,exitServices} = this
+            let {exitServices} = this
             let zeroСheck = [name,description]//массив для проверки на пустые поля
             let oldPoints = []
             if(this.checkCompany){
@@ -386,6 +388,7 @@
                     newPoints.push({latitude,longitude,name ,address, newPhones, regionId})
                 }
             }
+            console.log(this.osmIdRegion)
             try{
                 // Проверка денежных полей
                 if(Number(priceMin)<0) throw new Error("не должно быть отрицательных чисел")
@@ -400,13 +403,12 @@
                         throw new Error("Заполните пустые поля")
                     }
                 }
-                if(!exitServices && newPoints.length == 0) {
+                console.log(exitServices)
+                console.log(newPoints.length)
+                console.log(this.osmIdRegion)
+                if(this.osmIdRegion==null && exitServices && newPoints.length == 0) {
                     throw new Error("Добавьте точки, или укажите регион выездной услуги")
                 }
-                /*
-                if(osmIdRegion == null && exitServices){
-                     throw new Error("Добавьте точки, или укажите регион выездной услуги")
-                }*/
                 //
                 //отправка
                 axios({url: '/ServicesAPI/addService', 
@@ -415,7 +417,7 @@
                     name,photos,
                     description,//video,
                     priceMin, priceMax,
-                    region: osmIdRegion, 
+                    regionId: this.osmIdRegion, 
                     companyId: this.checkCompany ?  this.curCompany.companyid : null,
                     categories: !this.checkCompany ?  this.sekectedCategories : null,
                     //
