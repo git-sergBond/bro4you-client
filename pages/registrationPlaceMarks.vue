@@ -155,7 +155,7 @@
             checkCompany: false,
 
             exitServices: false, region: "",//регион, если выбраны выездные услуги
-            osmIdRegion,
+            osmIdRegion: null,
             //гуишные ссылки
             nVisRegions: null,
             pointForGetRegion: null,//точка для определения региона выездных услуг
@@ -398,8 +398,11 @@
                         throw new Error("Заполните пустые поля")
                     }
                 }
-                if((!osmIdRegion && exitServices) || newPoints.length == 0) {
+                if(!exitServices && newPoints.length == 0) {
                     throw new Error("Добавьте точки, или укажите регион выездной услуги")
+                }
+                if(osmIdRegion == null && exitServices){
+                     throw new Error("Добавьте точки, или укажите регион выездной услуги")
                 }
                 //
                 //отправка
