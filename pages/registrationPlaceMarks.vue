@@ -98,13 +98,9 @@
     import axios from 'axios';
     import DragImage from '../components/DragImage.vue';
     import treeItem from '../components/treeItem.vue';
-    import TOKENS from '../TOKENS'
-    class Company{
-        constructor(id = null, name = null){
-            this.companyid = id;
-            this.name = name
-        }
-    }
+    import TOKENS from '../TOKENS';
+    import TradePoint from '../clases/TradePoint.js';
+    import Regions from '../clases/Regions.js';
     class Service{
         constructor(){
             this.name = ""//название услуги 
@@ -127,95 +123,7 @@
         //отправляю запрос на добавление услуги в БД
         
     } 
-    class TradePoint {
-        //класс характеризующий точку оказания услуги
-        constructor(point,mapIsnt,Vcon){
-            //данные принимаемые с сервера
-            this.pointid = !!point.pointid ? point.pointid : null
-            this.latitude = point.latitude;//широта
-            this.longitude= point.longitude;//долгота
-            this.name = point.name // название точки оказания услуг
-            this.address= point.address;//адрес
-            this.newPhones = [] //массив для новых номеров телефонов
-            this.categories = [] //массив категорий, к которым нужно привязать услугу
-            //гуи
-            this.Vcon = Vcon;//контекст экземпляра Vue
-            this.mapIsnt = mapIsnt;//контекст яндекс карты
-            this.pointInst = this.DrawOnMap();//контекст точки на яндекс карте
-            this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
-            this.selected = false //нужен для показа номеров и прочей херни по точке
-            
-        }
-        addNewPhone(){
-            this.newPhones.push({
-                "active": true,
-                "phone": ""
-            })
-        }
-        changeCaption(){
-            this.pointInst.properties.set({
-                iconCaption: this.name
-            });
-        }
-        setCoords(coords){
-            let context = this;
-            this.latitude = coords[0];//широта
-            this.longitude = coords[1];//долгота
-            this.pointInst.geometry.setCoordinates(coords);//меняем координаты метки
-            let res = ymaps.geocode([this.latitude,this.longitude]);
-            res.then(res=>{
-                let firstGeoObject = res.geoObjects.get(0);
-                let address = firstGeoObject.getAddressLine();
-                console.log(address);
-                context.address = address;
-            });
-        }
-        setCoordsForAdress(){
-            let context = this
-            let res = ymaps.geocode(this.address);
-            console.log(this.address)
-            res.then(res=>{
-                let coord = res.geoObjects.get(0).geometry.getCoordinates()
-                console.log(coord)
-                context.setCoords(coord)
-            })
-            
-        }
-        DrawOnMap(){
-            let context = this
-            let p = new ymaps.Placemark([this.latitude,this.longitude], {
-                iconCaption: this.name
-            }, {
-                 preset: 'islands#darkblueDotIconWithCaption',
-                 draggable: true
-            })
-            p.properties.set({
-                linkOnStruct: context,//сылка на структуру, для обратной связи
-            });
-            p.events.add('click', this.Vcon.HendlerClickOnPointFromMap);
-            p.events.add('dragend', this.Vcon.HendlerDragend);
-            this.mapIsnt.geoObjects.add(p);
-            return p;
-        }
-        SetVisibleOnMap(vis){
-            this.pointInst.options.set({ "visible": vis});
-        }
-        //Активный или нет? (формирует список того, что нужно передать на сервер)
-        setActive(val){
-            this.SetVisibleOnMap(val);
-            this.active = val
-        }
-        //посчитали индекс квадранта для заданного масштабы
-        calculate_index_for_square(coord, scale=500000){
-            let tableScale = [];
-            // таблица масштабов
-            // [масштаб] = [размер широты, оазмер долготы]
-            tableScale[500000] = [2, 3];
-            let degs = tableScale[scale];//вытащили размеры ячейки из таблицы
-            let index = (coord[0] / degs[0]) * (coord[1] / degs[1] + 1);
-            return index;
-        }
-    }
+    //проверка на целое число
     function isInteger(num) {
         let res = true;
         let str = String(num);
@@ -247,8 +155,10 @@
             checkCompany: false,
 
             exitServices: false, region: "",//регион, если выбраны выездные услуги
-
+            osmIdRegion,
             //гуишные ссылки
+            nVisRegions: null,
+            pointForGetRegion: null,//точка для определения региона выездных услуг
 
             statusEditPoint: false,//флаг, который меняется при редактровании точки
             editPoint: null,//ссылка на точку которую нужно отредактирвать
@@ -285,6 +195,10 @@
                 
                 //добавляем событие спомощью которого можно менять координаты щелчком на карте
                 myMap.events.add('click', this.click_on_map);
+                //точка нужная для определения региона для выездной услуги
+                this.pointForGetRegion = new TradePoint({latitude: 0, longitude: 0, name: "", address: "",newPhones: []},myMap,this)
+                this.pointForGetRegion.SetVisibleOnMap(false);//скрываем ее на карте
+//this.nVisRegions = new Regions(myMap,this,true);
             },
             reqursiCheck(model){
                 let { sekectedCategories } = this
@@ -323,18 +237,26 @@
             publish: function () {
                 this.QaddService(this.service);
             },
-            showExitServiceRegion() {
-                //показать регионы 
-                let {region, exitServices} = this;
+            async showExitServiceRegion() {
+                //показать регион
+                let {region, exitServices, mapInst, osmIdRegion} = this;
                 try{
                     if(!region || region.length == 0) throw new Error("Напишите регион в текстовом поле") 
                     if(!exitServices)  throw new Error("Не выбрали галочку выбора выездных услуг") 
-                    let coords = null
-                    let res = ymaps.geocode(this.address);
-                    res.then(res=>{
-                        coords = res.geoObjects.get(0).geometry.getCoordinates()
-                    })
-                    console.log(coords)
+                    let coords = null;
+                    //узнаем координаты указанного адреса, и уточняем адрес
+                    let coordsAwait = await ymaps.geocode(region);
+                    coords = coordsAwait.geoObjects.get(0).geometry.getCoordinates()
+                        //перезаписываем в строку региона уточненный адрес по координатам
+                    let addressAwait = await ymaps.geocode(coords);
+                    let firstGeoObject = addressAwait.geoObjects.get(0);
+                    region = firstGeoObject.getAddressLine();//уточняем адресс
+                    //создаем (невидимую) точку
+                    this.pointForGetRegion.pointInst.geometry.setCoordinates(coords);//меняем координаты метки
+                    let reg = await Regions.getInfoRegionFromPoint(this.pointForGetRegion.pointInst,this.mapIsnt)
+                    osmIdRegion = reg.osmId//сохраняем ид
+                
+                    
                 }catch(e){
                     alert(e.message)
                 }
@@ -431,7 +353,8 @@
             },
             QaddService(ser){
                 //КОСТЫЛЬ - РАЗРЫВ РЕКУРСИИ
-            let {name,description,priceMin,priceMax ,photos,video,region} = ser;
+            let {name,description,priceMin,priceMax ,photos,video} = ser;
+            let {osmIdRegion,exitServices} = this
             let zeroСheck = [name,description]//массив для проверки на пустые поля
             let oldPoints = []
             if(this.checkCompany){
@@ -475,6 +398,9 @@
                         throw new Error("Заполните пустые поля")
                     }
                 }
+                if((!osmIdRegion && exitServices) || newPoints.length == 0) {
+                    throw new Error("Добавьте точки, или укажите регион выездной услуги")
+                }
                 //
                 //отправка
                 axios({url: '/ServicesAPI/addService', 
@@ -483,7 +409,7 @@
                     name,photos,
                     description,//video,
                     priceMin, priceMax,
-                    region, 
+                    region: osmIdRegion, 
                     companyId: this.checkCompany ?  this.curCompany.companyid : null,
                     categories: !this.checkCompany ?  this.sekectedCategories : null,
                     //

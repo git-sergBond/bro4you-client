@@ -150,7 +150,6 @@
                 colors: ['blue', 'darkgreen', 'orange', 'red'],
                 rang_price: null,
                 //для фильтра регионов
-                noVisibleRegions: null,
                 regions: null,//Здесь в 1й раз загружаются регионы и используются далее в приложении
                 filter_regions: null,// [{name ,check},{}]
                 //osmId: null,
@@ -616,10 +615,6 @@
             //---------------- ОТРИСОВКА ОБЛАСТИ НА КАРТЕ---------
             getInfoRegionFromPoint: async function(p){
                 let mapInst = this.mapInstanse;
-                let nVizReg = this.noVisibleRegions;
-                // !!! оптимизировать загрузку полигонов
-                //+ накинуть плюхи контекста
-                //console.log(store.state.RUregions)
                 if(LOC_STORE== null){
                     LOC_STORE = ymaps.geoQuery(ymaps.regions.load('RU'));
                     await LOC_STORE.then((resolve)=>{
