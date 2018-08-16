@@ -371,11 +371,13 @@
                 }
             }
             let newPoints = []
+            let lastRegion;
             for(let point of ser.newPointsServices){
                 if(!!point.active) {
                     let {latitude,longitude,name ,address} = point;
                     let reg = await Regions.getInfoRegionFromPoint(point.pointInst,this.mapIsnt)
                     let regionId = reg.osmId//сохраняем ид
+                    lastRegion = regionId;
                     zeroСheck.push(name)
                     zeroСheck.push(address)
                     let newPhones = [];
@@ -406,7 +408,10 @@
                 console.log(exitServices)
                 console.log(newPoints.length)
                 console.log(this.osmIdRegion)
-                if(this.osmIdRegion==null && exitServices && newPoints.length == 0) {
+                if(!exitServices && newPoints.length == 0) {
+                    throw new Error("Добавьте точки, или укажите регион выездной услуги")
+                }
+                if(this.osmIdRegion==null && exitServices) {
                     throw new Error("Добавьте точки, или укажите регион выездной услуги")
                 }
                 //
@@ -417,7 +422,8 @@
                     name,photos,
                     description,//video,
                     priceMin, priceMax,
-                    regionId: this.osmIdRegion, 
+                    exitServices,//
+                    regionId: this.osmIdRegion == null ? lastRegion : this.osmIdRegion, 
                     companyId: this.checkCompany ?  this.curCompany.companyid : null,
                     categories: !this.checkCompany ?  this.sekectedCategories : null,
                     //
