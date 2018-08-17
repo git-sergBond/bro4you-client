@@ -282,9 +282,10 @@
             
             getShares_from_server: async function(bounds){
                 //получить данные о рекламе и акциях в звдвнном районе
-                console.log('requset to server (bounds rect)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
-                console.log('... become response (json array sahres with info)')//<-----------------  жду ответа
-                return await axios.get("/SharesAPI/getShares");
+                let res = await axios.get("/SharesAPI/getShares");
+                let shares = res.data.shares;
+                console.log(shares)
+                return shares;
             },
             //-------- ОБВОДКА ОБЛАСТИ ---------------------------
             intit_events_DrawPolygonByFinger() {
@@ -893,7 +894,7 @@
                // this.categories = this.getCategoties_from_server();
             },
             add_actions_info: async function(shares_data){
-                this.shares_d = this.getShares_from_server();
+                this.shares_d =  await this.getShares_from_server();
                 await this.add_placemarks_on_map(this.shares_d);
             },
             //----------------РЕГИОНЫ------------------------------
