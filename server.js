@@ -5,6 +5,7 @@ var ServicesAPIController = require("./server/Controllers/ServicesAPIController.
 var TradePointsAPIController = require("./server/Controllers/TradePointsAPIController.js");
 var CompaniesAPIController = require("./server/Controllers/CompaniesAPIController.js");
 var CategoriesAPI = require("./server/Controllers/CategoriesAPI.js");
+var SharesAPI = require("./server/Controllers/SharesAPI.js")
 // 
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 var jsonParser = bodyParser.json();
@@ -107,5 +108,7 @@ app.post("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoi
 app.get("/CompaniesAPI/getCompanies",jsonParser,CompaniesAPIController.getCompanies);
 //CategoriesAPI
 app.get("/CategoriesAPI/getCategoriesForSite",jsonParser,CategoriesAPI.getCategoriesForSite);
+//SharesAPI
+app.get("/SharesAPI/getShares",jsonParser,SharesAPI.getShares)
 app.listen(8080);
 //app.listen(3000);

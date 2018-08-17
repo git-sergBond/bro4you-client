@@ -203,11 +203,40 @@
                 this.intit_events_DrawPolygonByFinger();
             },
             //----------------ЗАПРОСЫ----------------------------
-            async totalQusery(){
+            async getServices(typeQuery, 
+                    userQuery = null,
+                    categoriesId = null,
+                    //
+                    regionsId = null,center = null,diagonal = null,
+                    //
+                    type = null,id = null){
+                //typeQuery - тип запроса (каждый раз передается имп запроса)
+                /*
+                0  - пользователь ввел строку и нажал кнопку искать
+                ->     строка + [id регионов] + центр + точка на diagonal
+                <- стандартные точки, кот уже есть
+                
+                1 -  запрос на получение элементов интелект. поиска
+                - > строка запроса польз.  + [id регионов] + центр + точка на diagonal
+                <- [{type:str, name:str, id: int}{}{}]
+
+                2 - при клике на элемент инт. поиска
+                -> {type:str,  name:str, id: int} + [id регионов] + центр + точка на diagonal
+                <- стандартные точки, кот уже есть
+
+                3 - пользователь указал категории для поиска
+                -> [массив id категорий] + [id регионов] + центр + точка на diagonal
+                <- стандартные точки, кот уже есть
+
+                4 - пользователь указал область поиска и(или) написал запрос для поиска
+                -> строка запроса польз. + [id регионов] + центр + точка на diagonal
+                <- стандартные точки, кот уже есть
+                */
                 let modifiResponse = [];
                 axios.defaults.headers.common['Authorization'] = localStorage.getItem(TOKENS.AUTHORIZE);
-                let result = await axios({url: 'ServicesAPI/getServices',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'GET' })
-                    //console.log(result.data.services)
+                let result = await axios({url: 'ServicesAPI/getServices',data:{
+                    typeQuery,center,diagonal,type,id,userQuery,regionsId,categoriesId                  
+                }, method: 'POST' })
                     for(let { points , service, categories} of result.data.services){
                         for( let { latitude , longitude, phones } of points){
                            modifiResponse.push({
@@ -219,12 +248,9 @@
                                 countReviews: 0,
                                 price: service.pricemax,
                                 stars: 5,
-// !!! СДЕЛАТЬ, чтобы можно было юзать несколько категорий
                                 category: categories,
-// !!! !!! !!! !!! !!! !!!
                                 url: '#1'
                             });
-                            console.log(categories)
                         }
                     }
                 return modifiResponse;
@@ -233,87 +259,32 @@
                 //асинхронный запрос серверу
                 //серверу запрос поиска + передается массив точек (вершин полигона)
                 //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
-                console.log('requset to server (search msg + json array coordinates)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
-                //console.log(coordinates)
-                console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
-                
-                return await this.totalQusery();
+                return await this.getServices(0);
             },
             getInfoForPoligons_from_server: async function (search, coordinates) {
                 //асинхронный запрос серверу
                 //серверу запрос поиска + массив полигонов
                 //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
-                console.log('requset to server (search msg + json array polygons)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
-                //console.log(coordinates)
-                console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
-                return await this.totalQusery();
+                return await this.getServices(1);
             },
             getInfoForBounds_from_server: async function(search, bounds){
                 //асинхронный запрос серверу
                 //серверу строка запроса пользователя + координаты квадрата Л-В и П-Н
                 //принимается ответ от сервера в виде объекта с координатами и объектом info содержащим данные о чем-то
-                console.log('requset to server (string search msg + bounds rect)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
-                console.log('... become response (json array plasemarks with info)')//<-----------------  жду ответа
-                return await this.totalQusery();
+                return await this.getServices(2);
             },
             get_Categories_and_polygon_from_server: async function(category, polygon){
-// NOP
-                return await this.totalQusery();
+                return await this.getServices(3);
             },
             get_Categories_and_bounds_from_server: async function(category, bounds){
-// NOP
-                return await this.totalQusery();
+                return await this.getServices(4);
             },
-            /*
-            getCategoties_from_server: function(){
-                return ['Магазины Авто', 'Еда', 'Одежда', 'Ищут работу', "Транспорт", "Развлечения", "Драгоценности", "Банкоматы"];
-            },*/
-            getShares_from_server: function(bounds){
+            
+            getShares_from_server: async function(bounds){
                 //получить данные о рекламе и акциях в звдвнном районе
                 console.log('requset to server (bounds rect)...')//-----------------> отправляю данные координат на сервер !!! дублируется 1 координата
                 console.log('... become response (json array sahres with info)')//<-----------------  жду ответа
-                return [
-                    {
-                        coords: [55.05980129774418, 40.562484643066426],
-                        name: 'Маникюр - 30%',
-                        imageUrl: 'images/car1.jpg',
-                        address: 'Белгород, улица Щорса, 123Б',
-                        phoneNumber: '+ 7 (XXX) XX - 55',
-                        countReviews: 123,
-                        stars: 4,
-                        url: '#1'
-                    },
-                    {
-                        coords: [60.05980129774418, 40.562484643066426],
-                        name: 'СТО - 30%',
-                        imageUrl: 'images/car1.jpg',
-                        address: 'Белгород, улица Щорса, 123Б',
-                        phoneNumber: '+ 7 (XXX) XX - 55',
-                        countReviews: 123,
-                        stars: 3,
-                        url: '#1'
-                    },
-                    {
-                        coords: [60.05980129774418, 50.562484643066426],
-                        name: 'Автомойка - 30%',
-                        imageUrl: 'images/car1.jpg',
-                        address: 'Белгород, улица Щорса, 123Б',
-                        phoneNumber: '+ 7 (XXX) XX - 55',
-                        countReviews: 123,
-                        stars: 5,
-                        url: '#1'
-                    },
-                    {
-                        coords: [60.05980129774418, 60.562484643066426],
-                        name: 'Ногти - 30%',
-                        imageUrl: 'images/car1.jpg',
-                        address: 'Белгород, улица Щорса, 123Б',
-                        phoneNumber: '+ 7 (XXX) XX - 55',
-                        countReviews: 123,
-                        stars: 2,
-                        url: '#1'
-                    }
-                ];
+                return await axios.get("/SharesAPI/getShares");
             },
             //-------- ОБВОДКА ОБЛАСТИ ---------------------------
             intit_events_DrawPolygonByFinger() {

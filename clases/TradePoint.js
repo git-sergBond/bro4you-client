@@ -9,6 +9,14 @@ export default class TradePoint{
         this.address= point.address;//адрес
         this.newPhones = [] //массив для новых номеров телефонов
         this.categories = [] //массив категорий, к которым нужно привязать услугу
+        
+        //хинт, балун
+        //преднастройка иконок
+        //полезные данные при клике 
+        // данные вообще 
+        //события
+        //клик, драг, двойной клик, наведение
+        
         //гуи
         this.Vcon = VueContext;//контекст экземпляра Vue
         this.mapIsnt = mapIsnt;//контекст яндекс карты
@@ -62,8 +70,8 @@ export default class TradePoint{
         let p = new ymaps.Placemark([this.latitude,this.longitude], {
             iconCaption: this.name
         }, {
-             preset: 'islands#darkblueDotIconWithCaption',
-             draggable: true
+            preset: 'islands#darkblueDotIconWithCaption',
+            draggable: true
         })
         p.properties.set({
             linkOnStruct: context,//сылка на структуру, для обратной связи
