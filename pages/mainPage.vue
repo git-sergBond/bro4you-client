@@ -97,6 +97,7 @@
     import placeInfoMap from '../components/placeInfoMap.vue'
     import  authorization from '../components/authorization.vue';
     import formAutorize from '../components/formAutorize.vue';
+    import Hints from '../clases/Hints.js';
     export default {
         name: "mainPage",
         //el: '',
@@ -518,72 +519,6 @@
                     }
                 }
             },
-            make_shares_hint: function () {
-                // Создание макета содержимого хинта.
-                // Макет создается через фабрику макетов с помощью текстового шаблона.
-                let HintLayout = ymaps.templateLayoutFactory.createClass(
-                    "<div class='my-hint'>" +
-                    "<img src = '{{ properties.imageUrl }}'>"+
-                    "<p><b>{{ properties.name }}</b>" +
-                    "<br/>{{ properties.address }}" +
-                    "<br/>{{ properties.phoneNumber }}" +
-                    "<br/><b>АКЦИЯ</b> " +
-                    "</p></div>", {
-                        // Определяем метод getShape, который
-                        // будет возвращать размеры макета хинта.
-                        // Это необходимо для того, чтобы хинт автоматически
-                        // сдвигал позицию при выходе за пределы карты.
-                        getShape: function () {
-                            var el = this.getElement(),
-                                result = null;
-                            if (el) {
-                                var firstChild = el.firstChild;
-                                result = new ymaps.shape.Rectangle(
-                                    new ymaps.geometry.pixel.Rectangle([
-                                        [0, 0],
-                                        [firstChild.offsetWidth, firstChild.offsetHeight]
-                                    ])
-                                );
-                            }
-                            return result;
-                        }
-                    }
-                );
-                return HintLayout;
-            },
-            make_service_hint: function () {
-                // Создание макета содержимого хинта.
-                // Макет создается через фабрику макетов с помощью текстового шаблона.
-                let HintLayout = ymaps.templateLayoutFactory.createClass(
-                    "<div class='my-hint'>" +
-                    "<img src = '{{ properties.imageUrl[0] }}'>"+
-                    "<p><b>{{ properties.name }}</b>" +
-                    "<br/>{{ properties.address }}" +
-                    "<br/>{{ properties.phoneNumber[0] }}" +
-                    "<br/><b>{{ properties.price }} Руб.</b>" +
-                    "</p></div>", {
-                        // Определяем метод getShape, который
-                        // будет возвращать размеры макета хинта.
-                        // Это необходимо для того, чтобы хинт автоматически
-                        // сдвигал позицию при выходе за пределы карты.
-                        getShape: function () {
-                            var el = this.getElement(),
-                                result = null;
-                            if (el) {
-                                var firstChild = el.firstChild;
-                                result = new ymaps.shape.Rectangle(
-                                    new ymaps.geometry.pixel.Rectangle([
-                                        [0, 0],
-                                        [firstChild.offsetWidth, firstChild.offsetHeight]
-                                    ])
-                                );
-                            }
-                            return result;
-                        }
-                    }
-                );
-                return HintLayout;
-            },
             //---------------- ОТРИСОВКА ОБЛАСТИ НА КАРТЕ---------
             getInfoRegionFromPoint: async function(p){
                 let mapInst = this.mapInstanse;
@@ -601,8 +536,8 @@
             },
             add_placemarks_on_map: async function(arr_placemarks){
                 //добавление меток на карту и информации о них
-                let HintShare = this.make_service_hint();
-                let HintServ = this.make_shares_hint();
+                let HintShare = Hints.make_service_hint();
+                let HintServ = Hints.make_shares_hint();
                 let myCollection = new ymaps.GeoObjectCollection();//создаем коллекцию для поиска по точкам
                 let filter_regions = this.filter_regions = [];//сохраняем информацию для фильтра по регионам
                 for(let placemark of arr_placemarks){
