@@ -27,15 +27,15 @@
                     ref="pictureInput"
                     @change="onChanged"
                     @remove="onRemoved"
-                    :width="500"
+                    :width="250"
                     :removable="true"
                     removeButtonClass="ui red button"
-                    :height="500"
+                    :height="250"
                     accept="image/jpeg, image/png, image/gif"
                     buttonClass="ui button primary"
                     :customStrings="{
                     upload: '<h1>Upload it!</h1>',
-                    drag: 'Drag and drop your image here'}">
+                    drag: 'Перетащите сюда фото'}">
                 </picture-input>
                 <hr>
                 <!--label>Видео</label><input type="text" v-model="service.video" ><br-->
@@ -470,14 +470,13 @@
                         if(this.image){
                             const formData = new FormData();
                             formData.append("picture1", this.image);
+                            formData.append("serviceId", serviceId);
                             const config = {
                                 headers: {
-                                    "authorization": localStorage.getItem(TOKENS.AUTHORIZE),
-                                    "serviceId": serviceId,
                                     'content-type': 'multipart/form-data'
                                 }
                             };
-                            axios.post('/ServicesAPI/addImageHandler', formData, config).then(resp=>{
+                            axios.post('/ServicesAPI/addImages', formData, config).then(resp=>{
                                 alert("картинка добавлена")
                             })
                         }
