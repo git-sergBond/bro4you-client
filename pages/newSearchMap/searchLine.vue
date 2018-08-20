@@ -1,9 +1,9 @@
 <template>
     <div>
         <input type="text" v-model="userQuery" placeholder="Что вы ищите?" ><button>Искать</button>
-        <list-autocomplete v-show="dataAutocomplete.length > 0"></list-autocomplete>
-        <categories v-show="dataAutocomplete.length == 0"></categories>
-        <results-search></results-search>
+        <list-autocomplete v-show="dataAutocomplete.length > 0" :list-data="dataAutocomplete"></list-autocomplete>
+        <categories v-show="dataAutocomplete.length == 0 && !!categories" :model="categories"></categories>
+        <results-search v-show="resultsSearch.length > 0"></results-search>
     </div>
 </template>
 
@@ -17,27 +17,51 @@ export default {
     data(){
         return {
             userQuery: "",
-            dataAutocomplete: []
+            dataAutocomplete: [],
+            resultsSearch: [],
+            categories: null
         }
     },
     components: {
         listAutocomplete,
-        categories
+        categories,
+        resultsSearch
+    },
+    methods: {
+        clearAutocomplete(){
+            this.dataAutocomplete = []
+        }
     },
     watch: {
         'userQuery': async function(newStr, oldStr){
-            const typeQuery = 1;
-            let result = await axios.post({
-                url: 'ServicesAPI/getServices',
-                data: { 
-                    typeQuery, 
-                    newStr 
-                }, 
-                method: 'POST' 
-            });
-            console.log(result.data)
+            if(newStr.length < 3){
+                this.clearAutocomplete()
+            }else{
+                try{
+                const typeQuery = 1;
+                let result = await axios({
+                    url: 'ServicesAPI/getServices',
+                    data: { 
+                        typeQuery, 
+                        newStr 
+                    }, 
+                    method: 'POST' 
+                });
+                this.dataAutocomplete = result.data.autocomplete;
+                }catch(e){
+                    alert(e.message)
+                }
+            }
         }
-    }
+    },
+    async created(){
+        let categories = await axios({url: 'CategoriesAPI/getCategoriesForSite', method: 'GET' })
+        this.categories = {
+            name:"Категории", 
+            child: categories.data.categories,
+            root: true
+        }
+    },
 }
 </script>
 
