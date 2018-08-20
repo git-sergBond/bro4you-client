@@ -5,18 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>компонент карты</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css.map" />
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />    
-    <link rel="stylesheet" href="http:/netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 </head>
 <body> 
     <div id="app" >
-        <!--
-        <router-link to="/p1">Пример показа статических снимков из карт</router-link>
-        <router-link to="/p2">Главная страница</router-link>
-        <router-link to="/p3">Регистрация метки и ее индексация</router-link>
-        -->
         <router-view></router-view>
+        <div v-show="showRoutes">
+            <h4>Карта сайта</h4>
+            <ul>
+                <li><router-link to="/p2">Поиск (старый -> классика) //старые запросы к БД</router-link></li>
+                <li><router-link to="/p4">Поиск (новый)</router-link></li>
+                <li><router-link to="/p3">Добавление услуги</router-link></li>
+                <li><router-link to="/p1">Список статических снимков карты</router-link></li>
+            </ul>
+            <button @click="showRoutes = !showRoutes">Скрыть меню навигации</button>
+        </div>
     </div>
     <script src="dist/bundle.js"></script>
 </body>

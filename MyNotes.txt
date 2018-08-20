@@ -5,11 +5,13 @@
 
 Поиск на карт:
 -в clear_map вставить add_actions (убрать избыточность)
+-перевести ласс точки на проперетарный в maps-vue yandex-marker
 
 Общее:
+-дебаг режим и 2 ветки на прод и свой
 -сделать тесты для форм
 -uml и документирование кода
--переход на scss, TScript, Бем, адаптив, бутстрап
+-переход на scss, TScript,pug, Бем, адаптив, бутстрап
 -постепенное изучение Kotlin, Obj-C, swift, RXSwift, Realm
 -перейти на Phalcon, composer, docer, sfinks
 -graphQl

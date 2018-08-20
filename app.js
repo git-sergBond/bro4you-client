@@ -11,13 +11,15 @@ Vue.use(Vuex);
 import listPlaceMarks from './pages/listPlaceMarks.vue';
 import mainPage from './pages/mainPage.vue';
 import registrationPlaceMarks from './pages/registrationPlaceMarks.vue';
+import newSearchMap from './pages/newSearchMap.vue';
 import API from './API'
 import TOKENS from './TOKENS'
 // ROUTER
 const routes = [
     { path: '/p1', component: listPlaceMarks },
     { path: '/p2', component: mainPage },
-    { path: '/p3', component: registrationPlaceMarks }
+    { path: '/p3', component: registrationPlaceMarks },
+    { path: '/p4', component: newSearchMap}
 ]
 const router = new VueRouter({
     routes
@@ -117,6 +119,11 @@ const store = new Vuex.Store({
 new Vue({
     //el: "#app",
     router,
-    store
+    store,
+    data(){
+      return {
+        showRoutes: true
+      }
+    }
 }).$mount('#app');
 Vue.config.devtools = true;
