@@ -245,13 +245,21 @@
                 }
             },
             addNewPoint(){
-                this.service.newPointsServices.push(new TradePoint({
-                    latitude: 0,
-                    longitude: 0,
-                    name: "",
-                    address: "",
-                    newPhones: [],
-                },this.mapIsnt,this))
+                this.service.newPointsServices.push(new TradePoint(
+                    {
+                        latitude: 0,
+                        longitude: 0,
+                        name: "",
+                        address: "",
+                        newPhones: [],
+                    },
+                    this.mapIsnt,
+                    this, 
+                    null,
+                    [
+                        { name: 'click', event: this.HendlerClickOnPointFromMap },
+                        { name: 'dragend', event: this.HendlerDragend }
+                    ]))
             },
             publish: function () {
                 this.QaddService(this.service);
@@ -298,7 +306,10 @@
                     console.log('listTradePoint.data.points')
                    // if(listTradePoint.data.points > 0){
                         for(let point of listTradePoint.data.points){
-                            let p = new TradePoint(point.tradePoint, this.mapIsnt, this)
+                            let p = new TradePoint(point.tradePoint, this.mapIsnt, this, null, [
+                                { name: 'click', event: this.HendlerClickOnPointFromMap },
+                                { name: 'dragend', event: this.HendlerDragend }
+                            ])
                             p.exist = true;
                             //p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
                             res.push(p);
@@ -373,7 +384,10 @@
                     for(let {company, points} of list.data.companies){
                         company.points = [];
                         for(let point of points){
-                            let p = new TradePoint(point, this.mapIsnt, this)
+                            let p = new TradePoint(point, this.mapIsnt, this, null, [
+                                { name: 'click', event: this.HendlerClickOnPointFromMap },
+                                { name: 'dragend', event: this.HendlerDragend }
+                            ])
                             p.exist = true;
                             //p.pointInst.events.add('click', this.HendlerClickOnPointFromMap);
                             company.points.push(p);

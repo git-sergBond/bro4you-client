@@ -1,6 +1,12 @@
 export default class TradePoint{
+
+
+    //
+    //приравнять активную точку к видимой
+    //
+
     //класс характеризующий точку оказания услуги
-    constructor(point,properties,mapIsnt,VueContext){
+    constructor(point,mapIsnt,VueContext,properties=null,events=null,draggable=true){
         //данные принимаемые с сервера
         this.pointid = !!point.pointid ? point.pointid : null
         this.latitude = point.latitude;//широта
@@ -11,22 +17,28 @@ export default class TradePoint{
         this.categories = []; //массив категорий, к которым нужно привязать услугу
         
         //хинт, балун
-
+        
         //преднастройка иконок
         //полезные данные при клике
-         
+
         // данные вообще 
-        this.properties = properties;
-        //события
-        //клик, драг, двойной клик, наведение
+        this.properties = properties;//и перредаются в DrawMap
+        
+        
         
         //гуи
-        this.Vcon = VueContext;//контекст экземпляра Vue
+        this.VueContext = VueContext;//контекст экземпляра Vue
         this.mapIsnt = mapIsnt;//контекст яндекс карты
-        this.pointInst = this.DrawOnMap();//контекст точки на яндекс карте
+        this.pointInst = this.DrawOnMap(properties,events,draggable);//контекст точки на яндекс карте
         this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
         this.selected = false //нужен для показа номеров и прочей херни по точке
     }
+
+
+    //
+    //  добавить методы 
+    //
+
     //добавление телефона к услуге
     addNewPhone(){
         this.newPhones.push({
@@ -68,23 +80,31 @@ export default class TradePoint{
         
     }
     //метод отрисовки метки на карте
-    DrawOnMap(){
+    DrawOnMap(properties,events,draggable){
         let context = this
+
         let p = new ymaps.Placemark([this.latitude,this.longitude], {
             iconCaption: this.name
         }, {
             preset: 'islands#darkblueDotIconWithCaption',
-            draggable: true
+            draggable: draggable
         })
+
         p.properties.set({
             linkOnStruct: context,//сылка на структуру, для обратной связи
-            ...properties //в
         });
-            
+        if(!!properties) p.properties.set({
+            ...properties //сохраняем важные данные
+        });
+
+        if(!!events) for(let {name,event} of events){
+            //click, драг(dragend), двойной клик, наведение
+            p.events.add(name, event);
+        }
         
         p.properties.set(properties);//кастомные данные пользователя
-        p.events.add('click', this.Vcon.HendlerClickOnPointFromMap);
-        p.events.add('dragend', this.Vcon.HendlerDragend);
+       // p.events.add('click', this.VueContext.HendlerClickOnPointFromMap);
+       // p.events.add('dragend', this.VueContext.HendlerDragend);
         this.mapIsnt.geoObjects.add(p);
         return p;
     }
