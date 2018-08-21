@@ -1,19 +1,22 @@
 export default class TradePoint{
     //класс характеризующий точку оказания услуги
-    constructor(point,mapIsnt,VueContext){
+    constructor(point,properties,mapIsnt,VueContext){
         //данные принимаемые с сервера
         this.pointid = !!point.pointid ? point.pointid : null
         this.latitude = point.latitude;//широта
         this.longitude= point.longitude;//долгота
         this.name = point.name // название точки оказания услуг
         this.address= point.address;//адрес
-        this.newPhones = [] //массив для новых номеров телефонов
-        this.categories = [] //массив категорий, к которым нужно привязать услугу
+        this.newPhones = []; //массив для новых номеров телефонов
+        this.categories = []; //массив категорий, к которым нужно привязать услугу
         
         //хинт, балун
+
         //преднастройка иконок
-        //полезные данные при клике 
+        //полезные данные при клике
+         
         // данные вообще 
+        this.properties = properties;
         //события
         //клик, драг, двойной клик, наведение
         
@@ -75,7 +78,11 @@ export default class TradePoint{
         })
         p.properties.set({
             linkOnStruct: context,//сылка на структуру, для обратной связи
+            ...properties //в
         });
+            
+        
+        p.properties.set(properties);//кастомные данные пользователя
         p.events.add('click', this.Vcon.HendlerClickOnPointFromMap);
         p.events.add('dragend', this.Vcon.HendlerDragend);
         this.mapIsnt.geoObjects.add(p);
