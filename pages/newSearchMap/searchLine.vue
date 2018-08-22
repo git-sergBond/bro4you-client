@@ -13,6 +13,7 @@ import listAutocomplete from "./searchLine/listAutocomplete.vue";
 import categories from "./searchLine/categories.vue";
 import resultsSearch from "./searchLine/resultsSearch.vue";
 
+import Categori from '../../clases/Categori.js'
 export default {
     name: "searchLine",
     data (){
@@ -68,12 +69,7 @@ export default {
         }
     },
     async created (){
-        let categories = await axios({url: 'CategoriesAPI/getCategoriesForSite', method: 'GET' })
-        this.categories = {
-            name:"Категории", 
-            child: categories.data.categories,
-            root: true
-        }
+        this.categories = await new Categori().getCategoriesForSite();
     },
 }
 </script>

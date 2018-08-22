@@ -24,7 +24,6 @@ export default {
     name: "categories",
     props: {
         model: Object,
-
     },
     data(){
         return {
@@ -36,11 +35,10 @@ export default {
             this.child = child
         },
         getServices(item){
-            let obj = {
+            this.$emit('event_getServices',{
                 typeQuery: 3,
                 categoriesId: [item.id]
-            }
-            this.$emit('event_getServices',123)
+            })
         },
         close(){
             this.child = null
