@@ -10,6 +10,7 @@ export default class TradePoint{
 
     //класс характеризующий точку оказания услуги
     constructor(point,mapIsnt,VueContext,properties=null,events=null,draggable=true){
+        try{
         //данные принимаемые с сервера
         this.pointid = !!point.pointid ? point.pointid : null
         this.latitude = point.latitude;//широта
@@ -35,6 +36,10 @@ export default class TradePoint{
         this.pointInst = this.DrawOnMap(properties,events,draggable);//контекст точки на яндекс карте
         this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
         this.selected = false //нужен для показа номеров и прочей херни по точке
+        }catch(e){
+            console.log('DATA')
+            console.log(e.message)
+        }
     }
 
 
@@ -84,6 +89,7 @@ export default class TradePoint{
     }
     //метод отрисовки метки на карте
     DrawOnMap(properties,events,draggable){
+        try{
         let context = this
 
         let p = new ymaps.Placemark([this.latitude,this.longitude], {
@@ -109,6 +115,10 @@ export default class TradePoint{
        // p.events.add('click', this.VueContext.HendlerClickOnPointFromMap);
        // p.events.add('dragend', this.VueContext.HendlerDragend);
         this.mapIsnt.geoObjects.add(p);
+        }catch(e){
+            console.log('DRAW')
+            console.log(e.message)
+        }
         return p;
     }
     //установка видимости метки

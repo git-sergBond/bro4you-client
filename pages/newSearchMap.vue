@@ -49,8 +49,7 @@ export default {
                 this, 
                 null,
                 [
-                    { name: 'click', event: this.HendlerClickOnPointFromMap },
-                    { name: 'dragend', event: this.HendlerDragend }
+                   
                 ])
             }
             /*
