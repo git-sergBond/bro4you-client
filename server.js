@@ -103,7 +103,7 @@ app.post("/ServicesAPI/addService",jsonParser, ServicesAPIController.addService)
 app.post("/ServicesAPI/getServices",jsonParser, ServicesAPIController.getServices);
 app.post("/ServicesAPI/addImageHandler",jsonParser, ServicesAPIController.addImageHandler);
 //TradePointsAPI
-app.post("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoints);
+app.get("/TradePointsAPI/getPoints",jsonParser, TradePointsAPIController.getPoints);
 //CompaniesAPI
 app.get("/CompaniesAPI/getCompanies",jsonParser,CompaniesAPIController.getCompanies);
 //CategoriesAPI

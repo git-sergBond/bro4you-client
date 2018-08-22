@@ -73,7 +73,7 @@ let tradePoints =
 module.exports =  {
     //Возвращает точки предоставления услуг назначенные текущему пользователю
     getPoints(request, response){
-        console.log("// "+new Date + " POST /TradePointsAPI/getPoints");
+        console.log("// "+new Date + " GET /TradePointsAPI/getPoints");
         console.log("data: ")
         console.log(request.body)
         console.log(tradePoints)

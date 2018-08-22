@@ -294,7 +294,7 @@
                 //получить все точки услуг пользователя
                 let res = [];
                 try {
-                    let listTradePoint = await axios({url: 'TradePointsAPI/getPoints',data:{"authorization":localStorage.getItem(TOKENS.AUTHORIZE)}, method: 'POST' })
+                    let listTradePoint = await axios({url: 'TradePointsAPI/getPoints', method: 'GET' })
                 //подготовка, для реактивной формы
                     /*
                     for(let phone of listTradePoint.data.points.phones){
