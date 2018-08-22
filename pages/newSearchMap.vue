@@ -48,9 +48,7 @@ export default {
                 this.mapIsnt,
                 this, 
                 null,
-                [
-                   
-                ])
+                [])
             }
             /*
             */

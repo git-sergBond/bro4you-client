@@ -9,7 +9,7 @@ export default class TradePoint{
     //
 
     //класс характеризующий точку оказания услуги
-    constructor(point,mapIsnt,VueContext,properties=null,events=null,draggable=true){
+    constructor(point,mapIsnt,VueContext,properties=null,events=null,draggable=true,services=[]){
         try{
         //данные принимаемые с сервера
         this.pointid = !!point.pointid ? point.pointid : null
@@ -19,7 +19,7 @@ export default class TradePoint{
         this.address= point.address;//адрес
         this.newPhones = []; //массив для новых номеров телефонов
         this.categories = []; //массив категорий, к которым нужно привязать услугу
-        
+        this.services = services;
         //хинт, балун
         
         //преднастройка иконок
