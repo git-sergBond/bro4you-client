@@ -28,8 +28,9 @@ export default class Service{
     }
     drawPoints(mapIsnt=null){
         for(let point of this.points){
+            point.mapIsnt = mapIsnt
             point.DrawOnMap()
-            point.setActive(true);
+            //point.setActive(true);
         }
     }
     queryServicesAPIgetServices(){
