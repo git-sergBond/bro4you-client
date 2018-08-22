@@ -1,3 +1,6 @@
+const queries = {
+
+}
 export default class TradePoint{
 
 
@@ -24,7 +27,7 @@ export default class TradePoint{
         // данные вообще 
         this.properties = properties;//и перредаются в DrawMap
         
-        
+        this.queries = queries
         
         //гуи
         this.VueContext = VueContext;//контекст экземпляра Vue

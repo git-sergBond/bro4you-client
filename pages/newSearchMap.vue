@@ -1,6 +1,6 @@
 <template>
     <div>
-        <search-line></search-line>
+        <search-line @drawServices=drawServices></search-line>
         <outline-area></outline-area>
         <div class="map-comp"
             @mouseup='mouseup_event_DrawPolygonByFinger'
@@ -16,16 +16,46 @@
 <script>
 import searchLine from './newSearchMap/searchLine.vue'
 import outlineArea from './newSearchMap/outlineArea.vue'
+import TradePoint from '../clases/TradePoint.js';
 export default {
     name: "newSearchMap",
     data(){
         return {
-            coords: [50,50]
+            coords: [50,50],
+            mapIsnt: null
         }
     },
     components: {
         searchLine,
         outlineArea
+    },
+    methods: {
+        initHandler(myMap){
+            this.mapIsnt = myMap
+        },
+        //Отрисовка точек предоставляющих услуги
+        drawServices(services){
+            console.log(services)
+            for(let service of services) for(let p of service.points){
+                new TradePoint(
+                {
+                    latitude: p.latitude,
+                    longitude: p.longitude,
+                    name: p.name,
+                    address: p.address,
+                    newPhones: [],
+                },
+                this.mapIsnt,
+                this, 
+                null,
+                [
+                    { name: 'click', event: this.HendlerClickOnPointFromMap },
+                    { name: 'dragend', event: this.HendlerDragend }
+                ])
+            }
+            /*
+            */
+        }
     }
 }
 </script>

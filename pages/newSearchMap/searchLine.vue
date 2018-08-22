@@ -39,10 +39,11 @@ export default {
                     typeQuery,center,diagonal,type,id,userQuery,regionsId,categoriesId                  
                 }, method: 'POST' })
                 this.dataServices = result.data.services
+                this.$emit('drawServices',this.dataServices);
             }catch(e){
                 alert(e.message)
             }
-        }
+        },
     },
     watch: {
         'userQuery': async function(newStr, oldStr){
