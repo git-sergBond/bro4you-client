@@ -2,6 +2,7 @@ import axios from 'axios';
 export default class Categori{
     constructor(parseCategori=null,mapIsnt=null,VueContext=null){
         try{
+            this.queries = queries;
             if(!!parseCategori){
                 this.categoryid = parseCategori.categoryid;
                 this.categoryname = parseCategori.categoryname;
@@ -16,8 +17,9 @@ export default class Categori{
             alert(e.message)
         }
     }
+}
+const queries = {
     //запрос на получение списка категорйи
-
     async getCategoriesForSite(){
         let res = await axios({url: 'CategoriesAPI/getCategoriesForSite', method: 'GET' })
         let treeCategories = {

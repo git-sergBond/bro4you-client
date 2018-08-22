@@ -69,7 +69,7 @@ export default {
         }
     },
     async created (){
-        this.categories = await new Categori().getCategoriesForSite();
+        this.categories = await new Categori().queries.getCategoriesForSite();
     },
 }
 </script>
