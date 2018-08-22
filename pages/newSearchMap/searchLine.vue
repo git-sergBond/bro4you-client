@@ -14,6 +14,8 @@ import categories from "./searchLine/categories.vue";
 import resultsSearch from "./searchLine/resultsSearch.vue";
 
 import Categori from '../../clases/Categori.js'
+import Service from '../../clases/Service.js'
+
 export default {
     name: "searchLine",
     data (){
@@ -39,7 +41,11 @@ export default {
                 let result = await axios({url: 'ServicesAPI/getServices',data:{
                     typeQuery,center,diagonal,type,id,userQuery,regionsId,categoriesId                  
                 }, method: 'POST' })
-                this.dataServices = result.data.services
+                let servicesAfterParse = []
+                for (let service of result.data.services) {
+                    servicesAfterParse.push(new Service(service,null,this))
+                }
+                this.dataServices = servicesAfterParse;
                 this.$emit('drawServices',this.dataServices);
             }catch(e){
                 alert(e.message)

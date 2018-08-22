@@ -9,7 +9,7 @@ export default class TradePoint{
     //
 
     //класс характеризующий точку оказания услуги
-    constructor(point,mapIsnt,VueContext,properties=null,events=null,draggable=true,services=[]){
+    constructor(point,mapIsnt,VueContext,drawOnmap=true,properties=null,events=null,draggable=true,services=[]){
         try{
         //данные принимаемые с сервера
         this.pointid = !!point.pointid ? point.pointid : null
@@ -33,8 +33,10 @@ export default class TradePoint{
         //гуи
         this.VueContext = VueContext;//контекст экземпляра Vue
         this.mapIsnt = mapIsnt;//контекст яндекс карты
-        this.pointInst = this.DrawOnMap(properties,events,draggable);//контекст точки на яндекс карте
-        this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
+        if(drawOnmap){
+            this.pointInst = this.DrawOnMap(properties,events,draggable);//контекст точки на яндекс карте
+            this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
+        }
         this.selected = false //нужен для показа номеров и прочей херни по точке
         }catch(e){
             console.log('DATA')
@@ -88,7 +90,7 @@ export default class TradePoint{
         
     }
     //метод отрисовки метки на карте
-    DrawOnMap(properties,events,draggable){
+    DrawOnMap(properties={},events=[],draggable=false){
         try{
         let context = this
 

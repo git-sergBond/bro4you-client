@@ -36,19 +36,8 @@ export default {
         //Отрисовка точек предоставляющих услуги
         drawServices(services){
             console.log(services)
-            for(let service of services) for(let p of service.points){
-                new TradePoint(
-                {
-                    latitude: p.latitude,
-                    longitude: p.longitude,
-                    name: p.name,
-                    address: p.address,
-                    newPhones: [],
-                },
-                this.mapIsnt,
-                this, 
-                null,
-                [])
+            for(let service of services){
+                service.drawPoints(this.mapIsnt)
             }
             /*
             */

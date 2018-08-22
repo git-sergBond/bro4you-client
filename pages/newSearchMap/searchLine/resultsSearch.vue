@@ -9,6 +9,7 @@
 <script>
 import briefInfo from './briefInfo.vue'
 import filters from './resultsSearch/filters.vue'
+
 export default {
     name: "resultsSearch",
     props: ['services'],

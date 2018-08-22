@@ -1,7 +1,8 @@
 import Categori from './Categori.js'
 import TradePoint from './TradePoint.js'
 export default class Service{
-    constructor(parseService,mapIsnt,VueContext){
+    constructor(parseService,mapIsnt=null,VueContext=null){
+        console.log(parseService)
         this.serviceid = parseService.service.serviceid;
         this.subjectid = parseService.service.subjectid;
         this.description = parseService.service.description;
@@ -14,18 +15,24 @@ export default class Service{
         this.regionid = parseService.service.regionid;
         this.name = parseService.service.name;
         this.categories = []
-        for(categori of parseService.categories){
-            categories.push(new Categori(categori,mapIsnt,VueContext));
+        for(let categori of parseService.categories){
+            this.categories.push(new Categori(categori,mapIsnt,VueContext));
         }
         this.points = []
-        for(point of parseService.points){
-            points.push(new TradePoint(point,mapIsnt,VueContext));
+        for(let point of parseService.points){
+            this.points.push(new TradePoint(point,mapIsnt,VueContext));
         }
         //гуи
         this.mapIsnt = mapIsnt;
         this.VueContext = VueContext
     }
+    drawPoints(mapIsnt=null){
+        for(let point of this.points){
+            point.DrawOnMap()
+            point.setActive(true);
+        }
+    }
     queryServicesAPIgetServices(){
-        //запрос на получение точек 
+        //запрос на получение услуг 
     }
 }
