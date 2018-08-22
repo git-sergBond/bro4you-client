@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>{{service.service.name}} <button>перейти</button> <button>Показать все ТОУ</button>
+        <p>{{service.name}} <button>перейти</button> <button>Показать все ТОУ</button>
         [звезды, колличество отзывов(кликабельные)]
         </p>
 

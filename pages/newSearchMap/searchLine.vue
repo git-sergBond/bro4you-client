@@ -46,7 +46,7 @@ export default {
                     servicesAfterParse.push(new Service(service,null,this))
                 }
                 this.dataServices = servicesAfterParse;
-                this.$emit('drawServices',this.dataServices);
+                //this.$emit('drawServices',this.dataServices);
             }catch(e){
                 alert(e.message)
             }
