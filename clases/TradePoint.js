@@ -54,38 +54,48 @@ export default class TradePoint{
     }
     //измененить название на иконке, которое будет соответствовать точке
     changeCaption(){
-        this.pointInst.properties.set({
-            iconCaption: this.name
-        });
+        try{
+            this.pointInst.properties.set({
+                iconCaption: this.name
+            });
+        }catch(e){
+            console.log('class TradePoint.changeCaption() : '+e.message)
+        }
     }
     //установить координаты
     setCoords(coords){
         let context = this;
-        this.latitude = coords[0];//широта
-        this.longitude = coords[1];//долгота
-        this.pointInst.geometry.setCoordinates(coords);//меняем координаты метки
-        //вычисляем адрес метки, относительно координат
-        let res = ymaps.geocode([this.latitude,this.longitude]);
-        res.then(res=>{
-            let firstGeoObject = res.geoObjects.get(0);
-            let address = firstGeoObject.getAddressLine();
-            context.address = address;
-        });
+        try{
+            this.latitude = coords[0];//широта
+            this.longitude = coords[1];//долгота
+            this.pointInst.geometry.setCoordinates(coords);//меняем координаты метки
+            //вычисляем адрес метки, относительно координат
+            let res = ymaps.geocode([this.latitude,this.longitude]);
+            res.then(res=>{
+                let firstGeoObject = res.geoObjects.get(0);
+                let address = firstGeoObject.getAddressLine();
+                context.address = address;
+            });
+        }catch(e){
+            console.log('class TradePoint.setCoords() : '+e.message)
+        }
     }
     //установить координаты, по адресу метки
     setCoordsForAdress(){
         let context = this
-        let res = ymaps.geocode(this.address);
-        res.then(res=>{
-            let coord = res.geoObjects.get(0).geometry.getCoordinates()
-            context.setCoords(coord)
-        })
-        
+        try{
+            let res = ymaps.geocode(this.address);
+            res.then(res=>{
+                let coord = res.geoObjects.get(0).geometry.getCoordinates()
+                context.setCoords(coord)
+            });
+        }catch(e){
+            console.log('class TradePoint.setCoordsForAdress() : '+e.message)
+        }
     }
     //метод отрисовки метки на карте
     DrawOnMap(properties={},events=[],draggable=false){
         let context = this
-        console.log(context.name)
         let p = new ymaps.Placemark([this.latitude,this.longitude], 
         {
             iconCaption: context.name
@@ -97,36 +107,44 @@ export default class TradePoint{
 
         try{
 
-        p.properties.set({
-            linkOnStruct: context,//сылка на структуру, для обратной связи
-        });
-        if(!!properties) p.properties.set({
-            ...properties //сохраняем важные данные
-        });
+            p.properties.set({
+                linkOnStruct: context,//сылка на структуру, для обратной связи
+            });
+            if(!!properties) p.properties.set({
+                ...properties //сохраняем важные данные
+            });
         
-        //click, драг(dragend), двойной клик, наведение
-        if(!!events) for(let {name,event} of events) {
-            p.events.add(name, event);
-        }
+            //click, драг(dragend), двойной клик, наведение
+            if(!!events) for(let {name,event} of events) {
+                p.events.add(name, event);
+            }
         
-        context.mapIsnt.geoObjects.add(p);
+            context.mapIsnt.geoObjects.add(p);
         }catch(e){
-            console.log('DRAW')
-            console.log(e.message)
+            console.log('class TradePoint.DrawOnMap() : '+e.message)
         }
         return p;
     }
     //установка видимости метки
     SetVisibleOnMap(vis){
-        this.pointInst.options.set({ "visible": vis});
+        try{
+            this.pointInst.options.set({ "visible": vis});
+        }catch(e){
+            console.log('class TradePoint.SetVisibleOnMap() : '+e.message)
+        }
     }
     //Активный или нет? (формирует список того, что нужно передать на сервер)
     setActive(val){
-        this.SetVisibleOnMap(val);
-        this.active = val
+        try{
+            this.SetVisibleOnMap(val);
+            this.active = val
+        }catch(e){
+            console.log('class TradePoint.setActive() : '+e.message)
+        }
     }
     //посчитали индекс квадранта для заданного масштабы
     calculate_index_for_square(coord, scale=500000){
+        try{
         let tableScale = [];
         // таблица масштабов
         // [масштаб] = [размер широты, оазмер долготы]
@@ -134,5 +152,8 @@ export default class TradePoint{
         let degs = tableScale[scale];//вытащили размеры ячейки из таблицы
         let index = (coord[0] / degs[0]) * (coord[1] / degs[1] + 1);
         return index;
+        }catch(e){
+            console.log('class TradePoint.calculate_index_for_square() : '+e.message)
+        }
     }
 }
