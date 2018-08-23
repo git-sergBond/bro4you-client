@@ -24,9 +24,10 @@ export default class Service{
         }
         //гуи
         this.mapIsnt = mapIsnt;
-        this.VueContext = VueContext
+        this.VueContext = VueContext;
     }
     drawPoints(mapIsnt=null){
+        console.log(this.points)
         for(let point of this.points){
             point.mapIsnt = mapIsnt
             point.DrawOnMap()

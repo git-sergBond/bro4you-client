@@ -1,31 +1,34 @@
 import axios from 'axios';
+/*
+ * Класс категории
+ */
 export default class Categori{
-    constructor(parseCategori=null,mapIsnt=null,VueContext=null){
+    constructor(parseCategori){
         try{
-            this.queries = queries;
-            if(!!parseCategori){
-                this.categoryid = parseCategori.categoryid;
-                this.categoryname = parseCategori.categoryname;
-                this.parentid = parseCategori.parentid;
-                this.description = parseCategori.description;
-                this.img
-            //гуи
-            this.mapIsnt = mapIsnt;
-            this.VueContext = VueContext
-            }
+            this.categoryid = parseCategori.categoryid;
+            this.categoryname = parseCategori.categoryname;
+            this.parentid = parseCategori.parentid;
+            this.description = parseCategori.description;
+            this.img
         }catch(e){
-            alert(e.message)
+            console.log("class Categori.constructor() : " + e.message)
         }
     }
-}
-const queries = {
+    /*
+     * ЗАПРОСЫ
+     */
     //запрос на получение списка категорйи
-    async getCategoriesForSite(){
-        let res = await axios({url: 'CategoriesAPI/getCategoriesForSite', method: 'GET' })
-        let treeCategories = {
-            name:"Категории", 
-            child: res.data.categories,
-            root: true
+    static async getCategoriesForSite(){
+        let treeCategories = null
+        try{
+            let res = await axios({url: 'CategoriesAPI/getCategoriesForSite', method: 'GET' })
+            treeCategories = {
+                name:"Категории", 
+                child: res.data.categories,
+                root: true
+            }
+        }catch(e){
+            console.log("class Categori.getCategoriesForSite() : " + e.message)
         }
         return treeCategories
     }

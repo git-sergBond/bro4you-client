@@ -36,9 +36,24 @@ export default {
         //Отрисовка точек предоставляющих услуги
         drawServices(services){
             console.log(services)
-            for(let service of services){
-                service.drawPoints(this.mapIsnt)
+            try{
+                for (let i = 0; i < services.length; i++) {
+                    let element = services[i];
+                    console.log(element)
+                    element.mapIsnt = this.mapIsnt
+                    element.drawPoints()
+                    //element.drawPoints(this.mapIsnt)
+                }
+                /*
+                for(let service of services){
+                    console.log(service)
+                   // service.drawPoints(this.mapIsnt)
+                }
+                */
+            }catch(e){
+                console.log(e.message)
             }
+            
             /*
             */
         }
