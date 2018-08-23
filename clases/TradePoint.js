@@ -1,6 +1,3 @@
-const queries = {
-
-}
 export default class TradePoint{
 
 
@@ -11,6 +8,7 @@ export default class TradePoint{
     //класс характеризующий точку оказания услуги
     constructor(point,mapIsnt,VueContext,drawOnmap=true,properties=null,events=null,draggable=true,services=[]){
         try{
+            console.log(mapIsnt)
         //данные принимаемые с сервера
         this.pointid = !!point.pointid ? point.pointid : null
         this.latitude = point.latitude;//широта
@@ -19,6 +17,7 @@ export default class TradePoint{
         this.address= point.address;//адрес
         this.newPhones = []; //массив для новых номеров телефонов
         this.categories = []; //массив категорий, к которым нужно привязать услугу
+        //для обратной связи
         this.services = services;
         //хинт, балун
         
@@ -27,8 +26,6 @@ export default class TradePoint{
 
         // данные вообще 
         this.properties = properties;//и перредаются в DrawMap
-        
-        this.queries = queries
         
         //гуи
         this.VueContext = VueContext;//контекст экземпляра Vue
@@ -39,8 +36,7 @@ export default class TradePoint{
         }
         this.selected = false //нужен для показа номеров и прочей херни по точке
         }catch(e){
-            console.log('DATA')
-            console.log(e.message)
+            console.log('class TradePoint.constructor() : '+e.message)
         }
     }
 
@@ -73,7 +69,6 @@ export default class TradePoint{
         res.then(res=>{
             let firstGeoObject = res.geoObjects.get(0);
             let address = firstGeoObject.getAddressLine();
-            console.log(address);
             context.address = address;
         });
     }
@@ -81,25 +76,26 @@ export default class TradePoint{
     setCoordsForAdress(){
         let context = this
         let res = ymaps.geocode(this.address);
-        console.log(this.address)
         res.then(res=>{
             let coord = res.geoObjects.get(0).geometry.getCoordinates()
-            console.log(coord)
             context.setCoords(coord)
         })
         
     }
     //метод отрисовки метки на карте
     DrawOnMap(properties={},events=[],draggable=false){
-        try{
         let context = this
-
-        let p = new ymaps.Placemark([this.latitude,this.longitude], {
-            iconCaption: this.name
-        }, {
+        console.log(context.name)
+        let p = new ymaps.Placemark([this.latitude,this.longitude], 
+        {
+            iconCaption: context.name
+        }, 
+        {
             preset: 'islands#darkblueDotIconWithCaption',
             draggable: draggable
-        })
+        });
+
+        try{
 
         p.properties.set({
             linkOnStruct: context,//сылка на структуру, для обратной связи
@@ -107,16 +103,13 @@ export default class TradePoint{
         if(!!properties) p.properties.set({
             ...properties //сохраняем важные данные
         });
-
-        if(!!events) for(let {name,event} of events){
-            //click, драг(dragend), двойной клик, наведение
+        
+        //click, драг(dragend), двойной клик, наведение
+        if(!!events) for(let {name,event} of events) {
             p.events.add(name, event);
         }
         
-        p.properties.set(properties);//кастомные данные пользователя
-       // p.events.add('click', this.VueContext.HendlerClickOnPointFromMap);
-       // p.events.add('dragend', this.VueContext.HendlerDragend);
-        this.mapIsnt.geoObjects.add(p);
+        context.mapIsnt.geoObjects.add(p);
         }catch(e){
             console.log('DRAW')
             console.log(e.message)
