@@ -20,7 +20,7 @@ export default class Service{
         }
         this.points = []
         for(let point of parseService.points){
-            this.points.push(new TradePoint(point,mapIsnt,VueContext));
+            this.points.push(new TradePoint(point,[this],mapIsnt,VueContext));
         }
         //гуи
         this.mapIsnt = mapIsnt;

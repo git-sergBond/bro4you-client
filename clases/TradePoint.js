@@ -6,37 +6,36 @@ export default class TradePoint{
     //
 
     //класс характеризующий точку оказания услуги
-    constructor(point,mapIsnt,VueContext,drawOnmap=true,properties=null,events=null,draggable=true,services=[]){
-        try{
-            console.log(mapIsnt)
-        //данные принимаемые с сервера
-        this.pointid = !!point.pointid ? point.pointid : null
-        this.latitude = point.latitude;//широта
-        this.longitude= point.longitude;//долгота
-        this.name = point.name // название точки оказания услуг
-        this.address= point.address;//адрес
-        this.newPhones = []; //массив для новых номеров телефонов
-        this.categories = []; //массив категорий, к которым нужно привязать услугу
-        //для обратной связи
-        this.services = services;
-        //хинт, балун
-        
-        //преднастройка иконок
-        //полезные данные при клике
+    constructor(point, services, mapIsnt, VueContext, drawOnmap = true, properties = null, events = null, draggable = true) {
+        try {
+            //данные принимаемые с сервера
+            this.pointid = !!point.pointid ? point.pointid : null
+            this.latitude = point.latitude;//широта
+            this.longitude = point.longitude;//долгота
+            this.name = point.name // название точки оказания услуг
+            this.address = point.address;//адрес
+            this.newPhones = []; //массив для новых номеров телефонов
+            this.categories = []; //массив категорий, к которым нужно привязать услугу
+            //для обратной связи
+            this.services = services;
+            //хинт, балун
 
-        // данные вообще 
-        this.properties = properties;//и перредаются в DrawMap
-        
-        //гуи
-        this.VueContext = VueContext;//контекст экземпляра Vue
-        this.mapIsnt = mapIsnt;//контекст яндекс карты
-        if(drawOnmap){
-            this.pointInst = this.DrawOnMap(properties,events,draggable);//контекст точки на яндекс карте
-            this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
-        }
-        this.selected = false //нужен для показа номеров и прочей херни по точке
-        }catch(e){
-            console.log('class TradePoint.constructor() : '+e.message)
+            //преднастройка иконок
+            //полезные данные при клике
+
+            // данные вообще 
+            this.properties = properties;//и перредаются в DrawMap
+
+            //гуи
+            this.VueContext = VueContext;//контекст экземпляра Vue
+            this.mapIsnt = mapIsnt;//контекст яндекс карты
+            if (drawOnmap) {
+                this.pointInst = this.DrawOnMap(properties, events, draggable);//контекст точки на яндекс карте
+                this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
+            }
+            this.selected = false //нужен для показа номеров и прочей херни по точке
+        } catch (e) {
+            console.log('class TradePoint.constructor() : ' + e.message)
         }
     }
 

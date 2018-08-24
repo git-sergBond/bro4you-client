@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>{{service.name}} <button>перейти</button> <button>Показать все ТОУ</button>
+        <p>{{service.name}} <button @click="showFullInfo">перейти</button> <button>Показать все ТОУ</button>
         [звезды, колличество отзывов(кликабельные)]
         </p>
 
@@ -11,6 +11,11 @@
 export default {
     name: "briefInfo",
     props: ['service'],
+    methods: {
+        showFullInfo(){
+            this.$emit('showFullInfo');
+        }
+    }
 }
 </script>
 

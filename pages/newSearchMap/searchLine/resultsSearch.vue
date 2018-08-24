@@ -2,7 +2,9 @@
     <div>
         <p>Результаты поиска <button>закрыть</button></p>
         <filters></filters>
-        <brief-info v-for="service in services" :service="service"></brief-info>
+        <brief-info v-for="service in services" :service="service"
+        @showFullInfo = "showFullInfo(service)"
+        ></brief-info>
     </div>
 </template>
 
@@ -16,6 +18,11 @@ export default {
     components: {
         briefInfo,
         filters
+    },
+    methods: {
+        showFullInfo(service){
+            this.$emit('showFullInfo',service)
+        }
     }
 }
 </script>

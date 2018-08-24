@@ -3,7 +3,8 @@
         <input type="text" v-model="userQuery" placeholder="Что вы ищите?" ><button>Искать</button>
         <list-autocomplete v-show="dataAutocomplete.length > 0" :list-data="dataAutocomplete"></list-autocomplete>
         <categories @event_getServices="getServices" v-show="dataAutocomplete.length == 0 && !!categories" :model="categories"></categories>
-        <results-search v-show="dataServices.length > 0" :services="dataServices" ></results-search>
+        <results-search v-show="dataServices.length > 0" :services="dataServices"
+            @showFullInfo='showFullInfo' ></results-search>
     </div>
 </template>
 
@@ -51,6 +52,9 @@ export default {
                 alert(e.message)
             }
         },
+        showFullInfo(service){
+            alert(service)
+        }
     },
     watch: {
         'userQuery': async function(newStr, oldStr){
