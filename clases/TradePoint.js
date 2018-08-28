@@ -14,6 +14,7 @@ export default class TradePoint{
             this.longitude = point.longitude;//долгота
             this.name = point.name // название точки оказания услуг
             this.address = point.address;//адрес
+            this.phones = point.phones;//имеющиеся номера телефонов у точки
             this.newPhones = []; //массив для новых номеров телефонов
             this.categories = []; //массив категорий, к которым нужно привязать услугу
             //для обратной связи
