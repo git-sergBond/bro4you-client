@@ -14,6 +14,8 @@ export default class Service{
         this.datepublication = parseService.service.datepublication;
         this.regionid = parseService.service.regionid;
         this.name = parseService.service.name;
+        this.rating = parseService.service.rating;
+
         this.categories = []
         for(let categori of parseService.categories){
             this.categories.push(new Categori(categori,mapIsnt,VueContext));
@@ -22,6 +24,9 @@ export default class Service{
         for(let point of parseService.points){
             this.points.push(new TradePoint(point,[this],mapIsnt,VueContext));
         }
+
+        this.images = this.images
+
         //гуи
         this.mapIsnt = mapIsnt;
         this.VueContext = VueContext;

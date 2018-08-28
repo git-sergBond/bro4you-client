@@ -5,6 +5,7 @@
         <categories @event_getServices="getServices" v-show="dataAutocomplete.length == 0 && !!categories" :model="categories"></categories>
         <results-search v-show="dataServices.length > 0" :services="dataServices"
             @showFullInfo='showFullInfo' ></results-search>
+        <full-info v-if="!!curentService" :service="curentService"></full-info>
     </div>
 </template>
 
@@ -13,6 +14,7 @@ import axios from 'axios';
 import listAutocomplete from "./searchLine/listAutocomplete.vue";
 import categories from "./searchLine/categories.vue";
 import resultsSearch from "./searchLine/resultsSearch.vue";
+import fullInfo from "./searchLine/fullInfo.vue";
 
 import Categori from '../../clases/Categori.js'
 import Service from '../../clases/Service.js'
@@ -24,13 +26,15 @@ export default {
             userQuery: "",
             dataAutocomplete: [],
             dataServices: [],
+            curentService: null,
             categories: null
         }
     },
     components: {
         listAutocomplete,
         categories,
-        resultsSearch
+        resultsSearch,
+        fullInfo
     },
     methods: {
         clearAutocomplete(){
@@ -53,7 +57,11 @@ export default {
             }
         },
         showFullInfo(service){
-            alert(service)
+            try{
+                this.curentService = service
+            }catch(e){
+                console.log(e.message)
+            }
         }
     },
     watch: {
