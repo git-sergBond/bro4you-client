@@ -25,7 +25,7 @@ export default class Service{
             this.points.push(new TradePoint(point,[this],mapIsnt,VueContext));
         }
 
-        this.images = this.images
+        this.images = parseService.images
 
         //гуи
         this.mapIsnt = mapIsnt;
