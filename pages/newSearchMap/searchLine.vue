@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{getLastState}}
         <input type="text" v-model="userQuery" placeholder="Что вы ищите?" ><button>Искать</button>
         
         <categories v-show="getLastState == 0"  @event_getServices="getServices" :model="categories"></categories>
