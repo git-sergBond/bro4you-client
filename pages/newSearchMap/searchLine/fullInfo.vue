@@ -4,7 +4,7 @@
         <h3>{{service.name}}</h3>
         <P>[звезды] {{service.rating}}</P>
         <ul>
-            <li v-for="image in service.images">{{image.imagepath}}</li>
+            <li v-for="image in service.images"><img :src="image.imagepath"></li>
         </ul>
         <button>+  Подписаться</button>
         <p>{{service.description}}</p>
