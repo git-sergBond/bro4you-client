@@ -1,15 +1,15 @@
 <template>
     <div>
-        {{stateComp}}
+        {{getLastState}}
         <input type="text" v-model="userQuery" placeholder="Что вы ищите?" ><button>Искать</button>
         
-        <categories v-show="stateComp == 0"  @event_getServices="getServices" :model="categories"></categories>
-        <p v-show="stateComp == 1">Часто исползуемы услуги</p>
-        <list-autocomplete v-show="stateComp == 2" :list-data="dataAutocomplete"></list-autocomplete>
+        <categories v-show="getLastState == 0"  @event_getServices="getServices" :model="categories"></categories>
+        <p v-show="getLastState == 1">Часто исползуемы услуги</p>
+        <list-autocomplete v-show="getLastState == 2" :list-data="dataAutocomplete"></list-autocomplete>
         
-        <results-search v-show="stateComp == 3" :services="dataServices"
+        <results-search v-show="getLastState == 3" :services="dataServices"
             @showFullInfo='showFullInfo' ></results-search>
-        <full-info v-if="stateComp == 4" :service="curentService"></full-info>
+        <full-info v-if="getLastState == 4" :service="curentService"></full-info>
     </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
             dataServices: [],
             curentService: null,
             categories: null,
-            stateComp: 0, //состояние приложения
+            stateQueue: [0], //состояние приложения
             /*
                 0 - поиск по категориям this.dataAutocomplete.length == 0 && !!this.categories
                 1 - часто исползуемые услуги
@@ -48,12 +48,23 @@ export default {
         resultsSearch,
         fullInfo
     },
+    computed: {
+        getLastState(){
+            return this.stateQueue[this.stateQueue.length-1]
+        }
+    },
     methods: {
         clearAutocomplete(){
             this.dataAutocomplete = []
         },
+        changeState(newState){
+            this.stateQueue.push(newState)
+        },
+        beforeState(){
+            this.stateQueue.pop()
+        },
         async getServices({typeQuery,center=null,diagonal=null,type=null,id=null,userQuery=null,regionsId=null, categoriesId}){
-            this.stateComp = 3
+            this.changeState(3)
             try{
                 //3 == typeQuery пользователь указал категории для поиска
                 let result = await axios({url: 'ServicesAPI/getServices',data:{
@@ -72,7 +83,7 @@ export default {
         showFullInfo(service){
             try{
                 this.curentService = service
-                this.stateComp = 4
+                this.changeState(4)
             }catch(e){
                 console.log(e.message)
             }
@@ -82,7 +93,7 @@ export default {
         'userQuery': async function(newStr, oldStr){
             if(newStr.length < 3){
                 this.clearAutocomplete()
-                this.stateComp = 0
+                this.changeState(0)
             }else{
                 try{
                     const typeQuery = 1;// запрос на получение элементов интелект. поиска
@@ -95,7 +106,7 @@ export default {
                         method: 'POST' 
                     });
                     this.dataAutocomplete = result.data.autocomplete;
-                    this.stateComp = 2
+                    this.changeState(2)
                 }catch(e){
                     alert(e.message)
                 }

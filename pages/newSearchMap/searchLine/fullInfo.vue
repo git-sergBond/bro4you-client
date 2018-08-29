@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button>Вернуться</button>
+        <button @click="back">Вернуться</button>
         <h3>{{service.name}}</h3>
         <P>[звезды] {{service.rating}}</P>
         <ul>
@@ -9,7 +9,7 @@
         <button>+  Подписаться</button>
         <p>{{service.description}}</p>
         <p style="color:red">[i-time] время спарсено</p>
-        <p style="color:red">[i-phone] телефон по компании есть?</p>
+        <p style="color:red">[i-phone] телефон по компании есть? (не нужно)</p>
         <ul>
             {{ service.points.length == 0 ? "Выездная услуга" : "" }}
             <li v-for="point in service.points">
@@ -29,7 +29,12 @@
 <script>
 export default {
     name: 'fullInfo',
-    props: ['service'] 
+    props: ['service'],
+    methods: {
+        back(){
+            this.$emit
+        }
+    }
 }
 </script>
 
