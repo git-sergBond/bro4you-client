@@ -17,16 +17,14 @@ export default {
     methods: {
         itemClick(item){
             if(item.type == "point"){
-                this.showFullInfo(item)
+                alert("точки не показываем")
             }else{
-
+                this.$emit('event_getServices',{
+                    typeQuery:2,
+                    type: item.type,
+                    id: item.id,
+                });
             }
-        },
-        showFullInfo(){
-
-        },
-        showFullInfo(){
-
         }
     }
 }

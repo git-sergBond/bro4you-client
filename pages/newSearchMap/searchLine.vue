@@ -4,7 +4,9 @@
         
         <categories v-show="getLastState == 0"  @event_getServices="getServices" :model="categories"></categories>
         <p v-show="getLastState == 1">Часто исползуемы услуги</p>
-        <list-autocomplete v-show="getLastState == 2" :list-data="dataAutocomplete"></list-autocomplete>
+        <list-autocomplete v-show="getLastState == 2" :list-data="dataAutocomplete"
+             @event_getServices="getServices"
+        ></list-autocomplete>
         
         <results-search v-show="getLastState == 3" :services="dataServices"
             @showFullInfo='showFullInfo'
