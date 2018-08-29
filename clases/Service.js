@@ -14,7 +14,8 @@ export default class Service{
         this.datepublication = parseService.service.datepublication;
         this.regionid = parseService.service.regionid;
         this.name = parseService.service.name;
-        this.rating = parseService.service.rating;
+        this.rating = parseService.service.rating;//рейтинг
+        this.ratingcount = parseService.ratingcount;//кол-во отзывов 
 
         this.categories = []
         for(let categori of parseService.categories){
