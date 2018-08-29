@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" v-model="userQuery" placeholder="Что вы ищите?" ><button>Искать</button>
+        <input type="text" v-model="userQuery" placeholder="Что вы ищите?" ><button @click="clickSearch">Искать</button>
         
         <categories v-show="getLastState == 0"  @event_getServices="getServices" :model="categories"></categories>
         <p v-show="getLastState == 1">Часто исползуемы услуги</p>
@@ -80,10 +80,22 @@ export default {
                     servicesAfterParse.push(new Service(service,null,this))
                 }
                 this.dataServices = servicesAfterParse;
+                //если нажали на услугу в автокомплите
+                if(this.dataServices.length == 1){
+                    showFullInfo(this.dataServices[0]);
+                    changeState(4);
+                }
                 this.$emit('drawServices',this.dataServices);
             }catch(e){
                 alert(e.message)
             }
+        },
+        async clickSearch(){
+            await this.getServices({
+                typeQuery: 0,
+                userQuery: this.userQuery
+            });
+            changeState(4);
         },
         showFullInfo(service){
             try{
