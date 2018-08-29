@@ -82,8 +82,8 @@ export default {
                 this.dataServices = servicesAfterParse;
                 //если нажали на услугу в автокомплите
                 if(this.dataServices.length == 1){
-                    showFullInfo(this.dataServices[0]);
-                    changeState(4);
+                    this.showFullInfo(this.dataServices[0]);
+                    this.changeState(4);
                 }
                 this.$emit('drawServices',this.dataServices);
             }catch(e){
