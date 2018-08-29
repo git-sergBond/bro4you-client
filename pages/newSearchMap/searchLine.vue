@@ -8,8 +8,12 @@
         <list-autocomplete v-show="getLastState == 2" :list-data="dataAutocomplete"></list-autocomplete>
         
         <results-search v-show="getLastState == 3" :services="dataServices"
-            @showFullInfo='showFullInfo' ></results-search>
-        <full-info v-if="getLastState == 4" :service="curentService"></full-info>
+            @showFullInfo='showFullInfo'
+            @beforeState="beforeState"
+        ></results-search>
+        <full-info v-if="getLastState == 4" :service="curentService" 
+            @beforeState="beforeState"
+        ></full-info>
     </div>
 </template>
 

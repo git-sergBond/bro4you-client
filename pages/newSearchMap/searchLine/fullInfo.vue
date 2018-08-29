@@ -32,7 +32,7 @@ export default {
     props: ['service'],
     methods: {
         back(){
-            this.$emit
+            this.$emit('beforeState')
         }
     }
 }
