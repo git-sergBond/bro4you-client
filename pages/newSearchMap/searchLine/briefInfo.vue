@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>{{service.name}} <button @click="showFullInfo">перейти</button> <button>Показать все ТОУ</button>
-        [звезды, колличество отзывов(кликабельные)]
+        [звезды] {{service.rating}}, отзывов({{service.ratingcount}})
         </p>
     </div>
 </template>
