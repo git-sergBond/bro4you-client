@@ -1,11 +1,11 @@
 <template>
     <div>
         <input type="text" v-model="userQuery" placeholder="Что вы ищите?" ><button>Искать</button>
-        <list-autocomplete v-show="dataAutocomplete.length > 0" :list-data="dataAutocomplete"></list-autocomplete>
-        <categories @event_getServices="getServices" v-show="dataAutocomplete.length == 0 && !!categories" :model="categories"></categories>
-        <results-search v-show="dataServices.length > 0" :services="dataServices"
+        <list-autocomplete v-show="stateComp == 1" :list-data="dataAutocomplete"></list-autocomplete>
+        <categories v-show="stateComp == 0"  @event_getServices="getServices" :model="categories"></categories>
+        <results-search v-show="stateComp == 2" :services="dataServices"
             @showFullInfo='showFullInfo' ></results-search>
-        <full-info v-if="!!curentService" :service="curentService"></full-info>
+        <full-info v-if="stateComp == 3" :service="curentService"></full-info>
     </div>
 </template>
 
@@ -27,7 +27,30 @@ export default {
             dataAutocomplete: [],
             dataServices: [],
             curentService: null,
-            categories: null
+            categories: null,
+        }
+    },
+    computed: {
+        //состояние приложения
+        /*
+            0 - часто исползуемые услуги
+            1 - автокомплит + категории
+            2 - результаты поиска
+            3 - подробная информация о услуге
+        */
+        stateComp: function(){
+            if(this.dataAutocomplete.length == 0 && !!this.categories){
+                return 0;
+            }
+            if(this.dataAutocomplete.length > 0){
+                return 1; //автокомплит
+            }
+            if(this.dataServices.length > 0){
+                return 2; //результаты поиска
+            }
+            if(!!this.curentService){
+                return 3; //подробная информация о услуге
+            }
         }
     },
     components: {
