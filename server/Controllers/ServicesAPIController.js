@@ -8378,6 +8378,7 @@ var autocomplete = [
             "points": []
         }*/
     ]
+    let autocomplete = ﻿[{"type":"point", "name":"Левая точка", "id": 12, "address": "Москва, Шелапутинский переулок, 6с5"},{"type":"company", "name":"Левая компания", "id": 11},{"type":"point", "name":"Правая точка", "id": 45, "address": "Москва, улица Александра Невского"},{"type":"category", "name":"Перевоза левых грузов", "id": 19},{"type":"service", "name":"Украду для вас ключи", "id": 105},{"type":"company", "name":"Бочка Ромы", "id": 84},{"type":"company", "name":"Четвертый вокзал", "id": 3},{"type":"service", "name":"Помою машину", "id": 45}]
 //Контроллер для услуг
 module.exports =  {
     //Добавляет новую услугу к субъекту
