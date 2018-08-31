@@ -41,22 +41,21 @@ export default {
             let getItems = localStorage.getItem(TOKENS.OFENUSED);
             if (getItems == null) {
                 //если статистика собирается в первый раз
-                let newStat = JSON.stringify('{}');
+                let newStat = JSON.stringify({});
                 localStorage.setItem(TOKENS.OFENUSED, newStat);
-                alert("new")
                 this.addCollectionStatistics(mainCategory);
             } else {
+                //если не в первый раз, то добавляем данные
                 let itemId = mainCategory.id;
                 let oldData = JSON.parse(getItems);
-                if(oldData[itemId] == undefined){
+                if(oldData[itemId] != undefined){
                     oldData[itemId]++;
-                    alert(`inc ${itemId} = ${oldData[itemId]}`);
                 } else {
                     oldData[itemId] = 1;
-                    alert(`add ${itemId} = ${oldData[itemId]}`);
                 }
+                let newStat = JSON.stringify(oldData);
+                localStorage.setItem(TOKENS.OFENUSED, newStat);
             }
-            alert(getItem);
         },
         getServices(item){
             this.$emit('event_getServices',{
