@@ -41,7 +41,7 @@ export default {
             let getItems = localStorage.getItem(TOKENS.OFENUSED);
             if (getItems == null) {
                 //если статистика собирается в первый раз
-                let newStat = JSON.stringify({});
+                let newStat = JSON.stringify([]);
                 localStorage.setItem(TOKENS.OFENUSED, newStat);
                 this.addCollectionStatistics(mainCategory);
             } else {
