@@ -5,7 +5,7 @@ import axios from 'axios';
 export default class Categori{
     constructor(parseCategori){
         try{
-            this.categoryid = parseCategori.categoryid;
+            this.id = parseCategori.id; //categoryid
             this.categoryname = parseCategori.categoryname;
             this.parentid = parseCategori.parentid;
             this.description = parseCategori.description;

@@ -1,7 +1,12 @@
 <template>
     <div>
-        <input type="text" v-model="userQuery" @focus="searchFocus" @blur="searchBlur" placeholder="Что вы ищите?" ><button @click="clickSearch">Искать</button>
+        <input type="text" v-model="userQuery" 
+        @focus="searchFocus" 
+        @blur="searchBlur" placeholder="Что вы ищите?" >
+        <button @click="clickSearch">Искать</button>
         
+        <ofen-used></ofen-used>
+
         <categories v-show="getLastState == 0"  @event_getServices="getServices" :model="categories"></categories>
         <p v-show="getLastState == 1">Часто исползуемы услуги</p>
         <list-autocomplete v-show="getLastState == 2" :list-data="dataAutocomplete"
@@ -24,6 +29,7 @@ import listAutocomplete from "./searchLine/listAutocomplete.vue";
 import categories from "./searchLine/categories.vue";
 import resultsSearch from "./searchLine/resultsSearch.vue";
 import fullInfo from "./searchLine/fullInfo.vue";
+import ofenUsed from "./searchLine/ofenUsed.vue";
 
 import Categori from '../../clases/Categori.js'
 import Service from '../../clases/Service.js'
@@ -51,7 +57,8 @@ export default {
         listAutocomplete,
         categories,
         resultsSearch,
-        fullInfo
+        fullInfo,
+        ofenUsed
     },
     computed: {
         getLastState(){
