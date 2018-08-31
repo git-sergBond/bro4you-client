@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" v-model="userQuery" placeholder="Что вы ищите?" ><button @click="clickSearch">Искать</button>
+        <input type="text" v-model="userQuery" @focus="searchFocus" @blur="searchBlur" placeholder="Что вы ищите?" ><button @click="clickSearch">Искать</button>
         
         <categories v-show="getLastState == 0"  @event_getServices="getServices" :model="categories"></categories>
         <p v-show="getLastState == 1">Часто исползуемы услуги</p>
@@ -59,6 +59,12 @@ export default {
         }
     },
     methods: {
+        searchFocus(){
+            console.log('focus')
+        },
+        searchBlur(){
+            console.log('blur')
+        },
         clearAutocomplete(){
             this.dataAutocomplete = []
         },
