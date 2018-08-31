@@ -71,7 +71,7 @@ export default {
             this.changeState(1)
         },
         searchBlur(){
-            this.beforeState()
+            if(getLastState != 1) this.beforeState()
         },
         clearAutocomplete(){
             this.dataAutocomplete = []
