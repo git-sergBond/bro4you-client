@@ -3,7 +3,7 @@
         <p>Часто используемые</p>
         <ul v-if="!!ofenUsedList">
             <li v-for="item in ofenUsedList">
-                <button @click="clickOnItem">{{item.name}}</button>
+                <button  @click="getServices(item)">{{item.name}}</button>
             </li>
         </ul>
     </div>
@@ -19,9 +19,11 @@ export default {
         }
     },
     methods: {
-        clickOnItem(){
-            //запрос на полчение данных
-            alert("click")
+        getServices(item){
+            this.$emit('event_getServices',{
+                typeQuery: 3,
+                categoriesId: [item.id]
+            })
         },
         loadOfenUsed: async function(){
             try{

@@ -5,10 +5,11 @@
         @blur="searchBlur" placeholder="Что вы ищите?" >
         <button @click="clickSearch">Искать</button>
         
-        <ofen-used></ofen-used>
+        <ofen-used v-show="getLastState == 0" 
+             @event_getServices="getServices"></ofen-used>
 
-        <categories v-show="getLastState == 0"  @event_getServices="getServices" :model="categories"></categories>
-        <p v-show="getLastState == 1">Часто исползуемы услуги</p>
+        <categories v-show="getLastState == 1" @event_getServices="getServices" :model="categories"></categories>
+       
         <list-autocomplete v-show="getLastState == 2" :list-data="dataAutocomplete"
              @event_getServices="getServices"
         ></list-autocomplete>
@@ -45,8 +46,8 @@ export default {
             categories: null,
             stateQueue: [0], //состояние приложения
             /*
-                0 - поиск по категориям this.dataAutocomplete.length == 0 && !!this.categories
-                1 - часто исползуемые услуги
+                0 - часто исползуемые услуги
+                1 - поиск по категориям this.dataAutocomplete.length == 0 && !!this.categories
                 2 - автокомплит this.dataAutocomplete.length > 0
                 3 - результаты поиска this.dataServices.length > 0
                 4 - подробная информация о услуге !!this.curentService
@@ -67,10 +68,10 @@ export default {
     },
     methods: {
         searchFocus(){
-            console.log('focus')
+            this.changeState(1)
         },
         searchBlur(){
-            console.log('blur')
+            this.beforeState()
         },
         clearAutocomplete(){
             this.dataAutocomplete = []

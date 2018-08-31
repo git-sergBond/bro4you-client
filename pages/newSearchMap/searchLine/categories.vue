@@ -4,7 +4,7 @@
         <p>Выберите категорию</p>
         <ul>
             <li v-for="item in model.child">
-                <button @click="clickOnItem(item)">{{ item.name }}</button>
+                <button @click.prevent="clickOnItem(item)">{{ item.name }}</button>
             </li>
         </ul> 
     </div>
@@ -12,7 +12,7 @@
         <p>{{child.name}} <button @click="close">Вернуться</button></p>
         <ul>
             <li v-for="item in child.child">
-                <button @click="getServices(item)">{{ item.name }}</button>
+                <button @click.prevent="getServices(item)">{{ item.name }}</button>
             </li>
         </ul> 
     </div>
@@ -33,6 +33,7 @@ export default {
     },
     methods: {
         clickOnItem(child){
+            alert(123)
             this.addCollectionStatistics(child);
             this.child = child
         },
