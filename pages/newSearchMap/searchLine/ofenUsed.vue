@@ -38,21 +38,18 @@ export default {
                         let max = 0;
                         let indexMaxEl = null;
                         //  находим максимальный элемент
-                        
                         for (let i = 0; i < getItems.length; i++) {
                             const el = getItems[i];
-                            if(!!el && (el > max)) indexMaxEl = i;
+                            if(!!el && (el > max)) {
+                                indexMaxEl = i;
+                                max = el;
+                            }
                         }
-                    
-                        
                         //если он найден, то ищем соответствие в актуальных данных и сохраняем
                         if(!!indexMaxEl) if(!!getItems[indexMaxEl]){
                             getItems[indexMaxEl] = null;
-                 
                             for (let mainCat of tmpCats.child) {
-                                
                                 if (Number(indexMaxEl) == Number(mainCat.id)) {
-                                    console.log(mainCat)
                                     ufenCats.push(mainCat)
                                 }
                             }
