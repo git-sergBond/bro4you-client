@@ -85,7 +85,7 @@ export default {
 .container{
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 400px;
     background-color: rgba(255, 255, 255, 0.7);
     margin-top: 10px;
     box-shadow: -7px 5px 30px -1px;/*-4px 7px 20px 0px;*/

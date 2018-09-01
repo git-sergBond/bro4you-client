@@ -1,12 +1,16 @@
 <template>
-<div>
-    <div v-if="!child">
-        <p>Выберите категорию</p>
-        <ul>
-            <li v-for="item in model.child">
-                <button @click.prevent="clickOnItem(item)">{{ item.name }}</button>
-            </li>
-        </ul> 
+<div class="container my-vars">
+    <div class="dop-info">
+        <p>Москва 24гр.ц.</p>
+        <p>18:20</p>
+    </div>
+    <div v-if="!child" class="container-row">
+        <div class="item"
+        v-for="item in model.child" 
+        @click.prevent="clickOnItem(item)">
+            <img class="icons" :src='item.img'>
+            <p>{{item.name}}</p>
+        </div>
     </div>
     <div v-if="!!child"> 
         <p>{{child.name}} <button @click="close">Вернуться</button></p>
@@ -71,5 +75,51 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.my-vars{
+    --c-margin: 5px;
+    --c-proportion: 32px;
+    --with-marg: 37px;
+    --sizeV: 40px;
+    --sizeH: var(--sizeV);
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin-top: 10px;
+    box-shadow: -7px 5px 30px -1px;/*-4px 7px 20px 0px;*/
+}
+.container-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.dop-info{
+    display: flex;
+    justify-content: space-around;
+}
+.item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px
+}
+.item:hover{
+    background-color: rgba(200,200,200,0.5);
+}
+.item p {
+    font-size: 10px;
+    padding: 0;
+}
+/*Иконки*/
+.icons{
+    height: var(--sizeH);
+    width: var(--sizeV);
+    margin: 0;
+    padding: 0;
+    z-index: 3;
+}
 </style>

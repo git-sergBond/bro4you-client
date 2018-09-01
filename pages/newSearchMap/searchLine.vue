@@ -157,12 +157,12 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 .my-vars{
     --c-margin: 5px;
     --c-proportion: 32px;
     --with-marg: 37px;
-    --sizeV: 25px;
+    --sizeV: 40px;
     --sizeH: var(--sizeV);
 }
 /*позиционирование*/
@@ -178,7 +178,7 @@ export default {
 /*стили*/
 .search-query{
     margin-left: 5px;
-    width: 300px;
+    width: 400px;
     background-color: transparent;
     border: 0;
 }
