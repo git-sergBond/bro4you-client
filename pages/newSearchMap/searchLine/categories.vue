@@ -6,10 +6,13 @@
     </div>
     <div v-if="!child" class="container-row">
         <div class="item"
-        v-for="item in model.child" 
-        @click.prevent="clickOnItem(item)">
+        v-for="(item, index) in model.child" 
+        @click.prevent="clickOnItem(item)" v-show="otherItems || index < countDrawItems">
             <img class="icons" :src='item.img'>
             <p>{{item.name}}</p>
+        </div>
+        <div class="item other" @click="showMore">
+            <img src="/images/icons/троеточие.PNG">
         </div>
     </div>
     <div class="childs" v-if="!!child"> 
@@ -30,10 +33,15 @@ export default {
     },
     data(){
         return {
-            child: null
+            child: null,
+            countDrawItems: 7,
+            otherItems: false
         }
     },
     methods: {
+        showMore(){
+            this.otherItems = !this.otherItems;
+        },
         clickOnItem(child){
             this.addCollectionStatistics(child);
             this.child = child
@@ -138,6 +146,12 @@ export default {
 }
 .childs .cats p:hover{
     background-color: rgba(200,200,200,0.5);
+}
+/**/
+.other{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /*Иконки*/
 .icons{
