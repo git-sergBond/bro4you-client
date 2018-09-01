@@ -88,7 +88,7 @@ export default {
     width: 300px;
     background-color: rgba(255, 255, 255, 0.7);
     margin-top: 10px;
-    box-shadow: -4px 7px 20px 0px;
+    box-shadow: -7px 5px 30px -1px;/*-4px 7px 20px 0px;*/
 }
 .item{
     display: flex;
