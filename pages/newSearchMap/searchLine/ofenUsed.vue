@@ -1,11 +1,12 @@
 <template>
-    <div>
-        <p>Часто используемые</p>
-        <ul v-if="!!ofenUsedList">
-            <li v-for="item in ofenUsedList">
-                <button  @click="getServices(item)">{{item.name}}</button>
-            </li>
-        </ul>
+    <div class="container my-vars">
+        <p>Часто использовалось</p>
+        <div v-if="!!ofenUsedList">
+            <div class="item" v-for="item in ofenUsedList" @click="getServices(item)">
+                <img class="icons" src='images/icons/categoryes/авто-и-преревозки.jpg'>
+                <p>{{item.name}}</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -73,6 +74,43 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.my-vars{
+    --c-margin: 5px;
+    --c-proportion: 32px;
+    --with-marg: 37px;
+    --sizeV: 40px;
+    --sizeH: var(--sizeV);
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin-top: 10px;
+    box-shadow: -4px 7px 20px 0px;
+}
+.item{
+    display: flex;
+    align-items: center;
+    padding-left: 13px;
+}
+.item:hover{
+    background-color: darkgrey;
+}
+.item p {
+    margin-left: 13px;
+}
+p{
+    margin: 3px;
+    padding: 0;
+}
+/*Иконки*/
+.icons{
+    height: var(--sizeH);
+    width: var(--sizeV);
+    margin: 0;
+    padding: 0;
+    z-index: 3;
+}
 </style>

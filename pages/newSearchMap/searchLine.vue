@@ -6,10 +6,10 @@
                 <input type="text" class="search-query common-margin" 
                 v-model="userQuery" 
                 @focus="searchFocus" 
-                @blur="searchBlur" placeholder="Что вы ищите?" >
+                @blur="searchBlur" placeholder="Поиск" >
             </div>
             <div class="flex-search-btn shadow" @click="clickSearch" ><img class="icons common-margin" src="images/icons/searching-magnifying-glass.png"></div>
-            <div class="flex-search-btn shadow" @click="clickSearch" ><img class="icons common-margin" src="images/icons/searching-magnifying-glass.png"></div>
+            <div class="flex-search-btn shadow" @click="clickSearch" ><img class="icons common-margin" src="images/icons/palets.png"></div>
         </div>
         
         <ofen-used v-show="getLastState == 0" 
@@ -78,7 +78,7 @@ export default {
             this.changeState(1)
         },
         searchBlur(){
-            if(getLastState != 1) this.beforeState()
+            if(this.getLastState() != 1) this.beforeState()
         },
         clearAutocomplete(){
             this.dataAutocomplete = []
