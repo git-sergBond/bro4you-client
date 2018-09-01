@@ -1,14 +1,14 @@
 <template>
-    <div>
+    <div class="my-vars">
         <div class="flex-search-line">
-            <div class="flex-search-line--line common-padding">
-                <img class="icons" src="images/icons/searching-magnifying-glass.png">
-                <input type="text" class="search-query" 
+            <div class="flex-search-line--line angle-right shadow">
+                <img class="icons common-margin" src="images/icons/searching-magnifying-glass.png">
+                <input type="text" class="search-query common-margin" 
                 v-model="userQuery" 
                 @focus="searchFocus" 
                 @blur="searchBlur" placeholder="Что вы ищите?" >
             </div>
-            <button  @click="clickSearch">Искать</button>
+            <button  @click="clickSearch" >Искать</button>
             <outline-area ></outline-area>
         </div>
         
@@ -160,6 +160,9 @@ export default {
 </script>
 
 <style >
+.my-vars{
+    --c-margin: 5px;
+}
 /*позиционирование*/
 .flex-search-line{
     display: flex;
@@ -173,16 +176,35 @@ export default {
 /*стили*/
 .search-query{
     margin-left: 5px;
+    width: 350px;
     background-color: transparent;
     border: 0;
 }
 /*общие стили*/
-.common-padding{
-    padding: 5px
+.common-margin{
+    margin: var(--c-margin)
+}
+.angle-right::after {
+    --with-marg: 37px;
+    --with-marg-invers: -37px;
+    content: '';
+    position: relative;
+    right: var(--with-marg-invers);
+    bottom: 0px;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border-top: var(--with-marg) solid transparent;
+    border-left: var(--with-marg) solid white;
+    box-shadow: -15px 0px 0px 0px white, -13px 5px 10px -5px black;
+}
+.shadow{
+    box-shadow: -3px 5px 10px -5px;
 }
 /*Иконки*/
 .icons{
-    --sizeV: 32px;
+    --sizeV: 25px;
     --sizeH: var(--sizeV);
     height: var(--sizeH);
     width: var(--sizeV);
