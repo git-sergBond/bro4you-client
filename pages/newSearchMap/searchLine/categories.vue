@@ -9,17 +9,18 @@
     </div>
     
     <div v-if="!child" class="container-row">
-        <div class="item" v-for="(name, index) in sortData">
+        <div class="item" v-for="(name, index) in filterData">
             <div v-for="item in model.child" 
                 @click.prevent="clickOnItem(item)"
-                v-if="name == item.name && (otherItems || index < countDrawItems)"
-                >
+                v-if="(name == item.name)">
                     <img class="icons" :src='item.img'>
                     <p>{{item.name}}</p>
             </div>
+            <!--!!((sortData.length-1 == index && otherItems ) && ())-->
             
-        </div><div class="item" @click="showMore">
-                <img src="/images/icons/троеточие.PNG">
+        </div>
+        <div @click="showMore" class="item">
+            <img   src="/images/icons/троеточие.PNG">
             </div>
     </div>
     <div class="childs" v-if="!!child"> 
@@ -65,17 +66,33 @@ export default {
                 'Благотворительность',
                 'Ритуальные услуги'
             ],
+            filterData: null,
             child: null,
             countDrawItems: 7,
-            otherItems: false
+            otherItems: true
         }
+    },
+    mounted(){
+        this.showMore()
     },
     methods: {
         closePanel(){
             this.$emit('beforeState')
         },
         showMore(){
+            let context = this;
             this.otherItems = !this.otherItems;
+            if(!this.otherItems){
+                let newMas = []
+                this.sortData.forEach((el,ind)=>{
+                    if(ind < context.countDrawItems)
+                    newMas.push(el)
+                })
+                this.filterData = newMas
+            }else{
+                this.filterData = this.sortData
+            }
+            
         },
         clickOnItem(child){
             this.addCollectionStatistics(child);
@@ -109,7 +126,7 @@ export default {
             })
         },
         close(){
-            this.child = null
+            this.child = null;
         }
     }
 }
