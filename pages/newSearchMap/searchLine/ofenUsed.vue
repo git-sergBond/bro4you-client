@@ -3,7 +3,7 @@
         <p>Часто использовалось</p>
         <div v-if="!!ofenUsedList">
             <div class="item" v-for="item in ofenUsedList" @click="getServices(item)">
-                <img class="icons" src='images/icons/categoryes/авто-и-преревозки.jpg'>
+                <img class="icons" :src='item.img'>
                 <p>{{item.name}}</p>
             </div>
         </div>

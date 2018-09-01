@@ -9,7 +9,7 @@ export default class Categori{
             this.categoryname = parseCategori.categoryname;
             this.parentid = parseCategori.parentid;
             this.description = parseCategori.description;
-            this.img
+            this.img = parseCategori.img
         }catch(e){
             console.log("class Categori.constructor() : " + e.message)
         }
