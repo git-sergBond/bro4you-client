@@ -8,8 +8,8 @@
                 @focus="searchFocus" 
                 @blur="searchBlur" placeholder="Что вы ищите?" >
             </div>
-            <div class="flex-search-btn shadow angle-right" @click="clickSearch" ><img class="icons common-margin" src="images/icons/searching-magnifying-glass.png"></div>
-            <outline-area ></outline-area>
+            <div class="flex-search-btn shadow" @click="clickSearch" ><img class="icons common-margin" src="images/icons/searching-magnifying-glass.png"></div>
+            <div class="flex-search-btn shadow" @click="clickSearch" ><img class="icons common-margin" src="images/icons/searching-magnifying-glass.png"></div>
         </div>
         
         <ofen-used v-show="getLastState == 0" 
@@ -38,7 +38,6 @@ import categories from "./searchLine/categories.vue";
 import resultsSearch from "./searchLine/resultsSearch.vue";
 import fullInfo from "./searchLine/fullInfo.vue";
 import ofenUsed from "./searchLine/ofenUsed.vue";
-import outlineArea from './searchLine/outlineArea.vue'
 
 import Categori from '../../clases/Categori.js'
 import Service from '../../clases/Service.js'
@@ -68,7 +67,6 @@ export default {
         resultsSearch,
         fullInfo,
         ofenUsed,
-        outlineArea
     },
     computed: {
         getLastState(){
@@ -176,12 +174,11 @@ export default {
     display: flex;
     align-items: center;
     background-color: white;
-    margin-right: 50px;
 }
 /*стили*/
 .search-query{
     margin-left: 5px;
-    width: 350px;
+    width: 300px;
     background-color: transparent;
     border: 0;
 }
@@ -192,16 +189,38 @@ export default {
     justify-content: center;
     height: var(--with-marg);
     width: var(--sizeV);
+    margin-left: 45px;
+}
+.flex-search-btn::after {
+    --with-marg-invers: -37px;
+    content: '';
+    position: relative;
+    right: -13px;
+    bottom: 0px;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border-top: var(--with-marg) solid transparent;
+    border-left: var(--with-marg) solid white;
+    box-shadow: -15px 0px 0px 0px white, -13px 5px 10px -5px black;
+}
+.flex-search-btn::before {
+    --with-marg-invers: -37px;
+    content: '';
+    position: relative;
+    left: -13px;
+    bottom: 0px;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border-bottom: var(--with-marg) solid transparent;
+    border-right: var(--with-marg) solid white;
 }
 .flex-search-btn .icons{
     position: absolute;
-}
-.flex-search-btn span {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    margin: 0;
-    padding: 0;
+    top: 3px;
 }
 /*общие стили*/
 .common-margin{
@@ -219,6 +238,20 @@ export default {
     padding: 0;
     border-top: var(--with-marg) solid transparent;
     border-left: var(--with-marg) solid white;
+    box-shadow: -15px 0px 0px 0px white, -13px 5px 10px -5px black;
+}
+.angle-left::before {
+    --with-marg-invers: -37px;
+    content: '';
+    position: relative;
+    left: var(--with-marg-invers);
+    bottom: 0px;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border-bottom: var(--with-marg) solid transparent;
+    border-right: var(--with-marg) solid green;
     box-shadow: -15px 0px 0px 0px white, -13px 5px 10px -5px black;
 }
 .shadow{
