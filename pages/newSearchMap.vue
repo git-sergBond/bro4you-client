@@ -1,21 +1,21 @@
 <template>
     <div>
-        <search-line @drawServices=drawServices></search-line>
-        <outline-area></outline-area>
-        <div class="map-comp"
+        <div class="map-comp reset-margin"
             @mouseup='mouseup_event_DrawPolygonByFinger'
             @mousedown='mousedown_event_DrawPolygonByFinger'>
             <yandex-map class="ymap" zoom="8"
                         :controls="['zoomControl']" :coords="coords"
                         @map-was-initialized="initHandler"></yandex-map>
         </div>
+        <search-line class="search-line common-margin" @drawServices=drawServices></search-line>
+        
         меню -> регалка
     </div>
 </template>
 
 <script>
 import searchLine from './newSearchMap/searchLine.vue'
-import outlineArea from './newSearchMap/outlineArea.vue'
+
 import TradePoint from '../clases/TradePoint.js';
 export default {
     name: "newSearchMap",
@@ -27,7 +27,6 @@ export default {
     },
     components: {
         searchLine,
-        outlineArea
     },
     methods: {
         initHandler(myMap){
@@ -53,8 +52,34 @@ export default {
 </script>
 
 <style>
+/*отступы*/
+.reset-margin{
+    margin: 0;
+}
+.common-margin{
+    margin: 5px;
+}
+
+
+
+
+/*позиционирование блоков*/
+.search-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+
+/*яндекс карта*/
 .ymap {
     width: 100%;
-    height: 99vh ;
+    height: 100vh ;
+}
+/* теги */
+body{
+    margin: 0;
 }
 </style>

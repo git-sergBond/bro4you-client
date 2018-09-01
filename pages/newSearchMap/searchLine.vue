@@ -1,9 +1,16 @@
 <template>
     <div>
-        <input type="text" v-model="userQuery" 
-        @focus="searchFocus" 
-        @blur="searchBlur" placeholder="Что вы ищите?" >
-        <button @click="clickSearch">Искать</button>
+        <div class="flex-search-line">
+            <div class="flex-search-line--line common-padding">
+                <img class="icons" src="images/icons/searching-magnifying-glass.png">
+                <input type="text" class="search-query" 
+                v-model="userQuery" 
+                @focus="searchFocus" 
+                @blur="searchBlur" placeholder="Что вы ищите?" >
+            </div>
+            <button  @click="clickSearch">Искать</button>
+            <outline-area ></outline-area>
+        </div>
         
         <ofen-used v-show="getLastState == 0" 
              @event_getServices="getServices"></ofen-used>
@@ -31,6 +38,7 @@ import categories from "./searchLine/categories.vue";
 import resultsSearch from "./searchLine/resultsSearch.vue";
 import fullInfo from "./searchLine/fullInfo.vue";
 import ofenUsed from "./searchLine/ofenUsed.vue";
+import outlineArea from './searchLine/outlineArea.vue'
 
 import Categori from '../../clases/Categori.js'
 import Service from '../../clases/Service.js'
@@ -59,7 +67,8 @@ export default {
         categories,
         resultsSearch,
         fullInfo,
-        ofenUsed
+        ofenUsed,
+        outlineArea
     },
     computed: {
         getLastState(){
@@ -150,6 +159,34 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
+<style >
+/*позиционирование*/
+.flex-search-line{
+    display: flex;
+    align-items: center;
+}
+.flex-search-line--line{
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+/*стили*/
+.search-query{
+    margin-left: 5px;
+    background-color: transparent;
+    border: 0;
+}
+/*общие стили*/
+.common-padding{
+    padding: 5px
+}
+/*Иконки*/
+.icons{
+    --sizeV: 32px;
+    --sizeH: var(--sizeV);
+    height: var(--sizeH);
+    width: var(--sizeV);
+    margin: 0;
+    padding: 0;
+}
 </style>
