@@ -1,7 +1,7 @@
 <template>
 <div class="container my-vars">
     <div class="dop-info">
-        <p>Москва 24гр.ц.</p>
+        <p>Москва 24°С</p>
         <p>18:20</p>
     </div>
     <div v-if="!child" class="container-row">
@@ -12,13 +12,11 @@
             <p>{{item.name}}</p>
         </div>
     </div>
-    <div v-if="!!child"> 
-        <p>{{child.name}} <button @click="close">Вернуться</button></p>
-        <ul>
-            <li v-for="item in child.child">
-                <button @click.prevent="getServices(item)">{{ item.name }}</button>
-            </li>
-        </ul> 
+    <div class="childs" v-if="!!child"> 
+        <img class="icons" :src='child.img' @click="close">
+        <div class="cats">
+            <p v-for="item in child.child" @click.prevent="getServices(item)">{{ item.name }}</p>
+        </div>
     </div>
 </div>
 </template>
@@ -37,7 +35,6 @@ export default {
     },
     methods: {
         clickOnItem(child){
-            alert(123)
             this.addCollectionStatistics(child);
             this.child = child
         },
@@ -111,8 +108,36 @@ export default {
     background-color: rgba(200,200,200,0.5);
 }
 .item p {
+    text-align: center;
     font-size: 10px;
     padding: 0;
+}
+/**/
+.childs{
+    display: flex;
+    flex-direction: row;
+    height: 300px;
+    flex-wrap: wrap;
+}
+.childs .icons {
+    flex-basis: auto;
+    width: 50px;
+    margin: 10px;
+}
+.childs .cats{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex-basis: auto;
+    width: 300px;
+    justify-content: flex-start;
+}
+.childs .cats p {
+    font-size: 9pt;
+    width: 150px;
+}
+.childs .cats p:hover{
+    background-color: rgba(200,200,200,0.5);
 }
 /*Иконки*/
 .icons{
