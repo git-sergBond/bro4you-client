@@ -96,7 +96,7 @@ export default {
     padding-left: 13px;
 }
 .item:hover{
-    background-color: darkgrey;
+    background-color: rgba(200,200,200,0.5);
 }
 .item p {
     margin-left: 13px;
