@@ -9,15 +9,18 @@
     </div>
     
     <div v-if="!child" class="container-row">
-        <div class="item"
-        v-for="(item, index) in model.child" 
-        @click.prevent="clickOnItem(item)" v-show="otherItems || index < countDrawItems">
-            <img class="icons" :src='item.img'>
-            <p>{{item.name}}</p>
-        </div>
-        <div class="item other" @click="showMore">
-            <img src="/images/icons/троеточие.PNG">
-        </div>
+        <div class="item" v-for="(name, index) in sortData">
+            <div v-for="item in model.child" 
+                @click.prevent="clickOnItem(item)"
+                v-if="name == item.name && (otherItems || index < countDrawItems)"
+                >
+                    <img class="icons" :src='item.img'>
+                    <p>{{item.name}}</p>
+            </div>
+            
+        </div><div class="item" @click="showMore">
+                <img src="/images/icons/троеточие.PNG">
+            </div>
     </div>
     <div class="childs" v-if="!!child"> 
         <img class="icons" :src='child.img' @click="close">
@@ -37,6 +40,31 @@ export default {
     },
     data(){
         return {
+            sortData: [
+                'Питание',
+                'Развлечения и отдых',
+                'Авто и перевозки',
+                'Красота',
+                'Спорт',
+                'Друг на час','Медицина',
+                'Недвижимость',
+                'Ремонт и строительство',
+                'IT, интернет, телеком',
+                'Деловые услуги',
+                'Курьерские поручения',
+                'Бытовые услуги',
+                'Клининг',
+                'Обучение',
+                'Праздники, мероприятия',
+                'Животные',
+                'Реклама, полиграфия',
+                'Сад, благоустройство',
+                'Охрана, безопасность',
+                'Патронажн, уход',
+                
+                'Благотворительность',
+                'Ритуальные услуги'
+            ],
             child: null,
             countDrawItems: 7,
             otherItems: false
@@ -117,12 +145,19 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100px
 }
 .item:hover{
     background-color: rgba(200,200,200,0.5);
 }
-.item p {
+.item div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px
+}
+.item  p {
     text-align: center;
     font-size: 10px;
     padding: 0;
@@ -153,12 +188,6 @@ export default {
 }
 .childs .cats p:hover{
     background-color: rgba(200,200,200,0.5);
-}
-/**/
-.other{
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 /**/
 .wrap-close{
