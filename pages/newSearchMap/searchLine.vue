@@ -15,7 +15,10 @@
         <ofen-used v-show="getLastState == 0" 
              @event_getServices="getServices"></ofen-used>
 
-        <categories v-show="getLastState == 1" @event_getServices="getServices" :model="categories"></categories>
+        <categories v-show="getLastState == 1" 
+        @event_getServices="getServices" 
+        @beforeState="beforeState"
+        :model="categories"></categories>
        
         <list-autocomplete v-show="getLastState == 2" :list-data="dataAutocomplete"
              @event_getServices="getServices"

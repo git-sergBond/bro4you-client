@@ -1,9 +1,13 @@
 <template>
 <div class="container my-vars">
+    
     <div class="dop-info">
         <p>Москва 24°С</p>
         <p>18:20</p>
+        <div class="wrap-close" @click="closePanel">
+        <img class="btn-close" src="/images/icons/крестик.PNG" ></div>
     </div>
+    
     <div v-if="!child" class="container-row">
         <div class="item"
         v-for="(item, index) in model.child" 
@@ -39,6 +43,9 @@ export default {
         }
     },
     methods: {
+        closePanel(){
+            this.$emit('beforeState')
+        },
         showMore(){
             this.otherItems = !this.otherItems;
         },
@@ -152,6 +159,17 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+/**/
+.wrap-close{
+    position: absolute;
+    margin-left: 185px;
+    margin-top: 5px;
+}
+.btn-close{
+    align-self: flex-end;
+  width: 20px;
+  height: 20px;
 }
 /*Иконки*/
 .icons{
