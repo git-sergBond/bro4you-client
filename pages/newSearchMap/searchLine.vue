@@ -8,7 +8,7 @@
                 @focus="searchFocus" 
                 @blur="searchBlur" placeholder="Что вы ищите?" >
             </div>
-            <button  @click="clickSearch" >Искать</button>
+            <div class="flex-search-btn shadow angle-right" @click="clickSearch" ><img class="icons common-margin" src="images/icons/searching-magnifying-glass.png"></div>
             <outline-area ></outline-area>
         </div>
         
@@ -162,6 +162,10 @@ export default {
 <style >
 .my-vars{
     --c-margin: 5px;
+    --c-proportion: 32px;
+    --with-marg: 37px;
+    --sizeV: 25px;
+    --sizeH: var(--sizeV);
 }
 /*позиционирование*/
 .flex-search-line{
@@ -172,6 +176,7 @@ export default {
     display: flex;
     align-items: center;
     background-color: white;
+    margin-right: 50px;
 }
 /*стили*/
 .search-query{
@@ -180,12 +185,29 @@ export default {
     background-color: transparent;
     border: 0;
 }
+.flex-search-btn{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--with-marg);
+    width: var(--sizeV);
+}
+.flex-search-btn .icons{
+    position: absolute;
+}
+.flex-search-btn span {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
 /*общие стили*/
 .common-margin{
     margin: var(--c-margin)
 }
 .angle-right::after {
-    --with-marg: 37px;
     --with-marg-invers: -37px;
     content: '';
     position: relative;
@@ -204,11 +226,10 @@ export default {
 }
 /*Иконки*/
 .icons{
-    --sizeV: 25px;
-    --sizeH: var(--sizeV);
     height: var(--sizeH);
     width: var(--sizeV);
     margin: 0;
     padding: 0;
+    z-index: 3;
 }
 </style>
