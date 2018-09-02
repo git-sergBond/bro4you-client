@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="win-cont">
         <button @click="back">Вернуться</button>
         <h3>{{service.name}}</h3>
         <P>[звезды] {{service.rating}}</P>
@@ -39,5 +39,13 @@ export default {
 </script>
 
 <style>
-
+/*окно*/
+.win-cont{
+    margin-top: 10px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: -1px -2px 20px 0px;
+}
 </style>

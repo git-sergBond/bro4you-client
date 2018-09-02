@@ -18,20 +18,17 @@
                 v-for="service in services"
                 @click="showFullInfo(service)">
                 <div>
-                    <p>{{service.name}}</p>
-                    <p>звезды:{{service.rating}}, {{!!service.pricemin?"цена от":"цена не указана"}} {{service.pricemin}}</p>
-                    <p>{{ service.points.length == 0 ? "Выездная услуга" : service.points[0].address }}</p>
-                    <p>открыт до 18:00</p>
+                    <p class="title">{{service.name}}</p>
+                    <p class="text"><img class="star" v-for="st in [1,2,3,4,5].splice(0,Number(service.rating))" src="images/icons/star.png"><img class="star" v-for="st in [1,2,3,4,5].splice(0,5-Number(service.rating))" src="images/icons/star1.png"> {{service.rating}} {{!!service.pricemin?"цена от":"цена не указана"}} {{service.pricemin}}</p>
+                    <p class="text">{{ service.points.length == 0 ? "Выездная услуга" : service.points[0].address }}
+                        <br>открыт до 18:00
+                    </p>
                 </div>
                 <div class="part2">
                     <img :src="service.images[0].imagepath">
-                    <span>{{service.ratingcount}} отзывов</span>
+                    <span class="text">{{service.ratingcount}} отзывов</span>
                 </div>
                 </div>
-                <!--
-            <brief-info  :service="service"
-                @showFullInfo = ""
-            ></brief-info>-->
             </div>
         </div>
         <div>
@@ -41,14 +38,9 @@
 </template>
 
 <script>
-import briefInfo from './briefInfo.vue'
-
 export default {
     name: "resultsSearch",
     props: ['services'],
-    components: {
-        briefInfo,
-    },
     methods: {
         showFullInfo(service){
             this.$emit('showFullInfo',service)
@@ -68,6 +60,9 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: -1px -2px 20px 0px;
+
+    --btn-color: rgba(171,211,226,1)
 }
 /*заголовок*/
 .win-cont .gray-text{
@@ -82,7 +77,7 @@ export default {
     justify-content: space-between;
 }
 .filters .filter{
-    background-color: rgb(34, 200, 230);
+    background-color: var(--btn-color);
     height: 30px;
     display: flex;
     align-items: center;
@@ -93,7 +88,8 @@ export default {
 .filter .text{
     text-transform: uppercase;
     margin: 0;
-
+    display: flex;
+    align-items: center;
 }
 .filters .left{
     margin-right: 10px;
@@ -106,24 +102,24 @@ export default {
     content: '';
     position: relative;
     right: -25px;
-    top: -24px;
+    /*top: -24px;*/
     width: 0;
     height: 0;
     margin: 0;
     padding: 0;
-    border-bottom: 30px solid rgb(34, 200, 230);;
+    border-bottom: 30px solid var(--btn-color);
     border-right: 20px solid transparent;
 }
 .angle-left::before {
     content: '';
     position: relative;
     left: -25px;
-    top: 25px;
+    /*top: 25px;*/
     width: 0;
     height: 0;
     margin: 0;
     padding: 0;
-    border-top: 30px solid rgb(34, 200, 230);
+    border-top: 30px solid var(--btn-color);
     border-left: 20px solid transparent;
 }
 /*список результатов*/
@@ -156,5 +152,16 @@ export default {
 }
 .part2 span{
     text-align: center;
+}
+p.title{
+    font-size: 18px;
+    margin-bottom: 0;
+}
+p.text{
+    font-size: 13px;
+}
+.item img.star{
+    height: 15px;
+    width: 15px;
 }
 </style>
