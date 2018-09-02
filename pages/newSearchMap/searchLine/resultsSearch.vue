@@ -13,9 +13,25 @@
                     <p class="text angle-left">Категория</p>
                 </div>
             </div>
-            <brief-info v-for="service in services" :service="service"
+            <div class="list-res">
+                <div class="item" 
+                v-for="service in services">
+                <div>
+                    <p>{{service.name}}</p>
+                    <p>звезды:{{service.rating}}, {{!!service.pricemin?"цена от":"цена не указана"}} {{service.pricemin}}</p>
+                    <p>адрес</p>
+                    <p>открыт до 18:00</p>
+                </div>
+                <div class="part2">
+                    <img :src="service.images[0].imagepath">
+                    <span>количество отзывов</span>
+                </div>
+                </div>
+                <!--
+            <brief-info  :service="service"
                 @showFullInfo = "showFullInfo(service)"
-            ></brief-info>
+            ></brief-info>-->
+            </div>
         </div>
         <div>
             Декоратив фигня
@@ -47,7 +63,7 @@ export default {
 /*окно*/
 .win-cont{
     margin-top: 10px;
-    width: 450px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     background-color: rgba(255, 255, 255, 0.7);
@@ -108,5 +124,29 @@ export default {
     padding: 0;
     border-top: 30px solid rgb(34, 200, 230);
     border-left: 20px solid transparent;
+}
+/*список результатов*/
+.list-res{
+   /* height: 400px;*/
+    /*overflow-y: scroll;*/
+    display: flex;
+    flex-direction: column;
+}
+.list-res .item{
+    display: flex;
+    justify-content: space-between;
+}
+.part2{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.list-res .item img{
+    width: 80px;
+    height: 80px;
+}
+.part2 span{
+    text-align: center;
 }
 </style>
