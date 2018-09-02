@@ -26,7 +26,7 @@
                 </div>
                 <div class="part2">
                     <img :src="service.images[0].imagepath">
-                    <span class="text">{{service.ratingcount}} отзывов</span>
+                    <p class="text">{{!!service.ratingcount ? service.ratingcount : "нет"}} отзывов</p>
                 </div>
                 </div>
             </div>
@@ -150,7 +150,7 @@ export default {
     width: 80px;
     height: 80px;
 }
-.part2 span{
+.part2 p{
     text-align: center;
 }
 p.title{
