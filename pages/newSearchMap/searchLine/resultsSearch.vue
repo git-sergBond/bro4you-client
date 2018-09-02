@@ -17,7 +17,7 @@
                 <div class="item" 
                 v-for="service in services"
                 @click="showFullInfo(service)">
-                <div>
+                <div class="part1">
                     <p class="title">{{service.name}}</p>
                     <p class="comment"><img class="star" v-for="st in [1,2,3,4,5].splice(0,Number(service.rating))" src="images/icons/star.png"><img class="star" v-for="st in [1,2,3,4,5].splice(0,5-Number(service.rating))" src="images/icons/star1.png"> {{service.rating}} {{!!service.pricemin?"цена от":"цена не указана"}} {{service.pricemin}}</p>
                     <p class="text">{{ service.points.length == 0 ? "Выездная услуга" : service.points[0].address }}
@@ -30,9 +30,6 @@
                 </div>
                 </div>
             </div>
-        </div>
-        <div>
-            Декоратив фигня
         </div>
     </div>
 </template>
@@ -128,6 +125,15 @@ export default {
     overflow-y: scroll;
     /*display: flex;*/
     flex-direction: column;
+    margin: 0;
+}
+.list-res::-webkit-scrollbar{
+    width: 20px;
+    --pos-grad: 30px;
+    background: -moz-linear-gradient(top, var(--btn-color) var(--pos-grad), transparent var(--pos-grad)); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, var(--btn-color) var(--pos-grad),#ffffff var(--pos-grad)); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, var(--btn-color) var(--pos-grad), transparent var(--pos-grad)); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 }
 .list-res .item{
     display: flex;
@@ -149,6 +155,9 @@ export default {
 .list-res .item img{
     width: 80px;
     height: 80px;
+}
+.part1 {
+    padding-right: 3px;
 }
 .part2 p{
     text-align: center;
