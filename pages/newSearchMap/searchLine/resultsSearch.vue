@@ -129,11 +129,15 @@ export default {
 }
 .list-res::-webkit-scrollbar{
     width: 20px;
+    padding: 3px;
     --pos-grad: 30px;
     background: -moz-linear-gradient(top, var(--btn-color) var(--pos-grad), transparent var(--pos-grad)); /* FF3.6-15 */
     background: -webkit-linear-gradient(top, var(--btn-color) var(--pos-grad),#ffffff var(--pos-grad)); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, var(--btn-color) var(--pos-grad), transparent var(--pos-grad)); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+.list-res::-webkit-scrollbar-thumb{
+    background-color: var(--btn-color);
 }
 .list-res .item{
     display: flex;
