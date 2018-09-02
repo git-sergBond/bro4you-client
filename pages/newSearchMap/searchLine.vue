@@ -2,14 +2,18 @@
     <div class="my-vars">
         <div class="flex-search-line">
             <div class="flex-search-line--line angle-right shadow">
-                <img class="icons common-margin" src="images/icons/searching-magnifying-glass.png">
+                <img class="icons2 common-margin" src="images/icons/searching-magnifying-glass.png">
                 <input type="text" class="search-query common-margin" 
                 v-model="userQuery" 
                 @focus="searchFocus" 
                 @blur="searchBlur" placeholder="Поиск" >
             </div>
-            <div class="flex-search-btn shadow" @click="clickSearch" ><img class="icons common-margin" src="images/icons/searching-magnifying-glass.png"></div>
-            <div class="flex-search-btn shadow" @click="clickSearch" ><img class="icons common-margin" src="images/icons/palets.png"></div>
+            <div class="flex-search-btn" @click="clickSearch" >
+                <img class="icons" style="width: 28px; height: 28px" src="images/icons/searching-magnifying-glass.png">
+            </div>
+            <div class="flex-search-btn" @click="clickSearch" >
+                <img class="icons" style="width: 28px; height: 28px" src="images/icons/palets.png">
+                </div>
         </div>
         
         <ofen-used v-show="getLastState == 0" 
@@ -198,7 +202,7 @@ export default {
     --with-marg-invers: -37px;
     content: '';
     position: relative;
-    right: -13px;
+    right: -20px;
     bottom: 0px;
     width: 0;
     height: 0;
@@ -212,7 +216,7 @@ export default {
     --with-marg-invers: -37px;
     content: '';
     position: relative;
-    left: -13px;
+    left: -20px;
     bottom: 0px;
     width: 0;
     height: 0;
@@ -267,5 +271,10 @@ export default {
     margin: 0;
     padding: 0;
     z-index: 3;
+}
+.icons2{
+    height: 28px;
+    width: 28px;
+    padding: 0;
 }
 </style>

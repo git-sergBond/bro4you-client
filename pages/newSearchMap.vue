@@ -51,7 +51,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /*отступы*/
 .reset-margin{
     margin: 0;
@@ -66,8 +66,8 @@ export default {
 /*позиционирование блоков*/
 .search-line {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 10px;
+    left: 10px;
 }
 
 
