@@ -15,21 +15,22 @@
             </div>
             <div class="list-res">
                 <div class="item" 
-                v-for="service in services">
+                v-for="service in services"
+                @click="showFullInfo(service)">
                 <div>
                     <p>{{service.name}}</p>
                     <p>звезды:{{service.rating}}, {{!!service.pricemin?"цена от":"цена не указана"}} {{service.pricemin}}</p>
-                    <p>адрес</p>
+                    <p>{{ service.points.length == 0 ? "Выездная услуга" : service.points[0].address }}</p>
                     <p>открыт до 18:00</p>
                 </div>
                 <div class="part2">
                     <img :src="service.images[0].imagepath">
-                    <span>количество отзывов</span>
+                    <span>{{service.ratingcount}} отзывов</span>
                 </div>
                 </div>
                 <!--
             <brief-info  :service="service"
-                @showFullInfo = "showFullInfo(service)"
+                @showFullInfo = ""
             ></brief-info>-->
             </div>
         </div>
@@ -127,14 +128,21 @@ export default {
 }
 /*список результатов*/
 .list-res{
-   /* height: 400px;*/
-    /*overflow-y: scroll;*/
-    display: flex;
+    height: 400px;
+    overflow-y: scroll;
+    /*display: flex;*/
     flex-direction: column;
 }
 .list-res .item{
     display: flex;
     justify-content: space-between;
+    background-color: white;
+    border-bottom: 1px solid rgb(218, 213, 213);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.list-res .item:hover{
+    background-color: rgb(218, 213, 213);
 }
 .part2{
     display: flex;
