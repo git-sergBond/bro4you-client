@@ -19,7 +19,7 @@
                 @click="showFullInfo(service)">
                 <div>
                     <p class="title">{{service.name}}</p>
-                    <p class="text"><img class="star" v-for="st in [1,2,3,4,5].splice(0,Number(service.rating))" src="images/icons/star.png"><img class="star" v-for="st in [1,2,3,4,5].splice(0,5-Number(service.rating))" src="images/icons/star1.png"> {{service.rating}} {{!!service.pricemin?"цена от":"цена не указана"}} {{service.pricemin}}</p>
+                    <p class="comment"><img class="star" v-for="st in [1,2,3,4,5].splice(0,Number(service.rating))" src="images/icons/star.png"><img class="star" v-for="st in [1,2,3,4,5].splice(0,5-Number(service.rating))" src="images/icons/star1.png"> {{service.rating}} {{!!service.pricemin?"цена от":"цена не указана"}} {{service.pricemin}}</p>
                     <p class="text">{{ service.points.length == 0 ? "Выездная услуга" : service.points[0].address }}
                         <br>открыт до 18:00
                     </p>
@@ -159,6 +159,10 @@ p.title{
 }
 p.text{
     font-size: 13px;
+}
+p.comment{
+    font-size: 13px;
+    margin-top: 3px;
 }
 .item img.star{
     height: 15px;
