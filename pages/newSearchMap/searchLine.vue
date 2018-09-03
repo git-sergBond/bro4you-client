@@ -239,7 +239,8 @@ export default {
     --with-marg-invers: -37px;
     content: '';
     position: relative;
-    right: -20px;
+   right: -20px;
+   
     bottom: 0px;
     width: 0;
     height: 0;
@@ -252,7 +253,8 @@ export default {
     --with-marg-invers: -37px;
     content: '';
     position: relative;
-    left: -20px;
+   left: -20px;
+
     bottom: 0px;
     width: 0;
     height: 0;
@@ -319,7 +321,8 @@ export default {
     height: var(--sizeH);
     width: var(--sizeV);
     margin: 0;
-    padding: 0;
+   /* padding: 0;*/
+   margin: auto;
     z-index: 3;
 }
 .icons2{
