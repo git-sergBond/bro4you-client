@@ -37,11 +37,13 @@ export default {
         initHandler(myMap){
             this.mapIsnt = myMap
         },
+        //получить координаты центра
         getCenterMap(){
             let context = this;
             const centerPoint = context.mapIsnt.getCenter();
             return centerPoint;
         },
+        //получить координаты двух точек диагонали
         getDiagonalMap(){
             let context = this;
             const diagonalPoints = context.mapIsnt.getBounds();
@@ -53,18 +55,28 @@ export default {
                 
                 for(let service of services){
                     service.drawPoints(this.mapIsnt)
+                    service.addEvents([
+                        { name: 'click', event: this.eventClickOnPoint },
+                    ])
                 }
                 
             }catch(e){
                 console.log(e.message, 'background: #222; color: #bada55')
             }
         },
+        //удаление точек
         deletePoints(){
             try{
                 this.mapIsnt.geoObjects.removeAll();
             }catch(e){
                 console.log(e.message, 'background: #222; color: #bada55')
             }
+        },
+        //событие клика на точку
+        eventClickOnPoint(event){
+            let mapPoint = event.get('target');
+            let objPoint = mapPoint.properties.get('linkOnStruct');
+            console.log(objPoint.services[0]);
         }
     }
 }

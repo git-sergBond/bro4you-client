@@ -31,7 +31,7 @@ export default class TradePoint{
             this.VueContext = VueContext;//контекст экземпляра Vue
             this.mapIsnt = mapIsnt;//контекст яндекс карты
             if (drawOnmap) {
-                this.pointInst = this.DrawOnMap(properties, events, draggable);//контекст точки на яндекс карте
+               /* this.pointInst = */this.DrawOnMap(properties, events, draggable);//контекст точки на яндекс карте
                 this.setActive(true); // индикатор показывающий, передавать точку на карту или нет 
             }
             this.selected = false //нужен для показа номеров и прочей херни по точке
@@ -104,7 +104,7 @@ export default class TradePoint{
             preset: 'islands#darkblueDotIconWithCaption',
             draggable: draggable
         });
-
+        this.pointInst = p;
         try{
 
             p.properties.set({
@@ -114,16 +114,20 @@ export default class TradePoint{
                 ...properties //сохраняем важные данные
             });
         
-            //click, драг(dragend), двойной клик, наведение
-            if(!!events) for(let {name,event} of events) {
-                p.events.add(name, event);
-            }
+            this.addEvents(events);
         
-            context.mapIsnt.geoObjects.add(p);
+            this.mapIsnt.geoObjects.add(p);
         }catch(e){
             console.log('class TradePoint.DrawOnMap() : '+e.message)
         }
         return p;
+    }
+    //добавление событий
+    addEvents(events){
+        //click, драг(dragend), двойной клик, наведение
+        if(!!events) for(let {name,event} of events) {
+            this.pointInst.events.add(name, event);
+        }
     }
     //установка видимости метки
     SetVisibleOnMap(vis){

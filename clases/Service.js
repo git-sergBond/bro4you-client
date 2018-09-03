@@ -33,11 +33,16 @@ export default class Service{
         this.VueContext = VueContext;
     }
     drawPoints(mapIsnt=null){
-        console.log(this.points)
+        //console.log(this.points)
         for(let point of this.points){
             point.mapIsnt = mapIsnt
             point.DrawOnMap()
             //point.setActive(true);
+        }
+    }
+    addEvents(events){
+        for(let point of this.points){
+            point.addEvents(events)
         }
     }
     queryServicesAPIgetServices(){
