@@ -1,7 +1,7 @@
 <template>
     <div class="win-autocomplete">
         <div class="item" v-for="item in listData" @click="itemClick(item)">
-            <img class="image" v-if="item.type == 'category'" src="images/icons/asd">
+            <img class="image" v-if="item.type == 'category'" :src="getIconCategory(item.id)">
             <img class="image" v-if="item.type == 'company'" src="images/icons/visitor.png">
             <img class="image" v-if="item.type == 'service'" src="images/icons/ikonki-rabotaem-pod-klyuch_18_prev.png">
             <p >{{item.name}}</p>
@@ -13,7 +13,8 @@
 export default {
     name: "listAutocomplete",
     props: [
-        "listData"
+        "listData",
+        "treeCategories"
     ],
     methods: {
         itemClick(item){
@@ -25,6 +26,21 @@ export default {
                     type: item.type,
                     id: item.id,
                 });
+            }
+        },
+        getIconCategory(id){
+            try{
+            console.log(this.treeCategories)
+            for(const mainCat of this.treeCategories.child){
+                for(const childCat of mainCat.child){   
+                    if(id==childCat.id){
+                        return mainCat.img;
+                    }
+                }
+            }
+            throw new Error("component listAAutocomplete.getIconCategory() категория не найдена")
+            }catch(e){
+                console.log(e.message);
             }
         }
     }

@@ -24,7 +24,9 @@
         @beforeState="beforeState"
         :model="categories"></categories>
        
-        <list-autocomplete v-show="getLastState == 2" :list-data="dataAutocomplete"
+        <list-autocomplete v-show="getLastState == 2" 
+            :list-data="dataAutocomplete"
+            :tree-categories="categories"
              @event_getServices="getServices"
         ></list-autocomplete>
         
