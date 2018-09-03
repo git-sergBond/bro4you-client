@@ -1,7 +1,7 @@
 <template>
     <div class="my-vars">
         <div class="flex-search-line">
-            <div class="flex-search-line--line angle-right shadow">
+            <div class="flex-search-line--line angle-right2 shadow">
                 <img class="icons2 common-margin" src="images/icons/searching-magnifying-glass.png">
                 <input type="text" class="search-query common-margin" 
                 v-model="userQuery" 
@@ -233,6 +233,7 @@ export default {
     height: var(--with-marg);
     width: var(--sizeV);
     margin-left: 45px;
+    box-shadow: -10px 3px 10px -5px black, 9px 3px 10px -5px black, 25px 5px 20px -10px black, -20px -1px 20px -8px black, 17px -11px 19px -15px black;
 }
 .flex-search-btn::after {
     --with-marg-invers: -37px;
@@ -246,7 +247,6 @@ export default {
     padding: 0;
     border-top: var(--with-marg) solid transparent;
     border-left: var(--with-marg) solid white;
-    box-shadow: -15px 0px 0px 0px white, -13px 5px 10px -5px black;
 }
 .flex-search-btn::before {
     --with-marg-invers: -37px;
@@ -282,6 +282,20 @@ export default {
     border-top: var(--with-marg) solid transparent;
     border-left: var(--with-marg) solid white;
     box-shadow: -15px 0px 0px 0px white, -13px 5px 10px -5px black;
+}
+.angle-right2::after {
+    --with-marg-invers: -37px;
+    content: '';
+    position: relative;
+    right: var(--with-marg-invers);
+    bottom: 0px;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border-top: var(--with-marg) solid transparent;
+    border-left: var(--with-marg) solid white;
+    box-shadow: -20px 2px 0px -2px white, -13px 7px 8px -5px black
 }
 .angle-left::before {
     --with-marg-invers: -37px;
