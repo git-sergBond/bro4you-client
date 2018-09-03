@@ -9,6 +9,7 @@
         </div>
         <search-line class="search-line common-margin" 
         @drawServices=drawServices 
+        @deletePoints=deletePoints
         :getDiagonalMap=getDiagonalMap 
         :getCenterMap=getCenterMap></search-line>
         
@@ -20,6 +21,7 @@
 import searchLine from './newSearchMap/searchLine.vue'
 
 import TradePoint from '../clases/TradePoint.js';
+import categoryVue from '../components/category.vue';
 export default {
     name: "newSearchMap",
     data(){
@@ -54,11 +56,15 @@ export default {
                 }
                 
             }catch(e){
-                console.log(e.message)
+                console.log(e.message, 'background: #222; color: #bada55')
             }
-            
-            /*
-            */
+        },
+        deletePoints(){
+            try{
+                this.mapIsnt.geoObjects.removeAll();
+            }catch(e){
+                console.log(e.message, 'background: #222; color: #bada55')
+            }
         }
     }
 }

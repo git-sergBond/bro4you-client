@@ -97,9 +97,15 @@ export default {
         beforeState(){
             this.stateQueue.pop()
         },
+        deletePoints(){
+            try{
+                this.$emit('deletePoints');
+            }catch(e){
+                console.log(e.message, 'background: #222; color: #bada55')
+            }
+        },
         async getServices({typeQuery,type=null,id=null,userQuery=null,regionsId=null, categoriesId}){
             this.changeState(3)
-            
             try{
                 let diagonalTmp  = this.getDiagonalMap()[0];
                 const diagonal = {
@@ -117,6 +123,7 @@ export default {
                 let result = await axios({url: 'ServicesAPI/getServices',data:{
                     typeQuery,center,diagonal,type,id,userQuery,regionsId,categoriesId                  
                 }, method: 'POST' })
+                this.deletePoints();
                 let servicesAfterParse = []
                 for (let service of result.data.services) {
                     servicesAfterParse.push(new Service(service,null,this))
@@ -137,7 +144,7 @@ export default {
                 typeQuery: 0,
                 userQuery: this.userQuery
             });
-            changeState(4);
+          //  this.changeState(4);
         },
         showFullInfo(service){
             try{
@@ -176,6 +183,7 @@ export default {
                         }, 
                         method: 'POST' 
                     });
+                    this.deletePoints();
                     this.dataAutocomplete = result.data.autocomplete;
                     this.changeState(2)
                 }catch(e){
