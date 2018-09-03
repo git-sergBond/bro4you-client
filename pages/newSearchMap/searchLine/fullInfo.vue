@@ -22,21 +22,26 @@
             <p class="desc">{{service.description}}</p>
             <div class="slider-comment">
                 <div class="flex-line"><img class="icon123" src="images/icons/clock-circular-outline.png"><p> открыт до 18:00</p></div>
-                <button>написать сообщение</button>
+                <div class="btn-message">
+                    <img src="images/icons/message.png">
+                    <p>написать сообщение</p>
+                </div>
             </div>
-            <p style="color:red"><img class="icon123" src="images/icons/old-handphone.png">телефон по компании</p>
+            <div class="phones"><img class="icon123" src="images/icons/old-handphone.png"><p >телефон по компании</p></div>
             <ul>
                 {{ service.points.length == 0 ? "Выездная услуга" : "" }}
                 <li v-for="point in service.points">
-                    [i-point] {{point.address}}
+                    <div class="phones"><img class="icon123" src="images/icons/point.png"><p>{{point.address}}</p></div>
                     <uL>
                         <li v-for="phone in point.phones">
-                            [i-phone] {{phone}}
+                             <div class="phones"><img class="icon123" src="images/icons/old-handphone.png"><p>{{phone}}</p></div>
                         </li>
                     </ul>
                 </li>
             </ul>
-            <p style="color:red">[i-site] сайт, для него нужны Company и UserInfo</p>
+            <!--p style="color:red">[i-site] сайт, для него нужны Company и UserInfo</p-->
+            <hr>
+            Отзывы
         </div>
     </div>
 </template>
@@ -211,12 +216,39 @@ img.star{
     padding-bottom: 15px;
 }
 .icon123{
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     margin-right: 3px;
 }
 .flex-line{
     display: flex;
     align-items: center;
+}
+.btn-message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+}
+.btn-message p {
+    margin: 0;
+    font-size: 13px;
+}
+.btn-message img {
+    margin-right: 5px;
+    width: 23px;
+    height: 23px;
+}
+.phones{
+    margin-left: 30px;
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+ul, li {
+    list-style-type: none; 
 }
 </style>
