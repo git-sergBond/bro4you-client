@@ -20,9 +20,11 @@
                 <p class="comment">+  Подписаться</p>
             </div>
             <p class="desc">{{service.description}}</p>
-            <p style="color:red"><img src="images/icons/clock-circular-outline.png"> время спарсено</p>
-            <button>написать сообщение</button>
-            <p style="color:red"><img src="images/icons/old-handphone.png"> телефон по компании есть? (не нужно)</p>
+            <div class="slider-comment">
+                <div class="flex-line"><img class="icon123" src="images/icons/clock-circular-outline.png"><p> открыт до 18:00</p></div>
+                <button>написать сообщение</button>
+            </div>
+            <p style="color:red"><img class="icon123" src="images/icons/old-handphone.png">телефон по компании</p>
             <ul>
                 {{ service.points.length == 0 ? "Выездная услуга" : "" }}
                 <li v-for="point in service.points">
@@ -207,5 +209,14 @@ img.star{
     padding-left: 30px;
     padding-right: 30px;
     padding-bottom: 15px;
+}
+.icon123{
+    width: 18px;
+    height: 18px;
+    margin-right: 3px;
+}
+.flex-line{
+    display: flex;
+    align-items: center;
 }
 </style>
