@@ -58,8 +58,8 @@ export default {
             userQuery: "",
             dataAutocomplete: [],
             dataServices: [],
-            curentService: null,
             categories: null,
+            curentService: null,
             stateQueue: [0], //состояние приложения
             /*
                 0 - часто исползуемые услуги

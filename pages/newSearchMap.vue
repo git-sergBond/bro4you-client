@@ -7,11 +7,12 @@
                         :controls="['zoomControl']" :coords="coords"
                         @map-was-initialized="initHandler"></yandex-map>
         </div>
-        <search-line class="search-line common-margin" 
+        <search-line ref="searchln" class="search-line common-margin" 
         @drawServices=drawServices 
         @deletePoints=deletePoints
         :getDiagonalMap=getDiagonalMap 
-        :getCenterMap=getCenterMap></search-line>
+        :getCenterMap=getCenterMap
+        ></search-line>
         
         меню -> регалка
     </div>
@@ -74,9 +75,10 @@ export default {
         },
         //событие клика на точку
         eventClickOnPoint(event){
+            let context = this
             let mapPoint = event.get('target');
             let objPoint = mapPoint.properties.get('linkOnStruct');
-            console.log(objPoint.services[0]);
+            context.$refs.searchln.showFullInfo(objPoint.services[0])
         }
     }
 }
