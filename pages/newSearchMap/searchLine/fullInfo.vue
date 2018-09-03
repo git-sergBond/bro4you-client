@@ -11,17 +11,18 @@
                 <p class="comment part2"><img class="star" v-for="st in [1,2,3,4,5].splice(0,Number(service.rating))" src="images/icons/star.png"><img class="star" v-for="st in [1,2,3,4,5].splice(0,5-Number(service.rating))" src="images/icons/star1.png"> {{service.rating}}</p>
             </div>
             <div class="slider">
-                <div class="left1"><img  src="images/icons/arrow-left.png"></div>
+                <div class="left1" @click="left"><img  src="images/icons/arrow-left.png"></div>
                 <img class="image" v-for="(image, index) in service.images" v-show="numImage == index" :src="image.imagepath">
-                <div class="right1"><img  src="images/icons/arrow-right.png"></div>
+                <div class="right1" @click="right"><img  src="images/icons/arrow-right.png"></div>
             </div>
             <div class="slider-comment">
-                <p class="comment">{{numImage+1}}/{{service.images.length+1}}</p>
+                <p class="comment">{{numImage+1}}/{{service.images.length}}</p>
                 <p class="comment">+  Подписаться</p>
             </div>
             <p class="desc">{{service.description}}</p>
-            <p style="color:red">[i-time] время спарсено</p>
-            <p style="color:red">[i-phone] телефон по компании есть? (не нужно)</p>
+            <p style="color:red"><img src="images/icons/clock-circular-outline.png"> время спарсено</p>
+            <button>написать сообщение</button>
+            <p style="color:red"><img src="images/icons/old-handphone.png"> телефон по компании есть? (не нужно)</p>
             <ul>
                 {{ service.points.length == 0 ? "Выездная услуга" : "" }}
                 <li v-for="point in service.points">
@@ -34,7 +35,6 @@
                 </li>
             </ul>
             <p style="color:red">[i-site] сайт, для него нужны Company и UserInfo</p>
-            <button>написать сообщение</button>
         </div>
     </div>
 </template>
@@ -51,6 +51,16 @@ export default {
     methods: {
         back(){
             this.$emit('beforeState')
+        },
+        left(){
+            if(this.numImage > 0){
+                this.numImage--;
+            }
+        },
+        right(){
+            if(this.numImage < this.service.images.length-1){
+                this.numImage++;
+            }
         }
     }
 }
