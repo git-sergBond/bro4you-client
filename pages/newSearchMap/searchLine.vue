@@ -68,6 +68,7 @@ export default {
             */
         }
     },
+    props: ['getDiagonalMap','getCenterMap'],
     components: {
         listAutocomplete,
         categories,
@@ -96,9 +97,14 @@ export default {
         beforeState(){
             this.stateQueue.pop()
         },
-        async getServices({typeQuery,center=null,diagonal=null,type=null,id=null,userQuery=null,regionsId=null, categoriesId}){
+        async getServices({typeQuery,type=null,id=null,userQuery=null,regionsId=null, categoriesId}){
             this.changeState(3)
+            
             try{
+                const center = this.getDiagonalMap();
+                const diagonal = this.getCenterMap()[0];
+                console.log(center);
+                console.log(diagonal);
                 //3 == typeQuery пользователь указал категории для поиска
                 let result = await axios({url: 'ServicesAPI/getServices',data:{
                     typeQuery,center,diagonal,type,id,userQuery,regionsId,categoriesId                  
@@ -146,7 +152,7 @@ export default {
                         url: 'ServicesAPI/getServices',
                         data: { 
                             typeQuery, 
-                            newStr 
+                            userQuery: newStr 
                         }, 
                         method: 'POST' 
                     });

@@ -7,7 +7,10 @@
                         :controls="['zoomControl']" :coords="coords"
                         @map-was-initialized="initHandler"></yandex-map>
         </div>
-        <search-line class="search-line common-margin" @drawServices=drawServices></search-line>
+        <search-line class="search-line common-margin" 
+        @drawServices=drawServices 
+        :getDiagonalMap=getDiagonalMap 
+        :getCenterMap=getCenterMap></search-line>
         
         меню -> регалка
     </div>
@@ -31,6 +34,16 @@ export default {
     methods: {
         initHandler(myMap){
             this.mapIsnt = myMap
+        },
+        getCenterMap(){
+            let context = this;
+            const centerPoint = context.mapIsnt.getCenter();
+            return centerPoint;
+        },
+        getDiagonalMap(){
+            let context = this;
+            const diagonalPoints = context.mapIsnt.getBounds();
+            return diagonalPoints;
         },
         //Отрисовка точек предоставляющих услуги
         drawServices(services){
