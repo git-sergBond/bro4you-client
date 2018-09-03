@@ -101,10 +101,18 @@ export default {
             this.changeState(3)
             
             try{
-                const center = this.getDiagonalMap();
-                const diagonal = this.getCenterMap()[0];
-                console.log(center);
-                console.log(diagonal);
+                let diagonalTmp  = this.getDiagonalMap()[0];
+                const diagonal = {
+                     longitude: diagonalTmp[1],
+                     latitude: diagonalTmp[0]
+                }
+                let centerTmp = this.getCenterMap();
+                const center = {
+                     longitude: centerTmp[1],
+                     latitude: centerTmp[0]
+                }
+                console.log('центр '+center);
+                console.log('диагоняль '+diagonal);
                 //3 == typeQuery пользователь указал категории для поиска
                 let result = await axios({url: 'ServicesAPI/getServices',data:{
                     typeQuery,center,diagonal,type,id,userQuery,regionsId,categoriesId                  
@@ -147,12 +155,24 @@ export default {
                 this.changeState(0)
             }else{
                 try{
+                    let diagonalTmp  = this.getDiagonalMap()[0];
+                const diagonal = {
+                     longitude: diagonalTmp[1],
+                     latitude: diagonalTmp[0]
+                }
+                let centerTmp = this.getCenterMap();
+                const center = {
+                     longitude: centerTmp[1],
+                     latitude: centerTmp[0]
+                }
                     const typeQuery = 1;// запрос на получение элементов интелект. поиска
                     let result = await axios({
                         url: 'ServicesAPI/getServices',
                         data: { 
                             typeQuery, 
-                            userQuery: newStr 
+                            userQuery: newStr,
+                            center,
+                            diagonal
                         }, 
                         method: 'POST' 
                     });
