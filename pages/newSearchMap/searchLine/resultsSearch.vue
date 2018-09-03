@@ -3,14 +3,17 @@
         <div class="win-cont">
             <p class="gray-text">Результаты поиска<!--button @click="back">закрыть/вернуться</button--></p>
             <div class="filters">
-                <div class="filter left">
+                <div class="filter left first">
                     <p class="text angle-right">Цена</p>
                 </div>
                 <div class="filter left right">
                     <p class="text angle-left angle-right">Рейтинг</p>
                 </div>
+                <div class="filter left right">
+                    <p class="text angle-left angle-right">Категория</p>
+                </div>
                 <div class="filter right" >
-                    <p class="text angle-left">Категория</p>
+                    <p class="text angle-left last-filter"></p>
                 </div>
             </div>
             <div class="list-res">
@@ -79,8 +82,13 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-left: 5px;
-    padding-right: 5px;
+ /*   padding-left: 5px; */
+/*    padding-right: 5px; */
+padding-left: 0px; 
+    padding-right: 0px; 
+}
+.filter.first{
+    padding-left: 3px; 
 }
 .filter .text{
     text-transform: uppercase;
@@ -89,17 +97,19 @@ export default {
     align-items: center;
 }
 .filters .left{
-    margin-right: 10px;
+   /* margin-right: 10px;*/
+   margin-right: 6px;
 }
 .filters .right{
-    margin-left: 20px;
+  /*  margin-left: 20px; */
+  margin-left: 6px;
 }
 /*уголки*/
 .angle-right::after {
     content: '';
     position: relative;
-    right: -25px;
-    /*top: -24px;*/
+   /* right: -25px;*/
+    right: -20px;
     width: 0;
     height: 0;
     margin: 0;
@@ -110,8 +120,8 @@ export default {
 .angle-left::before {
     content: '';
     position: relative;
-    left: -25px;
-    /*top: 25px;*/
+   /* left: -25px;*/
+left: -20px;
     width: 0;
     height: 0;
     margin: 0;
@@ -180,5 +190,8 @@ p.comment{
 .item img.star{
     height: 15px;
     width: 15px;
+}
+.last-filter{
+    width: 50px;
 }
 </style>
