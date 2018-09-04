@@ -11,7 +11,7 @@
             <div class="flex-search-btn" @click="clickSearch" >
                 <img class="icons" style="width: 28px; height: 28px" src="images/icons/searching-magnifying-glass.png">
             </div>
-            <div class="flex-search-btn" @click="clickSearch" >
+            <div class="flex-search-btn" @click="clickSearchInPolygon" >
                 <img class="icons" style="width: 28px; height: 28px" src="images/icons/palets.png">
                 </div>
         </div>
@@ -50,6 +50,7 @@ import ofenUsed from "./searchLine/ofenUsed.vue";
 
 import Categori from '../../clases/Categori.js'
 import Service from '../../clases/Service.js'
+import Polygon from '../../clases/Polygon.js'
 
 export default {
     name: "searchLine",
@@ -147,6 +148,13 @@ export default {
                 userQuery: this.userQuery
             });
           //  this.changeState(4);
+        },
+        //поиск в полигоне
+        async clickSearchInPolygon(){
+            //активация режима рисования
+            this.delete_geoObject(this.polygonEdit);
+            this.mapInstanse.behaviors.disable('drag');
+            this.stateApp = 1;
         },
         showFullInfo(service){
             try{
