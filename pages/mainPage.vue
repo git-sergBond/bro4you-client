@@ -687,7 +687,8 @@
                 console.log("Price1")
                 this.low_price = low_price;
                 this.high_price = high_price;
-                /*  (1) во время прохода выставляем цвета для ранжирования меток по цене
+                /*  
+                    (1) во время прохода выставляем цвета для ранжирования меток по цене
                     blue - 0 до 25%
                     darkgreen - 25 до 50%
                     orangeIcon - 50 до 75%

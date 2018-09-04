@@ -13,8 +13,9 @@
         :getDiagonalMap=getDiagonalMap 
         :getCenterMap=getCenterMap
         ></search-line>
-        
-        меню -> регалка
+        <div class="map-menu">
+            <img class="logo" src="images/icons/лого.png">
+        </div>
     </div>
 </template>
 
@@ -115,5 +116,18 @@ export default {
 /* теги */
 body{
     margin: 0;
+}
+/**/
+.map-menu{
+    position: relative;
+    width: 100%;
+    height: 0px;
+    display: flex;
+    justify-content: center;
+    top:-60px;
+}
+.map-menu .logo{
+    width: 40px;
+    height: 40px;
 }
 </style>
