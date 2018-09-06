@@ -85,6 +85,9 @@ export default {
 
     --btn-color: rgba(171,211,226,1)
 }
+.list-res{
+    background-color: white;
+}
 .list-res::-webkit-scrollbar{
     width: 20px;
     padding: 3px;
@@ -217,7 +220,7 @@ img.star{
 }
 .icon123{
     width: 20px;
-    height: 20px;
+  /*  height: 20px; */
     margin-right: 3px;
 }
 .flex-line{

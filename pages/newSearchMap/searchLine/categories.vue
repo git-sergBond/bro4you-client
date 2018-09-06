@@ -157,6 +157,7 @@ export default {
 .dop-info{
     display: flex;
     justify-content: space-around;
+    position: relative;
 }
 .item{
     display: flex;
@@ -196,7 +197,8 @@ export default {
     flex-direction: column;
     flex-wrap: wrap;
     flex-basis: auto;
-    width: 300px;
+    /*width: 300px;*/
+    height: 100%;
     justify-content: flex-start;
 }
 .childs .cats p {
@@ -209,13 +211,13 @@ export default {
 /**/
 .wrap-close{
     position: absolute;
-    margin-left: 185px;
-    margin-top: 5px;
+    right: 5px;
+    top: 5px;
 }
 .btn-close{
     align-self: flex-end;
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
 /*Иконки*/
 .icons{

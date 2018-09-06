@@ -13,13 +13,32 @@
         :getDiagonalMap=getDiagonalMap 
         :getCenterMap=getCenterMap
         ></search-line>
+        <div class="map-menu-wrap">
         <div class="map-menu">
-            <img class="logo" src="images/icons/лого.png">
+            <div class="logo">
+                <img src="images/icons/лого.png">
+            </div>
+            <div class="authorise"> 
+                <div class="angle-hex-item item1"><img src="images/icons/open64.png"></div>
+                <div class="angle-hex-item item2"><img src="images/icons/save64.png"></div>
+            </div>
+            <div class="menu-items">
+                <div>ЛК</div>
+                <div>Уведомления</div>
+
+                <div>профиль</div>
+                <div>сообщения</div>
+                <div>Авторизация</div>
+            </div >
         </div>
+        </div>
+        <form-autorize></form-autorize>
     </div>
 </template>
 
 <script>
+import formAutorize from '../components/formAutorize.vue';
+
 import searchLine from './newSearchMap/searchLine.vue'
 
 import TradePoint from '../clases/TradePoint.js';
@@ -28,12 +47,13 @@ export default {
     name: "newSearchMap",
     data(){
         return {
-            coords: [50,50],
+            coords: [55.452376,37.372236],
             mapIsnt: null
         }
     },
     components: {
         searchLine,
+        formAutorize
     },
     methods: {
         initHandler(myMap){
@@ -117,17 +137,70 @@ export default {
 body{
     margin: 0;
 }
+
+
+
 /**/
-.map-menu{
-    position: relative;
+.map-menu-wrap{
     width: 100%;
     height: 0px;
     display: flex;
     justify-content: center;
-    top:-60px;
+}
+.map-menu{
+    position: relative;
 }
 .map-menu .logo{
+    position: absolute;
+    top:-50px;
+}
+.map-menu .logo img{
     width: 40px;
     height: 40px;
+}
+.map-menu .authorise{
+    position: absolute;
+    top: -100px;
+}
+.angle-hex-item{
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    --proporions: 40px;
+    width: var(--proporions);
+    box-shadow: 0px 0px 30px -2px;
+    /*height: var(--proporions);*/
+}
+.angle-hex-item:after{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -10px;
+    border-right: 10px solid white;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+}
+.angle-hex-item:before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: -10px;
+    border-left: 10px solid white;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+}
+.angle-hex-item img{
+    width: 37px;
+    height: 37px;
+}
+.angle-hex-item.item1{
+    left: -35px;
+}
+.angle-hex-item.item2{
+    right: -75px
 }
 </style>
