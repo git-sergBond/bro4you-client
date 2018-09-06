@@ -18,7 +18,9 @@
                 <input required v-model="password" type="password" placeholder="Пароль"/>
             </div>
             <div class="forgot-pass">
-                <input type="checkbox">
+                <span class="checkbox__fake">
+                    <span v-show="true" class="b-checkbox__fake-on"></span>
+                </span>
                 <p>Запомнить меня</p>
             </div>
             <div class="enter-buttons">
@@ -170,11 +172,75 @@ export default {
     right: 20px;
 }
 .signin{
-    width: 100%;
+    width: 87%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-left: 40px;
+}
+.social-net{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.soc-net-icons {
+    display: flex;
+    align-items: center;
+}
+.soc-net-icons img{
+    margin-top: 0px;
+    margin-right: 10px;
+}
+.text-input{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    padding: 3px;
+    margin-bottom: 10px;
+}
+.text-input input{
+    background-color: transparent;
+    border: 0px solid;
+    margin-left: 10px;
+}
+.forgot-pass{
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox__fake {
+    position: relative;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border: 1px solid black;
+    background-color: transparent;
+    margin-right: 10px;
+}
+.b-checkbox__fake-on {
+    position: absolute;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='23' viewBox='0 0 21 23'%3E%3Cpath d='M20.966 3.178L17.62 1.045l-9.623 15.48-4.973-5.516L0 13.85 8.384 23z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    top: -3px;
+    right: -2px;
+    width: 21px;
+    height: 23px;
+}
+.forgot-pass p{
+    margin: 0;
+}
+.enter-buttons{
+    align-self: flex-end;
+}
+.enter-buttons button{
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    border: 1px solid
 }
 </style>
