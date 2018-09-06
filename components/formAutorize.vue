@@ -2,6 +2,11 @@
      <div v-show="isactive" class="win-authorise">
         <img src="images/backgrouns/Rectangle 60.png" class="background">
         <div class="content">
+        <div class="tabs">
+            <p class="active">Войти</p>
+            <div class="separator"></div>
+            <p>Регистрация</p>
+        </div>
         <form v-show="numtab==0" class="signin" @submit.prevent="signin">
             <h1>Авторизация</h1>
             <label>Email или Телефон</label>
@@ -110,5 +115,32 @@ export default {
     left: 0;
     width: var(--w);
     height: var(--h);
+}
+.tabs{
+    --tab-h: 40px;
+    display: flex;
+    justify-content: space-between;
+    width: var(--w);
+    height: var(--tab-h);
+}
+.tabs p {
+    width: calc(var(--w)/2 - 21px);
+    text-align: center;
+}
+.tabs .active{
+    border-bottom: 1px solid black;
+    height: 30px;
+    font-weight: 900;
+}
+.tabs .separator{
+    position: absolute;
+    width: 1px;
+    height: 64px;
+    transform: rotate(45deg);
+    left: calc(var(--w)/2);
+    background-color: black;
+    padding: 0;
+    margin: 0;
+    top: -8px;
 }
 </style>
