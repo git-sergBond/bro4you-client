@@ -7,14 +7,35 @@
             <div class="separator"></div>
             <p>Регистрация</p>
         </div>
+        <p class="btn-close">Закрыть X</p>
         <form v-show="numtab==0" class="signin" @submit.prevent="signin">
-            <h1>Авторизация</h1>
-            <label>Email или Телефон</label>
-            <input required v-model="login" type="text" placeholder="Snoopy"/>
-            <br><label>Пароль</label>
-            <input required v-model="password" type="password" placeholder="Password"/>
-            <br><button >Забыли пароль?</button><button >Или забыли логин?</button>
-            <br><button type="submit">Вход</button>
+            <div class="text-input">
+                <img src="images/icons/user-silhouette.png">
+                <input required v-model="login" type="text" placeholder="Email или Телефон"/>
+            </div>
+            <div class="text-input">
+                <img src="images/icons/key-silhouette-security-tool-interface-symbol-of-password.png">
+                <input required v-model="password" type="password" placeholder="Пароль"/>
+            </div>
+            <div class="forgot-pass">
+                <input type="checkbox">
+                <p>Запомнить меня</p>
+            </div>
+            <div class="enter-buttons">
+                <button type="submit">Войти</button>
+                <p>Забыли пароль?</p>
+            </div>
+            <div class="social-net">
+                <p>Вход через социальные сети</p>
+                <div class="soc-net-icons">
+                    <img src="images/icons/vk.png">
+                    <img src="images/icons/instagram.png">
+                    <img src="images/icons/twitter.png">
+                    <img src="images/icons/google-plus.png">
+                    <img src="images/icons/facebook.png">
+                    <img src="images/icons/pinterest.png">
+                </div>
+            </div>
         </form>
         <!--button @click.prevent="logout">Выход</button-->
         <form v-show="numtab==1" class="signup" @submit.prevent="signup">
@@ -142,5 +163,18 @@ export default {
     padding: 0;
     margin: 0;
     top: -8px;
+}
+.btn-close{
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+}
+.signin{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 </style>
