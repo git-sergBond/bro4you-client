@@ -1,43 +1,5 @@
 <template>
     <div>
-        <!--
-        <div class="modal-form">
-            <div class="button-close">
-
-            </div>
-
-            <div class="socialNet">
-
-            </div>
-            <div class="login">
-                <p></p>
-            </div>
-            <div class="number">
-
-            </div>
-
-            <div class="validation">
-
-            </div>
-            <div class="forgot-pass">
-
-            </div>
-            <div class="message">
-
-            </div>
-            <div class="forgot-login">
-
-            </div>
-            <div class="buttons">
-                <div class="ok">
-
-                </div>
-                <div class="clear">
-
-                </div>
-            </div>
-        </div>
-        -->
         <div class="main-buttons">
             <div class="angle-hex-item signIn">
                 <img src="images/icons/open64.png"/>

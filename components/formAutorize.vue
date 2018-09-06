@@ -1,6 +1,8 @@
 <template>
-     <div>
-        <form class="signin" @submit.prevent="signin">
+     <div v-show="isactive" class="win-authorise">
+        <img src="images/backgrouns/Rectangle 60.png" class="background">
+        <div class="content">
+        <form v-show="numtab==0" class="signin" @submit.prevent="signin">
             <h1>Авторизация</h1>
             <label>Email или Телефон</label>
             <input required v-model="login" type="text" placeholder="Snoopy"/>
@@ -9,8 +11,8 @@
             <br><button >Забыли пароль?</button><button >Или забыли логин?</button>
             <br><button type="submit">Вход</button>
         </form>
-        <button @click.prevent="logout">Выход</button>
-        <form class="signup" @submit.prevent="signup">
+        <!--button @click.prevent="logout">Выход</button-->
+        <form v-show="numtab==1" class="signup" @submit.prevent="signup">
             <h1>Регистрация</h1>
             <br><label>Email или Телефон</label>
             <input required v-model="login" type="text" placeholder="Snoopy"/>
@@ -21,6 +23,7 @@
             <br><button>FaceBook</button><button>Vk</button><button>Ok</button><button>Google</button><button>Yandex</button>
             <br><button type="submit">Зарегистрироваться</button>
         </form>
+        </div>
     </div>
 </template>
 <script>
@@ -32,6 +35,8 @@ export default {
             login: 'agggr@mail.ru',
             password: '1234',
             passwordVerif: '',
+            isactive: false,
+            numtab: 0
         }
     },
     methods: {
@@ -85,6 +90,25 @@ export default {
     }
 }
 </script>
-<style lang="sass" scoped>
-
+<style scoped>
+.win-authorise{
+    --w: 600px;
+    --h: 500px;
+    position: absolute;
+    width: var(--w);
+    height: var(--h);
+    top: 100px;
+    left: 300px;
+}
+.background{
+    width: var(--w);
+    height: var(--h);
+}
+.content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--w);
+    height: var(--h);
+}
 </style>

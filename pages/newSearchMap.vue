@@ -19,8 +19,10 @@
                 <img src="images/icons/лого.png">
             </div>
             <div class="authorise"> 
-                <div class="angle-hex-item item1"><img src="images/icons/open64.png"></div>
-                <div class="angle-hex-item item2"><img src="images/icons/save64.png"></div>
+                <div class="angle-hex-item item1"
+                    @click="signIn"><img src="images/icons/open64.png"></div>
+                <div class="angle-hex-item item2"
+                    @click="signUp"><img src="images/icons/save64.png"></div>
             </div>
             <div class="menu-items">
                 <div>ЛК</div>
@@ -32,14 +34,15 @@
             </div >
         </div>
         </div>
-        <form-autorize></form-autorize>
+        
+        <form-autorize ref="authForm"
+        ></form-autorize>
     </div>
 </template>
 
 <script>
 import formAutorize from '../components/formAutorize.vue';
-
-import searchLine from './newSearchMap/searchLine.vue'
+import searchLine from './newSearchMap/searchLine.vue';
 
 import TradePoint from '../clases/TradePoint.js';
 import categoryVue from '../components/category.vue';
@@ -47,8 +50,10 @@ export default {
     name: "newSearchMap",
     data(){
         return {
+            //карта
             coords: [55.452376,37.372236],
-            mapIsnt: null
+            mapIsnt: null,
+            authFormisactive: false
         }
     },
     components: {
@@ -56,6 +61,14 @@ export default {
         formAutorize
     },
     methods: {
+        signIn(){
+            this.$refs.authForm.isactive = true;
+            this.$refs.authForm.numtab = 0;
+        },
+        signUp(){
+            this.$refs.authForm.isactive = true;
+            this.$refs.authForm.numtab = 1;
+        },
         initHandler(myMap){
             this.mapIsnt = myMap
         },
@@ -125,9 +138,6 @@ export default {
     width: 100px;
 }
 
-
-
-
 /*яндекс карта*/
 .ymap {
     width: 100%;
@@ -171,7 +181,7 @@ body{
     --proporions: 40px;
     width: var(--proporions);
     box-shadow: 0px 0px 30px -2px;
-    /*height: var(--proporions);*/
+    height: var(--proporions);
 }
 .angle-hex-item:after{
     content: "";
