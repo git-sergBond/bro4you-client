@@ -41,15 +41,27 @@
         </form>
         <!--button @click.prevent="logout">Выход</button-->
         <form v-show="numtab==1" class="signup" @submit.prevent="signup">
-            <h1>Регистрация</h1>
-            <br><label>Email или Телефон</label>
-            <input required v-model="login" type="text" placeholder="Snoopy"/>
-            <br><label>Придумайте пароль</label>
-            <input required v-model="password" type="password" placeholder="Password"/>
-            <br><label>Повторите пароль</label>
-            <input required v-model="passwordVerif" type="password" placeholder="Password"/>
-            <br><button>FaceBook</button><button>Vk</button><button>Ok</button><button>Google</button><button>Yandex</button>
-            <br><button type="submit">Зарегистрироваться</button>
+            <div class="row-label-input">
+                <label>Телефон или Email</label>
+                <input required v-model="login" type="text" placeholder="Snoopy"/>
+            </div>
+            <div class="row-label-input"> 
+                <label>Придумайте пароль</label>
+                <input required v-model="password" type="password" placeholder="Password"/>
+            </div>
+            <div class="row-label-input"> 
+                <label>Повторите пароль</label>
+                <input required v-model="passwordVerif" type="password" placeholder="Password"/>
+            </div>
+            <div class="enter-buttons"> 
+                <button type="submit">Зарегистрироваться</button>
+                <div class="save-check">
+                    <span class="checkbox__fake">
+                    <span v-show="true" class="b-checkbox__fake-on"></span>
+                    </span>
+                    <p>Запомнить меня</p>
+                </div>
+            </div>
         </form>
         </div>
     </div>
@@ -180,6 +192,15 @@ export default {
     flex-direction: column;
     margin-left: 40px;
 }
+.signup {
+    width: 87%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 40px;
+}
 .social-net{
     display: flex;
     flex-direction: column;
@@ -242,5 +263,22 @@ export default {
     height: 40px;
     background-color: white;
     border: 1px solid
+}
+.row-label-input{
+    width: 100%;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between
+}
+.row-label-input input {
+    width: 60%;
+    
+}
+.row-label-input label {
+
+}
+.save-check{
+    display: flex;
+    align-items: center;
 }
 </style>
