@@ -38,6 +38,7 @@ const store = new Vuex.Store({
             3 - открытый интерфейс авторизации, вход в 1, 2 , 4
             4 - авторизован, вход в 1
         */
+       autorize: false
     },
     getters: {
         isAuthenticated: state => !!state.token,
@@ -92,7 +93,6 @@ const store = new Vuex.Store({
                 //dispatch(API.USER_REQUEST)
                 resolve(resp)
                 }
-                
               })
             .catch(err => {
               commit(API.AUTH_ERROR, err)
@@ -100,6 +100,17 @@ const store = new Vuex.Store({
               reject(err)
             })
           });
+        },
+        ["autoAuthorize"]:({commit, dispatch}, saveUser, token) => {
+          return new Promise((resolve, reject) => {
+            if(saveUser){
+              commit(API.AUTH_SUCCESS, token)
+              resolve('ok');
+            } else {
+              commit(API.AUTH_ERROR)
+              resolve('not_ok');
+            }
+          })
         }
       },
       mutations: {
@@ -107,12 +118,14 @@ const store = new Vuex.Store({
           state.status = 'loading'
         },
         [API.AUTH_SUCCESS]: (state, token) => {
+          alert(1)
           state.status = 'success'
           state.token = token
         },
         [API.AUTH_ERROR]: (state) => {
+          alert(2)
           state.status = 'error'
-        }
+        },
       }
   })
 // MAIN
@@ -124,6 +137,10 @@ new Vue({
       return {
         showRoutes: true
       }
+    },
+    mounted(){
+      let saveUser  = localStorage.getItem(TOKENS.SAVEUSER);
+      this.$store.dispatch("autoAuthorize",!!saveUser,123)
     }
 }).$mount('#app');
 Vue.config.devtools = true;
