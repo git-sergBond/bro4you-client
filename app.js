@@ -134,11 +134,11 @@ new Vue({
     async mounted(){
       let saveUser  = localStorage.getItem(TOKENS.SAVEUSER);
       let token = localStorage.getItem(TOKENS.AUTHORIZE)
-      if(!!token && !!saveUser){
+      if(!!token && saveUser=="1"){
         axios.defaults.headers.common['Authorization'] = token
         let res = await axios({url: 'sessionAPI/getCurrentRole', method: 'POST' });
-        if(res.status == "OK"){
-          let role = res.role;
+        if(res.data.status == "OK"){
+          let role = res.data.role;
           this.$store.commit(API.SAVE_ROLE, role);
           this.$store.commit(API.AUTH_SUCCESS,token);
         } else {
