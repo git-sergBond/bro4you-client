@@ -17,13 +17,13 @@
                 <img src="images/icons/key-silhouette-security-tool-interface-symbol-of-password.png">
                 <input required v-model="password" type="password" placeholder="Пароль"/>
             </div>
-            <div class="forgot-pass cursor1">
+            <div class="forgot-pass cursor1" @click="invertSaveUser">
                 <span class="checkbox__fake">
                     <span v-show="saveUser" class="b-checkbox__fake-on"></span>
                 </span>
                 <p>Запомнить меня</p>
             </div>
-            <div class="enter-buttons" @click="invertSaveUser">
+            <div class="enter-buttons" >
                 <button type="submit" class="cursor1">Войти</button>
                 <p class="cursor1">Забыли пароль?</p>
             </div>
@@ -51,7 +51,7 @@
             </div>
             <div class="row-label-input"> 
                 <label>Повторите пароль</label>
-                <input required type="password" placeholder="Password"/>
+                <input required v-model="passwordVerif" type="password" placeholder="Password"/>
             </div>
             <br>
             <div class="enter-buttons"> 
@@ -70,6 +70,7 @@
 <script>
 import axios from 'axios';//+
 import API from '../API'
+import TOKENS from '../TOKENS'
 export default {
     data: function(){
         return {
@@ -94,12 +95,17 @@ export default {
         invertSaveUser(){
             this.saveUser = !this.saveUser;
         },
+        locStorSaveUser(){
+            localStorage.setItem(TOKENS.SAVEUSER, this.saveUser);
+        },
         signin: function () {
+            let context = this;
             const { login, password} = this
             this.$store.dispatch(API.AUTH_REQUEST, { login, password })
             .then((resp) => {
                 if(resp.data.status == "OK") {
-                    closeWin();
+                    context.locStorSaveUser();
+                    context.closeWin();
                     alert("Вы успешно авторизовались")
                 } else 
                     alert("ОШИБКА: Авторизация не пройдена")
@@ -114,6 +120,7 @@ export default {
             closeWin();
         },
         signup: function() {
+            let context = this;
             const { login, password, passwordVerif} = this
             //проверка сходства паролей
             let validPass = true
@@ -133,7 +140,8 @@ export default {
                 this.$store.dispatch(API.REGISTRATION_REQUEST, {login, password} /*{ login, password, email, phone, firstname,lastname, male}*/
                 ).then((resp) => {
                     if(resp.data.status == "OK") {
-                        closeWin();
+                        context.locStorSaveUser();
+                        context.closeWin();
                         alert("Зайдите в свою почту для подтверждения")
                     } else 
                         alert("ОШИБКА: Такой логин/пароль уже занят")
