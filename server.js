@@ -15,8 +15,8 @@ app.use(express.static(__dirname));
 //тестовые данные пользователей
 let arr_users= [
   {
-    login: "a",
-    password: "a",
+    login: "agggr@mail.com",
+    password: "1234",
     email: "vacya@mail.ru",
     phone: "89202205409",
     token: "a"
@@ -50,7 +50,8 @@ app.post("/sessionAPI",jsonParser, function(request, response){
       return sendJSON(200,{
         status: 'OK',
         token: user.token,
-        errors: []//? зачем ошибки
+        lifetime:"2018-09-15 17:01:59",
+        role:"User"
       }, response);
     }
   }

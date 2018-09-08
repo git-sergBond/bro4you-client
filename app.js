@@ -38,11 +38,14 @@ const store = new Vuex.Store({
             3 - открытый интерфейс авторизации, вход в 1, 2 , 4
             4 - авторизован, вход в 1
         */
-       role: null
+       role: 'Guests'
     },
     getters: {
         isAuthenticated: state => !!state.token,
         authStatus: state => state.status,
+        isAuthorise: state => {
+          return state.status == 'success'
+        }
     },
     actions: {
         [API.AUTH_REQUEST]: ({commit, dispatch}, user) => {
@@ -51,10 +54,12 @@ const store = new Vuex.Store({
             axios({url: 'sessionAPI', data: user, method: 'POST' })
               .then(resp => {
                 if(resp.data.status == "OK"){
-                   const acessToken = resp.data.token
+                  const acessToken = resp.data.token;
+                  const role = resp.data.role;
                   localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
                   axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
-                  commit(API.AUTH_SUCCESS, acessToken)
+                  const token = acessToken;
+                  commit(API.AUTH_SUCCESS, {token, role})
                   // you have your token, now log in your user :)
                   //dispatch(API.USER_REQUEST)
                 }
@@ -85,10 +90,12 @@ const store = new Vuex.Store({
             axios({url: 'registerAPI', data: user, method: 'POST' })
               .then(resp => {
                 if(resp.data.status == "OK"){
-                  const acessToken = resp.data.token
-                localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
-                axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
-                commit(API.AUTH_SUCCESS, acessToken)
+                  const acessToken = resp.data.token;
+                  const role = resp.data.role;
+                  localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
+                  axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
+                  const token = acessToken;
+                  commit(API.AUTH_SUCCESS, {token, role})
                 // you have your token, now log in your user :)
                 //dispatch(API.USER_REQUEST)
                 resolve(resp)
@@ -106,20 +113,19 @@ const store = new Vuex.Store({
         [API.AUTH_REQUEST]: (state) => {
           state.status = 'loading'
         },
-        [API.AUTH_SUCCESS]: (state, token) => {
-          alert("auth sucess");
+        [API.AUTH_SUCCESS]: (state, {token, role}) => {
+          alert("auth sucess "+role);
           state.status = 'success'
+          console.log("AUTH_SUCCESS ",role)
+          state.role = role;
           state.token = token
         },
         [API.AUTH_ERROR]: (state) => {
           alert("authorise erroro ")
           state.status = 'error'
+          state.role = 'Guests';
         },
-        [API.SAVE_ROLE]: (state, role) => {
-          alert(role)
-          status.role = role;
-        }
-      }
+      },
   })
 // MAIN
 new Vue({
@@ -133,14 +139,17 @@ new Vue({
     },
     async mounted(){
       let saveUser  = localStorage.getItem(TOKENS.SAVEUSER);
-      let token = localStorage.getItem(TOKENS.AUTHORIZE)
+      const token = localStorage.getItem(TOKENS.AUTHORIZE)
+      alert(!!token && saveUser=="1");
       if(!!token && saveUser=="1"){
         axios.defaults.headers.common['Authorization'] = token
+        alert('start');
         let res = await axios({url: 'sessionAPI/getCurrentRole', method: 'POST' });
+        console.log(res.data);
         if(res.data.status == "OK"){
-          let role = res.data.role;
-          this.$store.commit(API.SAVE_ROLE, role);
-          this.$store.commit(API.AUTH_SUCCESS,token);
+          const role = res.data.role;
+          console.log(role)
+          this.$store.commit(API.AUTH_SUCCESS,{token,role});
         } else {
           this.$store.commit(API.AUTH_ERROR);
         }

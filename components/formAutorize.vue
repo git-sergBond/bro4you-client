@@ -74,7 +74,7 @@ import TOKENS from '../TOKENS'
 export default {
     data: function(){
         return {
-            login: 'agggr@mail.ru',
+            login: 'agggr@mail.com',
             password: '1234',
             passwordVerif: '',
             isactive: false,
@@ -96,7 +96,7 @@ export default {
             this.saveUser = !this.saveUser;
         },
         locStorSaveUser(){
-            localStorage.setItem(TOKENS.SAVEUSER, this.saveUser);
+            localStorage.setItem(TOKENS.SAVEUSER, this.saveUser ? 1 : 0);
         },
         signin: function () {
             let context = this;

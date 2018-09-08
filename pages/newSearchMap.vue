@@ -18,13 +18,15 @@
             <div class="logo">
                 <img src="images/icons/лого.png">
             </div>
-            <div class="authorise"> 
+            <!--  -->
+            <div   class="authorise"> 
                 <div class="angle-hex-item item1"
                     @click="signIn"><img src="images/icons/open64.png"></div>
                 <div class="angle-hex-item item2"
                     @click="signUp"><img src="images/icons/save64.png"></div>
             </div>
-            <div class="menu-items">
+            <!--  -->
+            <div  class="menu-items">
                 <div>ЛК</div>
                 <div>Уведомления</div>
 
@@ -59,6 +61,11 @@ export default {
     components: {
         searchLine,
         formAutorize
+    },
+    computed: {
+        isAuthorise(){
+            return this.$store.state.status == 'success'
+        }
     },
     methods: {
         signIn(){
@@ -113,7 +120,7 @@ export default {
             let mapPoint = event.get('target');
             let objPoint = mapPoint.properties.get('linkOnStruct');
             context.$refs.searchln.showFullInfo(objPoint.services[0])
-        }
+        },
     }
 }
 </script>
