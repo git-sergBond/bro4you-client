@@ -38,7 +38,7 @@ const store = new Vuex.Store({
             3 - открытый интерфейс авторизации, вход в 1, 2 , 4
             4 - авторизован, вход в 1
         */
-       autorize: false
+       role: null
     },
     getters: {
         isAuthenticated: state => !!state.token,
@@ -101,31 +101,24 @@ const store = new Vuex.Store({
             })
           });
         },
-        ["autoAuthorize"]:({commit, dispatch}, saveUser, token) => {
-          return new Promise((resolve, reject) => {
-            if(saveUser){
-              commit(API.AUTH_SUCCESS, token)
-              resolve('ok');
-            } else {
-              commit(API.AUTH_ERROR)
-              resolve('not_ok');
-            }
-          })
-        }
       },
       mutations: {
         [API.AUTH_REQUEST]: (state) => {
           state.status = 'loading'
         },
         [API.AUTH_SUCCESS]: (state, token) => {
-          alert(1)
+          alert("auth sucess");
           state.status = 'success'
           state.token = token
         },
         [API.AUTH_ERROR]: (state) => {
-          alert(2)
+          alert("authorise erroro ")
           state.status = 'error'
         },
+        [API.SAVE_ROLE]: (state, role) => {
+          alert(role)
+          status.role = role;
+        }
       }
   })
 // MAIN
@@ -138,9 +131,22 @@ new Vue({
         showRoutes: true
       }
     },
-    mounted(){
+    async mounted(){
       let saveUser  = localStorage.getItem(TOKENS.SAVEUSER);
-      this.$store.dispatch("autoAuthorize",!!saveUser,123)
+      let token = localStorage.getItem(TOKENS.AUTHORIZE)
+      if(!!token && !!saveUser){
+        axios.defaults.headers.common['Authorization'] = token
+        let res = await axios({url: 'sessionAPI/getCurrentRole', method: 'POST' });
+        if(res.status == "OK"){
+          let role = res.role;
+          this.$store.commit(API.SAVE_ROLE, role);
+          this.$store.commit(API.AUTH_SUCCESS,token);
+        } else {
+          this.$store.commit(API.AUTH_ERROR);
+        }
+      } else {
+        this.$store.commit(API.AUTH_ERROR);
+      }
     }
 }).$mount('#app');
 Vue.config.devtools = true;

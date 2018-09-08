@@ -8,5 +8,7 @@ export default {
     AUTH_LOGOUT: "AUTH_LOGOUT",
     //РЕГИСТРАЦИЯ
     //запросы
-    REGISTRATION_REQUEST: "REGISTRATION_REQUEST"
+    REGISTRATION_REQUEST: "REGISTRATION_REQUEST",
+    //
+    SAVE_ROLE: "SAVE_ROLE"
 }
