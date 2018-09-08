@@ -3,11 +3,11 @@
         <img src="images/backgrouns/Rectangle 60.png" class="background">
         <div class="content">
         <div class="tabs">
-            <p @click="goToNumtab0" :class="{ active: numtab==0 }">Войти</p>
+            <p @click="goToNumtab0" class="cursor1" :class="{ active: numtab==0 }">Войти</p>
             <div class="separator" :class="{ tab1: numtab==1 }"></div>
-            <p @click="goToNumtab1" :class="{ active: numtab==1 }">Регистрация</p>
+            <p @click="goToNumtab1" class="cursor1" :class="{ active: numtab==1 }">Регистрация</p>
         </div>
-        <p @click="closeWin" class="btn-close">Закрыть X</p>
+        <p @click="closeWin" class="btn-close cursor1">Закрыть X</p>
         <form v-show="numtab==0" class="signin" @submit.prevent="signin">
             <div class="text-input">
                 <img src="images/icons/user-silhouette.png">
@@ -17,15 +17,15 @@
                 <img src="images/icons/key-silhouette-security-tool-interface-symbol-of-password.png">
                 <input required v-model="password" type="password" placeholder="Пароль"/>
             </div>
-            <div class="forgot-pass">
+            <div class="forgot-pass cursor1">
                 <span class="checkbox__fake">
-                    <span v-show="true" class="b-checkbox__fake-on"></span>
+                    <span v-show="saveUser" class="b-checkbox__fake-on"></span>
                 </span>
                 <p>Запомнить меня</p>
             </div>
-            <div class="enter-buttons">
-                <button type="submit">Войти</button>
-                <p>Забыли пароль?</p>
+            <div class="enter-buttons" @click="invertSaveUser">
+                <button type="submit" class="cursor1">Войти</button>
+                <p class="cursor1">Забыли пароль?</p>
             </div>
             <div class="social-net">
                 <p>Вход через социальные сети</p>
@@ -55,10 +55,10 @@
             </div>
             <br>
             <div class="enter-buttons"> 
-                <button type="submit">Зарегистрироваться</button>
-                <div class="save-check">
+                <button type="submit" class="cursor1">Зарегистрироваться</button>
+                <div class="save-check cursor1" @click="invertSaveUser">
                     <span class="checkbox__fake">
-                    <span v-show="true" class="b-checkbox__fake-on"></span>
+                    <span v-show="saveUser" class="b-checkbox__fake-on"></span>
                     </span>
                     <p>Запомнить меня</p>
                 </div>
@@ -77,7 +77,8 @@ export default {
             password: '1234',
             passwordVerif: '',
             isactive: false,
-            numtab: 0
+            numtab: 0,
+            saveUser: true
         }
     },
     methods: {
@@ -90,13 +91,17 @@ export default {
         closeWin(){
             this.isactive = false;
         },
+        invertSaveUser(){
+            this.saveUser = !this.saveUser;
+        },
         signin: function () {
             const { login, password} = this
             this.$store.dispatch(API.AUTH_REQUEST, { login, password })
             .then((resp) => {
-                if(resp.data.status == "OK") 
+                if(resp.data.status == "OK") {
+                    closeWin();
                     alert("Вы успешно авторизовались")
-                else 
+                } else 
                     alert("ОШИБКА: Авторизация не пройдена")
             })
             .catch(()=>{
@@ -106,6 +111,7 @@ export default {
         logout: function () {
             alert("Выход")
             this.$store.dispatch(API.AUTH_LOGOUT)
+            closeWin();
         },
         signup: function() {
             const { login, password, passwordVerif} = this
@@ -126,9 +132,10 @@ export default {
             if(validPass){
                 this.$store.dispatch(API.REGISTRATION_REQUEST, {login, password} /*{ login, password, email, phone, firstname,lastname, male}*/
                 ).then((resp) => {
-                    if(resp.data.status == "OK") 
+                    if(resp.data.status == "OK") {
+                        closeWin();
                         alert("Зайдите в свою почту для подтверждения")
-                    else 
+                    } else 
                         alert("ОШИБКА: Такой логин/пароль уже занят")
                 }).catch(()=>{
                     alert("ОШИБКА: Что-то пощло не так")
@@ -293,5 +300,8 @@ export default {
 }
 .separator.tab1{
     transform: rotate(-45deg);
+}
+.cursor1{
+    cursor: pointer;
 }
 </style>
