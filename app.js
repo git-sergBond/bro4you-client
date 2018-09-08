@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import YmapPlugin from 'vue-yandex-maps';
 import Vuex from 'vuex';
 import axios from 'axios';//+
+axios.defaults.headers.common['Authorization'] = "first";
 Vue.use(YmapPlugin);
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -140,9 +141,11 @@ new Vue({
     async mounted(){
       let saveUser  = localStorage.getItem(TOKENS.SAVEUSER);
       const token = localStorage.getItem(TOKENS.AUTHORIZE)
+      alert(token)
       alert(!!token && saveUser=="1");
       if(!!token && saveUser=="1"){
-        axios.defaults.headers.common['Authorization'] = token
+        axios.defaults.headers.common['Authorization'] = token;
+        alert(token)
         alert('start');
         let res = await axios({url: 'sessionAPI/getCurrentRole', method: 'POST' });
         console.log(res.data);
@@ -152,9 +155,11 @@ new Vue({
           this.$store.commit(API.AUTH_SUCCESS,{token,role});
         } else {
           this.$store.commit(API.AUTH_ERROR);
+          axios.defaults.headers.common['Authorization'] = "first";
         }
       } else {
         this.$store.commit(API.AUTH_ERROR);
+        axios.defaults.headers.common['Authorization'] = "first";
       }
     }
 }).$mount('#app');

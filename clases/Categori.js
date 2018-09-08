@@ -1,4 +1,5 @@
 import axios from 'axios';
+import TOKENS from '../TOKENS'
 /*
  * Класс категории
  */
@@ -21,6 +22,8 @@ export default class Categori{
     static async getCategoriesForSite(){
         let treeCategories = null
         try{
+
+            
             let res = await axios({url: 'CategoriesAPI/getCategoriesForSite', method: 'GET' })
             treeCategories = {
                 name:"Категории", 

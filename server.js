@@ -19,7 +19,7 @@ let arr_users= [
     password: "1234",
     email: "vacya@mail.ru",
     phone: "89202205409",
-    token: "a"
+    token: "06c7cd0481bc1951420cd2428554738abe7ef137b52235792a0ef043ce70e25b"
   },
   {
     login: "b",
