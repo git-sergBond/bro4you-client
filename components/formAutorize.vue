@@ -3,11 +3,11 @@
         <img src="images/backgrouns/Rectangle 60.png" class="background">
         <div class="content">
         <div class="tabs">
-            <p class="active">Войти</p>
-            <div class="separator"></div>
-            <p>Регистрация</p>
+            <p @click="goToNumtab0" :class="{ active: numtab==0 }">Войти</p>
+            <div class="separator" :class="{ tab1: numtab==1 }"></div>
+            <p @click="goToNumtab1" :class="{ active: numtab==1 }">Регистрация</p>
         </div>
-        <p class="btn-close">Закрыть X</p>
+        <p @click="closeWin" class="btn-close">Закрыть X</p>
         <form v-show="numtab==0" class="signin" @submit.prevent="signin">
             <div class="text-input">
                 <img src="images/icons/user-silhouette.png">
@@ -51,8 +51,9 @@
             </div>
             <div class="row-label-input"> 
                 <label>Повторите пароль</label>
-                <input required v-model="passwordVerif" type="password" placeholder="Password"/>
+                <input required type="password" placeholder="Password"/>
             </div>
+            <br>
             <div class="enter-buttons"> 
                 <button type="submit">Зарегистрироваться</button>
                 <div class="save-check">
@@ -80,6 +81,15 @@ export default {
         }
     },
     methods: {
+        goToNumtab0(){
+            this.numtab = 0;
+        },
+        goToNumtab1(){
+            this.numtab = 1;
+        },
+        closeWin(){
+            this.isactive = false;
+        },
         signin: function () {
             const { login, password} = this
             this.$store.dispatch(API.AUTH_REQUEST, { login, password })
@@ -280,5 +290,8 @@ export default {
 .save-check{
     display: flex;
     align-items: center;
+}
+.separator.tab1{
+    transform: rotate(-45deg);
 }
 </style>
