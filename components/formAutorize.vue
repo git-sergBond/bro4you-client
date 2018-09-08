@@ -98,21 +98,26 @@ export default {
         locStorSaveUser(){
             localStorage.setItem(TOKENS.SAVEUSER, this.saveUser ? 1 : 0);
         },
-        signin: function () {
+        signin: async function () {
             let context = this;
             const { login, password} = this
-            this.$store.dispatch(API.AUTH_REQUEST, { login, password })
-            .then((resp) => {
-                if(resp.data.status == "OK") {
+            try{
+                let resp = await this.$store.dispatch(API.AUTH_REQUEST, { login, password })
+                if(this.$store.state.status == 'success'){
                     context.locStorSaveUser();
-                    context.closeWin();
+                    context.closeWin()
                     alert("Вы успешно авторизовались")
-                } else 
+                }else if(this.$store.state.status == 'error'){
                     alert("ОШИБКА: Авторизация не пройдена")
-            })
-            .catch(()=>{
-                 alert("ОШИБКА: Проблема в соединении с сервером")
-            })
+                } else {
+                    alert("ОШИБКА: не известная")
+                }
+                if(resp.data.status != "OK"){
+                    alert("Ошибка соединения или работы сервера")
+                }
+            }catch(e){
+                alert(e.message)
+            }
         },
         logout: function () {
             alert("Выход")

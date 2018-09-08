@@ -30,7 +30,7 @@ const store = new Vuex.Store({
     
     state: {
         token: localStorage.getItem(TOKENS.AUTHORIZE) || '',
-        status: '',
+        status: 'error',
         /*
         statusUI_Autorize: 0, 
         
@@ -99,7 +99,7 @@ const store = new Vuex.Store({
                   commit(API.AUTH_SUCCESS, {token, role})
                 // you have your token, now log in your user :)
                 //dispatch(API.USER_REQUEST)
-                resolve(resp)
+                  resolve(resp)
                 }
               })
             .catch(err => {
@@ -112,18 +112,20 @@ const store = new Vuex.Store({
       },
       mutations: {
         [API.AUTH_REQUEST]: (state) => {
-          state.status = 'loading'
+          /*state.status = 'loading'*/
         },
         [API.AUTH_SUCCESS]: (state, {token, role}) => {
-          alert("auth sucess "+role);
+       /*   alert("auth sucess "+role);*/
           state.status = 'success'
-          console.log("AUTH_SUCCESS ",role)
+          alert(state.status)
+       /*   console.log("AUTH_SUCCESS ",role)*/
           state.role = role;
           state.token = token
         },
         [API.AUTH_ERROR]: (state) => {
-          alert("authorise erroro ")
+         /* alert("authorise erroro ")*/
           state.status = 'error'
+          alert(state.status)
           state.role = 'Guests';
         },
       },
@@ -141,17 +143,17 @@ new Vue({
     async mounted(){
       let saveUser  = localStorage.getItem(TOKENS.SAVEUSER);
       const token = localStorage.getItem(TOKENS.AUTHORIZE)
-      alert(token)
-      alert(!!token && saveUser=="1");
+   /*   alert(token)*/
+    /*  alert(!!token && saveUser=="1");*/
       if(!!token && saveUser=="1"){
         axios.defaults.headers.common['Authorization'] = token;
-        alert(token)
-        alert('start');
+     /*   alert(token)*/
+       /* alert('start');*/
         let res = await axios({url: 'sessionAPI/getCurrentRole', method: 'POST' });
         console.log(res.data);
         if(res.data.status == "OK"){
           const role = res.data.role;
-          console.log(role)
+     /*    console.log(role)*/
           this.$store.commit(API.AUTH_SUCCESS,{token,role});
         } else {
           this.$store.commit(API.AUTH_ERROR);

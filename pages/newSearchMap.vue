@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <div class="map-comp reset-margin"
             @mouseup='mouseup_event_DrawPolygonByFinger'
             @mousedown='mousedown_event_DrawPolygonByFinger'>
@@ -14,19 +15,22 @@
         :getCenterMap=getCenterMap
         ></search-line>
         <div class="map-menu-wrap">
+            
         <div class="map-menu">
             <div class="logo">
                 <img src="images/icons/лого.png">
             </div>
+           
             <!--  -->
-            <div   class="authorise"> 
+            <div v-if="isAuthorise == 'error' "   class="authorise"> 
                 <div class="angle-hex-item item1"
                     @click="signIn"><img src="images/icons/open64.png"></div>
                 <div class="angle-hex-item item2"
                     @click="signUp"><img src="images/icons/save64.png"></div>
             </div>
+            
             <!--  -->
-            <div  class="menu-items">
+            <div v-if="isAuthorise == 'success'" class="menu-items">
                 <div>ЛК</div>
                 <div>Уведомления</div>
 
@@ -64,8 +68,18 @@ export default {
     },
     computed: {
         isAuthorise(){
-            return this.$store.state.status == 'success'
+            return this.$store.state.status;
         }
+    },
+    mounted() {
+        /*
+        try{
+        console.log("1")
+        console.log(this.isAuthorise)
+        console.log("2")
+        }catch(e){
+            console.log("newSearchMap.mounted() : "+ e.message)
+        }*/
     },
     methods: {
         signIn(){
