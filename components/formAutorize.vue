@@ -102,11 +102,19 @@ export default {
             let context = this;
             const { login, password} = this
             try{
+                console.log('begin -1-')
+                console.log(this.$store.state.status)
                 let resp = await this.$store.dispatch(API.AUTH_REQUEST, { login, password })
+                console.log(this.$store.state.status)
+                context.locStorSaveUser();
+                context.closeWin();
+                console.log(this.$store.state.status)
+                /*
+                console.log(resp)
                 if(this.$store.state.status == 'success'){
                     context.locStorSaveUser();
                     context.closeWin()
-                    alert("Вы успешно авторизовались")
+                    console.log("Вы успешно авторизовались")
                 }else if(this.$store.state.status == 'error'){
                     alert("ОШИБКА: Авторизация не пройдена")
                 } else {
@@ -114,9 +122,9 @@ export default {
                 }
                 if(resp.data.status != "OK"){
                     alert("Ошибка соединения или работы сервера")
-                }
+                }*/
             }catch(e){
-                alert(e.message)
+                console.log(e.message)
             }
         },
         logout: function () {

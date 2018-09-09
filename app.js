@@ -50,22 +50,29 @@ const store = new Vuex.Store({
     },
     actions: {
         [API.AUTH_REQUEST]: ({commit, dispatch}, user) => {
+          let context = this;
           return new Promise((resolve, reject) => { // The Promise used for router redirect in login
             commit(API.AUTH_REQUEST)
             axios({url: 'sessionAPI', data: user, method: 'POST' })
               .then(resp => {
-                if(resp.data.status == "OK"){
-                  const acessToken = resp.data.token;
-                  const role = resp.data.role;
-                  localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
-                  axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
-                  const token = acessToken;
-                  commit(API.AUTH_SUCCESS, {token, role})
-                  // you have your token, now log in your user :)
-                  //dispatch(API.USER_REQUEST)
+                try{
+                  if(resp.data.status == "OK"){
+                    const acessToken = resp.data.token;
+                    const role = resp.data.role;
+                    localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
+                    axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
+                    const token = acessToken;
+                    console.log(token)
+                    const obj = {
+                      token: acessToken,
+                      role: role
+                    }
+                    commit(API.AUTH_SUCCESS, obj)
+                  }
+                  resolve(resp)
+                } catch (e) {
+                  alert("app.js actions [API.AUTH_REQUEST] : "+e.message)
                 }
-               
-                resolve(resp)
               })
             .catch(err => {
               commit(API.AUTH_ERROR, err)
@@ -97,8 +104,6 @@ const store = new Vuex.Store({
                   axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
                   const token = acessToken;
                   commit(API.AUTH_SUCCESS, {token, role})
-                // you have your token, now log in your user :)
-                //dispatch(API.USER_REQUEST)
                   resolve(resp)
                 }
               })
@@ -113,14 +118,15 @@ const store = new Vuex.Store({
       mutations: {
         [API.AUTH_REQUEST]: (state) => {
           /*state.status = 'loading'*/
+          state.status = 'error'
         },
         [API.AUTH_SUCCESS]: (state, {token, role}) => {
-       /*   alert("auth sucess "+role);*/
+          /*
           state.status = 'success'
-          alert(state.status)
-       /*   console.log("AUTH_SUCCESS ",role)*/
           state.role = role;
-          state.token = token
+          state.token = token;
+          */
+          alert(state.role)
         },
         [API.AUTH_ERROR]: (state) => {
          /* alert("authorise erroro ")*/
