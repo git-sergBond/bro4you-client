@@ -1,7 +1,7 @@
 export default {
     //АВТОРИЗАЦИЯ
     //запросы
-    AUTH_REQUEST: "AUTH_REQUEST",
+    AUTH_REQUEST123abc: "sdfsdfs45346346346dfsdfsdf",//,"AUTH_REQUEST",
     //состояния
     AUTH_SUCCESS: "AUTH_SUCCESS",
     AUTH_ERROR: "AUTH_ERROR",

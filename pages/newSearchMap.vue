@@ -21,16 +21,16 @@
                 <img src="images/icons/лого.png">
             </div>
            
-            <!--  -->
-            <div v-if="isAuthorise == 'error' "   class="authorise"> 
+            <!-- v-if="isAuthorise == 'error'" -->
+            <div     class="authorise"> 
                 <div class="angle-hex-item item1"
                     @click="signIn"><img src="images/icons/open64.png"></div>
                 <div class="angle-hex-item item2"
                     @click="signUp"><img src="images/icons/save64.png"></div>
             </div>
             
-            <!--  -->
-            <div v-if="isAuthorise == 'success'" class="menu-items">
+            <!-- v-if="isAuthorise == 'success'" -->
+            <div  class="menu-items">
                 <div>ЛК</div>
                 <div>Уведомления</div>
 

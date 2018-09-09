@@ -67,7 +67,9 @@ const store = new Vuex.Store({
                       token: acessToken,
                       role: role
                     }
-                    commit(API.AUTH_SUCCESS, obj)
+                   // commit('successdfsdfsdf')
+                  // commit('sdfsdfs45346346346dfsdfsdf',obj)
+                    commit(API.AUTH_REQUEST123abc, obj)
                   }
                   resolve(resp)
                 } catch (e) {
@@ -103,7 +105,8 @@ const store = new Vuex.Store({
                   localStorage.setItem(TOKENS.AUTHORIZE, acessToken) // store the token in localstorage
                   axios.defaults.headers.common['Authorization'] = acessToken//применяем токен для каждого следующего запроса
                   const token = acessToken;
-                  commit(API.AUTH_SUCCESS, {token, role})
+                  //commit(API.AUTH_SUCCESS, {token, role})
+                  commit('successdfsdfsdf')
                   resolve(resp)
                 }
               })
@@ -116,17 +119,35 @@ const store = new Vuex.Store({
         },
       },
       mutations: {
-        [API.AUTH_REQUEST]: (state) => {
+        [API.AUTH_REQUEST123abc]: (state, obj) => {
+       //   sdfsdfs45346346346dfsdfsdf(state, obj){
           /*state.status = 'loading'*/
-          state.status = 'error'
+     //   state.status = 'error'
+          state.status = 'success'
+          alert(obj.role);
+     //     state.role = "role";
+     //     state.token = "token";
         },
-        [API.AUTH_SUCCESS]: (state, {token, role}) => {
+        successdfsdfsdf(state){
+          alert(state.status);
+          state.status = 'success'
+        },
+        [API.AUTH_SUCCESS]: (state) => {
+  
+        /*  let {token, role} = obj;/=*/
           /*
           state.status = 'success'
           state.role = role;
-          state.token = token;
-          */
-          alert(state.role)
+          state.token = token;*/
+          state.status = 'success'
+          state.role = "role";
+          state.token = "token";
+   /*       localStorage.setItem("5",token);
+          localStorage.setItem("6",role);
+         /*
+         localStorage.setItem("3",state.role)
+         localStorage.setItem("4",state.token)
+          alert(state.role)*/
         },
         [API.AUTH_ERROR]: (state) => {
          /* alert("authorise erroro ")*/
