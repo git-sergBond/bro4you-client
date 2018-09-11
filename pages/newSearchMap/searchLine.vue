@@ -50,7 +50,6 @@ import ofenUsed from "./searchLine/ofenUsed.vue";
 
 import Categori from '../../clases/Categori.js'
 import Service from '../../clases/Service.js'
-import Polygon from '../../clases/Polygon.js'
 
 export default {
     name: "searchLine",
@@ -150,11 +149,8 @@ export default {
           //  this.changeState(4);
         },
         //поиск в полигоне
-        async clickSearchInPolygon(){
-            //активация режима рисования
-            this.delete_geoObject(this.polygonEdit);
-            this.mapInstanse.behaviors.disable('drag');
-            this.stateApp = 1;
+        clickSearchInPolygon(){
+            this.$emit('startDrawLine');
         },
         showFullInfo(service){
             try{

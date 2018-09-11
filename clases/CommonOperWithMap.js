@@ -6,4 +6,13 @@ export default {
     delete_geoObject(o,mapInstanse){
         if(!!o) mapInstanse.geoObjects.remove(o);
     },
+    delGeoObj(){
+        
+    },
+    addGeoObj(){
+
+    },
+    addEvent(){
+
+    }
 }

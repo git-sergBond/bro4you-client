@@ -52,7 +52,7 @@ const store = new Vuex.Store({
         [API.AUTH_REQUEST]: ({commit, dispatch}, user) => {
           let context = this;
           return new Promise((resolve, reject) => { // The Promise used for router redirect in login
-            commit(API.AUTH_REQUEST)
+            commit(API.AUTH_REQUEST123abc)
             axios({url: 'sessionAPI', data: user, method: 'POST' })
               .then(resp => {
                 try{
@@ -67,8 +67,6 @@ const store = new Vuex.Store({
                       token: acessToken,
                       role: role
                     }
-                   // commit('successdfsdfsdf')
-                  // commit('sdfsdfs45346346346dfsdfsdf',obj)
                     commit(API.AUTH_REQUEST123abc, obj)
                   }
                   resolve(resp)
@@ -77,7 +75,7 @@ const store = new Vuex.Store({
                 }
               })
             .catch(err => {
-              commit(API.AUTH_ERROR, err)
+              commit(API.AUTH_ERROR123abc, err)
               localStorage.removeItem(TOKENS.AUTHORIZE) // if the request fails, remove any possible user token if possible
               reject(err)
             })
@@ -85,10 +83,10 @@ const store = new Vuex.Store({
         },
         [API.AUTH_LOGOUT]: ({commit, dispatch}) => {
             return new Promise((resolve, reject) => {
-              commit(API.AUTH_LOGOUT)
+              commit(API.AUTH_LOGOUT123abc)
               localStorage.removeItem(TOKENS.AUTHORIZE)
               axios({url: 'sessionAPI/end', method: 'POST' })
-              commit(API.AUTH_ERROR, err)
+              commit(API.AUTH_ERROR123abc, err)
               //!!!
               //delete axios.defaults.headers.common['Authorization'];//!!!
               //!!!
@@ -117,42 +115,20 @@ const store = new Vuex.Store({
             })
           });
         },
+        authomaticAuthorise: ({commit, dispatch}) => {
+        }
       },
       mutations: {
         [API.AUTH_REQUEST123abc]: (state, obj) => {
-       //   sdfsdfs45346346346dfsdfsdf(state, obj){
-          /*state.status = 'loading'*/
-     //   state.status = 'error'
-          state.status = 'success'
-          alert(obj.role);
-     //     state.role = "role";
-     //     state.token = "token";
+          state.status = 'error'
         },
-        successdfsdfsdf(state){
-          alert(state.status);
-          state.status = 'success'
-        },
-        [API.AUTH_SUCCESS]: (state) => {
-  
-        /*  let {token, role} = obj;/=*/
-          /*
+        [API.AUTH_SUCCESS123abc]: (state, {token, role}) => {
           state.status = 'success'
           state.role = role;
-          state.token = token;*/
-          state.status = 'success'
-          state.role = "role";
-          state.token = "token";
-   /*       localStorage.setItem("5",token);
-          localStorage.setItem("6",role);
-         /*
-         localStorage.setItem("3",state.role)
-         localStorage.setItem("4",state.token)
-          alert(state.role)*/
+          state.token = token;
         },
-        [API.AUTH_ERROR]: (state) => {
-         /* alert("authorise erroro ")*/
+        [API.AUTH_ERROR123abc]: (state) => {
           state.status = 'error'
-          alert(state.status)
           state.role = 'Guests';
         },
       },
@@ -181,13 +157,13 @@ new Vue({
         if(res.data.status == "OK"){
           const role = res.data.role;
      /*    console.log(role)*/
-          this.$store.commit(API.AUTH_SUCCESS,{token,role});
+          this.$store.commit(API.AUTH_SUCCESS123abc,{token,role});
         } else {
-          this.$store.commit(API.AUTH_ERROR);
+          this.$store.commit(API.AUTH_ERROR123abc);
           axios.defaults.headers.common['Authorization'] = "first";
         }
       } else {
-        this.$store.commit(API.AUTH_ERROR);
+        this.$store.commit(API.AUTH_ERROR123abc);
         axios.defaults.headers.common['Authorization'] = "first";
       }
     }

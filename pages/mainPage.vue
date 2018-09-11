@@ -1,10 +1,16 @@
 <template>
     <div>
         <div class="map-comp"
+            
              @mouseup='mouseup_event_DrawPolygonByFinger' @mousedown='mousedown_event_DrawPolygonByFinger'>
             <yandex-map class="ymap" zoom="8"
                         :controls="['zoomControl']" :coords="coords"
-                        @map-was-initialized="initHandler"></yandex-map>
+                        @map-was-initialized="initHandler"
+                        style=" {
+    filter: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale'); 
+    -webkit-filter: grayscale(100%); 
+}"
+                        ></yandex-map>
         </div>
         <authorization class="authorization"></authorization>
         <div class="top-panel">

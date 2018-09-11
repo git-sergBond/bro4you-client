@@ -11,6 +11,7 @@
         <search-line ref="searchln" class="search-line common-margin" 
         @drawServices=drawServices 
         @deletePoints=deletePoints
+        @startDrawLine=startDrawLine
         :getDiagonalMap=getDiagonalMap 
         :getCenterMap=getCenterMap
         ></search-line>
@@ -52,6 +53,11 @@ import searchLine from './newSearchMap/searchLine.vue';
 
 import TradePoint from '../clases/TradePoint.js';
 import categoryVue from '../components/category.vue';
+
+
+import Polygon from '../clases/Polygon.js';
+import Polyline from '../clases/Polyline.js';
+
 export default {
     name: "newSearchMap",
     data(){
@@ -59,7 +65,15 @@ export default {
             //карта
             coords: [55.452376,37.372236],
             mapIsnt: null,
-            authFormisactive: false
+            authFormisactive: false,
+            //
+            drawPolyline: null,
+            drawPolygon: null,
+            //
+            lineStringGeometry: null,
+            lineString: null,
+            line: null,
+            stateDrawing: 0
         }
     },
     components: {
@@ -71,17 +85,33 @@ export default {
             return this.$store.state.status;
         }
     },
-    mounted() {
-        /*
-        try{
-        console.log("1")
-        console.log(this.isAuthorise)
-        console.log("2")
-        }catch(e){
-            console.log("newSearchMap.mounted() : "+ e.message)
-        }*/
-    },
     methods: {
+        async startDrawLine(){
+            //активация режима рисования
+          /*  this.delete_geoObject(this.polygonEdit);*/
+            this.mapIsnt.behaviors.disable('drag');
+        },
+        mousedown_event_DrawPolygonByFinger(){
+            //this.drawPolyline.startDraw();
+            if (this.stateDrawing === 0) this.stateDrawing = 1;
+        },
+        mouseup_event_DrawPolygonByFinger(){
+            //this.drawPolyline.endDraw();
+            if (this.stateDrawing === 1 && this.lineStringGeometry.getLength()>2) {
+                this.stateDrawing = 0;
+               // this.getResult();
+            }
+        },
+        mousemoveDraw(event){
+            if (this.stateDrawing !== 1) return;
+            const point = event.get('coords');
+            /*
+            const position = event.get('position');
+            this.positionsOnPoligon.push(position);//добавляем точки для нахождения первого пересечения
+            */
+            const length = this.lineStringGeometry.getLength();
+            this.lineStringGeometry.insert(length, point);
+        },
         signIn(){
             this.$refs.authForm.isactive = true;
             this.$refs.authForm.numtab = 0;
@@ -91,7 +121,27 @@ export default {
             this.$refs.authForm.numtab = 1;
         },
         initHandler(myMap){
-            this.mapIsnt = myMap
+            try{
+                this.mapIsnt = myMap
+                //this.drawPolyline = new Polyline([],this.mapIsnt);
+                //this.mapInstanse = mapInstanse;
+                this.lineStringGeometry = new ymaps.geometry.LineString([]);
+                this.line = new ymaps.GeoObject({
+                    geometry: this.lineStringGeometry,
+                }, {
+                    // Описываем опции геообъекта.
+                    fillColor: '#00FF00',// Цвет заливки.
+                    strokeColor: '#0000FF',// Цвет обводки.
+                    opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки).
+                    strokeWidth: 5,// Ширина обводки.
+                    strokeStyle: 'shortdash'// Стиль обводки.
+                });
+                this.mapIsnt.geoObjects.add(this.line); // Создаем инстанцию геообъекта и передаем нашу геометрию
+                this.mapIsnt.events.add("mousemove", this.mousemoveDraw);
+                this.stateDrawing = 0;//состояние рисования линии
+            }catch(e){
+                console.log("newSearchMap.initHandler() : "+ e.message)
+            }
         },
         //получить координаты центра
         getCenterMap(){
