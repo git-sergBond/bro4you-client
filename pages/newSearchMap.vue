@@ -99,7 +99,8 @@ export default {
             //this.drawPolyline.endDraw();
             if (this.stateDrawing === 1 && this.lineStringGeometry.getLength()>2) {
                 this.stateDrawing = 0;
-               // this.getResult();
+                this.getResult();
+                this.mapIsnt.behaviors.enable('drag');
             }
         },
         mousemoveDraw(event){
@@ -112,6 +113,31 @@ export default {
             const length = this.lineStringGeometry.getLength();
             this.lineStringGeometry.insert(length, point);
         },
+        async getResult() {
+            //ищем среди объектов полигон и отправляем его на сервер
+            let coordinates = this.lineStringGeometry.getCoordinates();
+            //!добавляем точку в конец, чтобы не делать преобразований с полигоном
+            this.lineStringGeometry.insert(this.lineStringGeometry.getLength(),this.lineStringGeometry.getCoordinates()[0]);
+            //упрощаем геометрию линии, что бы можно было построить полигон
+            let simple_line = this.alg_simplifi_line(coordinates);
+            this.poly_line = simple_line;
+            // передача информауии на сервер
+            /*this.ClearMap();*/
+            this.polygonEdit = await this.NewPolygon(simple_line);
+           // this.placemarks = await this.getInfoForPoligon_from_server(simple_line);
+        },
+        alg_simplifi_line(arr_in){
+                let lenSimplifi = 5;
+                //уменьшение колличества точек на линии
+                let simle_arr = [];
+                simle_arr.push(arr_in[0]);
+                for (let index = 0; index < arr_in.length; index++) {
+                    const el = arr_in[index]
+                    if(index % lenSimplifi <= 0) simle_arr.push(el);
+                }
+                simle_arr.push(arr_in[arr_in.length-1]);
+                return simle_arr;
+            },
         signIn(){
             this.$refs.authForm.isactive = true;
             this.$refs.authForm.numtab = 0;
