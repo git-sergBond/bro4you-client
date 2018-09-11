@@ -122,8 +122,8 @@ export default {
             let simple_line = this.alg_simplifi_line(coordinates);
             this.poly_line = simple_line;
             // передача информауии на сервер
-            /*this.ClearMap();*/
-            this.polygonEdit = await this.NewPolygon(simple_line);
+            this.mapIsnt.geoObjects.removeAll();
+            this.drawPolygon = new Polygon(simple_line,this.mapIsnt);
            // this.placemarks = await this.getInfoForPoligon_from_server(simple_line);
         },
         alg_simplifi_line(arr_in){

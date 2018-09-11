@@ -19,14 +19,4 @@ export default class Polygon{
             console.log("class Polygon.constructor() : " + e.message)
         }
     }
-    
-    
-    mouseup_event_DrawPolygonByFinger(event){
-        if (this.stateApp === 2) {
-            if(this.lineStringGeometry.getLength()>2){
-                this.stateApp = 1;
-                this.Send_Polygon();
-            }
-        }
-    }
 }
