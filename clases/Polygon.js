@@ -14,9 +14,13 @@ export default class Polygon{
                 opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки).
                 strokeWidth: 3,// Ширина обводки.
             });
+            this.objInstanse = p;
             this.mapInstanse.geoObjects.add(p);// Добавляем многоугольник на карту.
         }catch(e){
             console.log("class Polygon.constructor() : " + e.message)
         }
+    }
+    foo(){
+        console.log(this.objInstanse)
     }
 }

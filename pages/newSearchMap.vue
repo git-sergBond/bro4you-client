@@ -96,11 +96,15 @@ export default {
             if (this.stateDrawing === 0) this.stateDrawing = 1;
         },
         mouseup_event_DrawPolygonByFinger(){
-            //this.drawPolyline.endDraw();
-            if (this.stateDrawing === 1 && this.lineStringGeometry.getLength()>2) {
-                this.stateDrawing = 0;
-                this.getResult();
-                this.mapIsnt.behaviors.enable('drag');
+            try{
+                //this.drawPolyline.endDraw();
+                if (this.stateDrawing === 1 && this.lineStringGeometry.getLength()>2) {
+                    this.stateDrawing = 0;
+                    this.getResult();
+                    this.mapIsnt.behaviors.enable('drag');
+                }
+            } catch(e) {
+                console.log('newSearchMap.mouseup_event_DrawPolygonByFinger() : ',e.message)
             }
         },
         mousemoveDraw(event){
@@ -114,6 +118,7 @@ export default {
             this.lineStringGeometry.insert(length, point);
         },
         async getResult() {
+            try{
             //ищем среди объектов полигон и отправляем его на сервер
             let coordinates = this.lineStringGeometry.getCoordinates();
             //!добавляем точку в конец, чтобы не делать преобразований с полигоном
@@ -123,8 +128,34 @@ export default {
             this.poly_line = simple_line;
             // передача информауии на сервер
             this.mapIsnt.geoObjects.removeAll();
+
             this.drawPolygon = new Polygon(simple_line,this.mapIsnt);
-           // this.placemarks = await this.getInfoForPoligon_from_server(simple_line);
+            //
+            const polygonBounds = this.drawPolygon.objInstanse.geometry.getBounds()
+            const diagonalPoints = polygonBounds[0];
+            const diagonal = {
+                longitude: diagonalPoints[1],
+                latitude: diagonalPoints[0]
+            }
+            //
+            const centerPoint = ymaps.util.bounds.getCenter(polygonBounds)
+            console.log(polygonBounds)
+            console.log(centerPoint)
+            const center = { 
+                longitude: centerPoint[1], 
+                latitude: centerPoint[0] 
+            }
+
+            await this.$refs.searchln.getServices({
+                typeQuery:4,
+                center,
+                diagonal});
+
+            this.drawPolygon = new Polygon(simple_line,this.mapIsnt);
+            
+            }catch(e){
+                console.log('error newSearchMap.getResult : ',e.message)
+            }
         },
         alg_simplifi_line(arr_in){
                 let lenSimplifi = 5;
