@@ -73,7 +73,7 @@ export default {
             lineStringGeometry: null,
             lineString: null,
             line: null,
-            stateDrawing: 0
+            stateDrawing: -1
         }
     },
     components: {
@@ -90,16 +90,17 @@ export default {
             //активация режима рисования
           /*  this.delete_geoObject(this.polygonEdit);*/
             this.mapIsnt.behaviors.disable('drag');
+            this.stateDrawing = 0
         },
         mousedown_event_DrawPolygonByFinger(){
             //this.drawPolyline.startDraw();
-            if (this.stateDrawing === 0) this.stateDrawing = 1;
+            if (this.stateDrawing == 0) this.stateDrawing = 1;
         },
         mouseup_event_DrawPolygonByFinger(){
             try{
                 //this.drawPolyline.endDraw();
-                if (this.stateDrawing === 1 && this.lineStringGeometry.getLength()>2) {
-                    this.stateDrawing = 0;
+                if (this.stateDrawing == 1 && this.lineStringGeometry.getLength()>2) {
+                    this.stateDrawing = -1;
                     this.getResult();
                     this.mapIsnt.behaviors.enable('drag');
                 }
@@ -128,8 +129,9 @@ export default {
             this.poly_line = simple_line;
             // передача информауии на сервер
             this.mapIsnt.geoObjects.removeAll();
-
+            
             this.drawPolygon = new Polygon(simple_line,this.mapIsnt);
+            this.lineStringGeometry = new ymaps.geometry.LineString([]);
             //
             const polygonBounds = this.drawPolygon.objInstanse.geometry.getBounds()
             const diagonalPoints = polygonBounds[0];
@@ -151,6 +153,7 @@ export default {
                 center,
                 diagonal});
 
+            this.newPolyline();
             this.drawPolygon = new Polygon(simple_line,this.mapIsnt);
             
             }catch(e){
@@ -177,25 +180,28 @@ export default {
             this.$refs.authForm.isactive = true;
             this.$refs.authForm.numtab = 1;
         },
+        newPolyline(){
+            //this.mapInstanse = mapInstanse;
+            this.lineStringGeometry = new ymaps.geometry.LineString([]);
+            this.line = new ymaps.GeoObject({
+                geometry: this.lineStringGeometry,
+            }, {
+                // Описываем опции геообъекта.
+                fillColor: '#00FF00',// Цвет заливки.
+                strokeColor: '#0000FF',// Цвет обводки.
+                opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки).
+                strokeWidth: 5,// Ширина обводки.
+                strokeStyle: 'shortdash'// Стиль обводки.
+            });
+            this.mapIsnt.geoObjects.add(this.line); // Создаем инстанцию геообъекта и передаем нашу геометрию
+            this.mapIsnt.events.add("mousemove", this.mousemoveDraw);
+            this.stateDrawing = -1;//состояние рисования линии
+        },
         initHandler(myMap){
             try{
                 this.mapIsnt = myMap
                 //this.drawPolyline = new Polyline([],this.mapIsnt);
-                //this.mapInstanse = mapInstanse;
-                this.lineStringGeometry = new ymaps.geometry.LineString([]);
-                this.line = new ymaps.GeoObject({
-                    geometry: this.lineStringGeometry,
-                }, {
-                    // Описываем опции геообъекта.
-                    fillColor: '#00FF00',// Цвет заливки.
-                    strokeColor: '#0000FF',// Цвет обводки.
-                    opacity: 0.5,// Общая прозрачность (как для заливки, так и для обводки).
-                    strokeWidth: 5,// Ширина обводки.
-                    strokeStyle: 'shortdash'// Стиль обводки.
-                });
-                this.mapIsnt.geoObjects.add(this.line); // Создаем инстанцию геообъекта и передаем нашу геометрию
-                this.mapIsnt.events.add("mousemove", this.mousemoveDraw);
-                this.stateDrawing = 0;//состояние рисования линии
+                this.newPolyline();
             }catch(e){
                 console.log("newSearchMap.initHandler() : "+ e.message)
             }

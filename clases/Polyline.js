@@ -15,7 +15,7 @@ export default class Polyline{
             });
             this.mapInstanse.geoObjects.add(this.line); // Создаем инстанцию геообъекта и передаем нашу геометрию
             this.mapInstanse.events.add("mousemove", this.mousemoveDraw);
-            this.stateDrawing = 0;//состояние рисования линии
+            this.stateDrawing = -1;//состояние рисования линии
             //this.getResult = getResult;//функция, вызывающаяся при отправке результатов
             
         } catch(e){
