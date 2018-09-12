@@ -14,6 +14,9 @@
             <div class="flex-search-btn" @click="clickSearchInPolygon" >
                 <img class="icons" style="width: 28px; height: 28px" src="images/icons/palets.png">
                 </div>
+            <div class="flex-search-btn" @click="clickSearchMicro" >
+                <img class="icons" style="width: 28px; height: 28px" src="images/icons/micro52.png">
+            </div>
         </div>
         
         <ofen-used v-show="getLastState == 0" 
@@ -151,6 +154,33 @@ export default {
         //поиск в полигоне
         clickSearchInPolygon(){
             this.$emit('startDrawLine');
+        },
+        //спомощьъю микрофона
+        clickSearchMicro(){
+            // Создаем распознаватель
+            let recognizer = new webkitSpeechRecognition();
+
+            // Ставим опцию, чтобы распознавание началось ещё до того, как пользователь закончит говорить
+            recognizer.interimResults = true;
+
+            // Какой язык будем распознавать?
+            recognizer.lang = 'ru-Ru';
+
+            // Используем колбек для обработки результатов
+            let context = this;
+            recognizer.onresult = async function (event) {
+            let result = event.results[event.resultIndex];
+            if (result.isFinal) {
+               // alert('Вы сказали: ' + result[0].transcript);
+               context.userQuery = result[0].transcript;
+               await context.clickSearch();
+            } else {
+               // console.log('Промежуточный результат: ', result[0].transcript);
+            }
+        };
+
+        // Начинаем слушать микрофон и распознавать голос
+        recognizer.start();
         },
         showFullInfo(service){
             try{
